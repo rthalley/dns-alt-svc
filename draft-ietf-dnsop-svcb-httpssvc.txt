@@ -155,7 +155,7 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
    12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  29
      12.1.  New registry for Service Parameters  . . . . . . . . . .  29
        12.1.1.  Procedure  . . . . . . . . . . . . . . . . . . . . .  29
-       12.1.2.  Initial contents . . . . . . . . . . . . . . . . . .  29
+       12.1.2.  Initial contents . . . . . . . . . . . . . . . . . .  30
      12.2.  Registry updates . . . . . . . . . . . . . . . . . . . .  30
    13. Acknowledgments and Related Proposals . . . . . . . . . . . .  31
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  31
@@ -1600,24 +1600,24 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
    *  Pointer to specification text
 
-   Values to be added to this namespace require Expert Review (see
-   [RFC5226], Section 4.1).  Apart from the initial contents, the name
-   MUST NOT start with "key".
+   SvcParamKey values to be added to this namespace have different
+   policies ([RFC5226], Section 4.1) based on their range:
 
-12.1.2.  Initial contents
+                 +-------------+-------------------------+
+                 | SvcParamKey | IANA Policy             |
+                 +=============+=========================+
+                 | 0-255       | Standards Action        |
+                 +-------------+-------------------------+
+                 | 256-32767   | Expert Review           |
+                 +-------------+-------------------------+
+                 | 32768-65280 | First Come First Served |
+                 +-------------+-------------------------+
+                 | 65280-65534 | Private Use             |
+                 +-------------+-------------------------+
+                 | 65535       | Standards Action        |
+                 +-------------+-------------------------+
 
-   The "Service Binding (SVCB) Parameter Registry" shall initially be
-   populated with the registrations below:
-
-
-
-
-
-
-
-
-
-
+                                  Table 1
 
 
 
@@ -1625,6 +1625,14 @@ Schwartz, et al.        Expires 13 December 2020               [Page 29]
 
 Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
+
+   Apart from the initial contents, the SvcParamKey name MUST NOT start
+   with "key".
+
+12.1.2.  Initial contents
+
+   The "Service Binding (SVCB) Parameter Registry" shall initially be
+   populated with the registrations below:
 
     +-------------+-----------------+---------------------+-----------+
     | SvcParamKey | NAME            | Meaning             | Reference |
@@ -1657,7 +1665,7 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
     |             |                 |                     | document) |
     +-------------+-----------------+---------------------+-----------+
 
-                                  Table 1
+                                  Table 2
 
    TODO: do we also want to reserve a range for greasing?
 
@@ -1665,14 +1673,6 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
    Per [RFC6895], please add the following entries to the data type
    range of the Resource Record (RR) TYPEs registry:
-
-
-
-
-
-
-
-
 
 
 
@@ -1692,7 +1692,7 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
      |          | Binding                                | document) |
      +----------+----------------------------------------+-----------+
 
-                                  Table 2
+                                  Table 3
 
    Per [Attrleaf], please add the following entry to the DNS Underscore
    Global Scoped Entry Registry:
@@ -1703,7 +1703,7 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
        | HTTPSSVC | _https     | HTTPS SVCB info | (This document) |
        +----------+------------+-----------------+-----------------+
 
-                                  Table 3
+                                  Table 4
 
 13.  Acknowledgments and Related Proposals
 
