@@ -1346,9 +1346,8 @@ Schwartz, et al.        Expires 13 December 2020               [Page 24]
 Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
 
-   Note that the SNI information provided in TLS by the client will be
-   that of the origin, not the SvcDomainName (as will the Host HTTP
-   header field value).
+   Note that the TLS SNI (and also the HTTP "Host" or ":authority") will
+   indicate the origin, not the SvcDomainName.
 
 7.5.  HTTP Strict Transport Security
 
@@ -1393,7 +1392,8 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
    the altered [WebSocket] opening handshake from [FETCH] SHOULD use
    HTTPSSVC for the "requestURL".
 
-
+   An HTTP-based protocol MAY define its own SVCB mapping.  Such
+   mappings MAY be defined to take precedence over HTTPSSVC.
 
 
 
@@ -1401,9 +1401,6 @@ Schwartz, et al.        Expires 13 December 2020               [Page 25]
 
 Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
-
-   An HTTP-based protocol MAY define its own SVCB mapping.  Such
-   mappings MAY be defined to take precedence over HTTPSSVC.
 
 8.  SVCB/HTTPSSVC parameter for ECH configuration
 
@@ -1445,6 +1442,9 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
    As a latency optimization, clients MAY prefetch DNS records for later
    steps before they are needed.
+
+
+
 
 
 
