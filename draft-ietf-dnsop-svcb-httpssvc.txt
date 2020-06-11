@@ -549,10 +549,10 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
 2.3.  SVCB owner names
 
-   When querying the SVCB RR, an origin is typically translated into a
-   QNAME by prefixing the port and scheme with "_", then concatenating
-   them with the hostname, resulting in a domain name like
-   "_8004._examplescheme.api.example.com.".
+   When querying the SVCB RR, an origin is translated into a QNAME by
+   prepending the hostname with a label indicating the scheme, prefixed
+   with an underscore, resulting in a domain name like
+   "_examplescheme.api.example.com.".
 
 
 
@@ -562,11 +562,14 @@ Schwartz, et al.        Expires 13 December 2020               [Page 10]
 Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
 
-   Protocol mappings for SVCB MAY remove the port or replace it with
-   other protocol-specific information, but MUST retain the scheme in
-   the QNAME.  RR types other than SVCB can define additional behavior
-   for translating origins to QNAMEs.  See Section 7.1 for the HTTPSSVC
-   behavior.
+   Protocol mapping documents MAY specify additional underscore-prefixed
+   labels to be prepended.  For schemes that specify a port
+   (Section 3.2.3 of [URI]), one reasonable possibility is to prepend
+   the indicated port number (or the default if no port number is
+   specified).  We term this behavior "Port Prefix Naming", and use it
+   in the examples throughout this document.
+
+   See Section 7.1 for the HTTPSSVC behavior.
 
    When a prior CNAME or SVCB record has aliased to an SVCB record, each
    RR shall be returned under its own owner name.
@@ -603,9 +606,6 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
    Within an SVCB RRSet, all RRs should have the same SvcRecordType.  If
    an RRSet contains a record in AliasForm, the client MUST ignore any
    records in the set with ServiceForm.
-
-
-
 
 
 
@@ -1079,7 +1079,8 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 6.2.  "port"
 
    The "port" SvcParamKey defines the TCP or UDP port that should be
-   used to contact this alternative service.
+   used to contact this alternative service.  If this key is not
+   present, clients SHALL use the origin server's port number.
 
    The presentation format of the SvcParamValue is a numeric value
    between 0 and 65535 inclusive.  Any other values (e.g. the empty
@@ -1111,7 +1112,6 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
    the correct SNI with probability at least 1/K, where K is the size of
    this ECH-enabled server anonymity set.  This probability may be
    increased via traffic analysis or other mechanisms.
-
 
 
 
@@ -1198,10 +1198,10 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
 
 7.1.  Owner names for HTTPSSVC records
 
-   The HTTPSSVC RR extends the behavior for determining a QNAME
-   specified above in Section 2.3.  In particular, if the scheme is
-   "https" with port 443 then the client's original QNAME is equal to
-   the origin hostname.
+   The HTTPSSVC RR uses Port Prefix Naming (Section 2.3), with one
+   modification: if the scheme is "https" and the port is 443, then the
+   client's original QNAME is equal to the origin hostname, without any
+   prefix labels.
 
    By removing the [Attrleaf] labels used in SVCB, this construction
    enables offline DNSSEC signing of wildcard domains, which are
@@ -1210,18 +1210,18 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
    returning HTTPSSVC responses without requiring origin domains to
    configure and maintain an additional delegation.
 
-   For HTTPS origins with ports other than 443, the port and scheme
-   continue to be prefixed to the hostname as described in Section 2.3.
-   Following of HTTPSSVC AliasForm and CNAME aliases is also unchanged
-   from SVCB.
+   Following of HTTPSSVC AliasForm and CNAME aliases is unchanged from
+   SVCB.
 
-   Clients always convert "http" URLS to "https" before performing an
+   Clients always convert "http" URLs to "https" before performing an
    HTTPSSVC query using the process described in Section 7.4, so domain
    owners MUST NOT publish HTTPSSVC records with a prefix of "_http".
 
    Note that none of these forms alter the HTTPS origin or authority.
    For example, clients MUST continue to validate TLS certificate
    hostnames based on the origin host.
+
+
 
 
 
@@ -1915,6 +1915,11 @@ Internet-Draft        SVCB and HTTPSSVC RRs for DNS            June 2020
               Considerations", BCP 42, RFC 6895, DOI 10.17487/RFC6895,
               April 2013, <https://www.rfc-editor.org/info/rfc6895>.
 
+   [URI]      Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, DOI 10.17487/RFC3986, January 2005,
+              <https://www.rfc-editor.org/info/rfc3986>.
+
 Appendix A.  Comparison with alternatives
 
    The SVCB and HTTPSSVC record types closely resemble, and are inspired
@@ -1948,11 +1953,6 @@ A.2.  Differences from the proposed HTTP record
 
    Like that proposal, it remains necessary to continue to include
    address records at the zone apex for legacy clients.
-
-
-
-
-
 
 
 
