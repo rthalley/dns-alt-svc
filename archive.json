@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-07T17:03:20.252781+00:00",
+  "timestamp": "2020-06-11T02:06:07.680336+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2620,7 +2620,7 @@
       "id": "MDU6SXNzdWU2MTM3MDc3Njk=",
       "title": "Clarify that transport proxies cannot issue SVCB queries",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/147",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -2631,8 +2631,8 @@
       ],
       "body": "",
       "createdAt": "2020-05-07T01:18:05Z",
-      "updatedAt": "2020-05-29T20:43:50Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T02:05:30Z",
+      "closedAt": "2020-06-11T02:05:29Z",
       "comments": []
     },
     {
@@ -2694,7 +2694,7 @@
       ],
       "body": "Having only 256 experimental SvcParamKeys may not be enough.\r\nProposed would be to leave the first 32k as expert review,\r\nmost of the next 32k as first-come-first-served, and some\r\nsubset (256) as experimental/private-use.",
       "createdAt": "2020-05-29T19:31:27Z",
-      "updatedAt": "2020-06-07T16:37:46Z",
+      "updatedAt": "2020-06-08T16:56:31Z",
       "closedAt": null,
       "comments": [
         {
@@ -2724,6 +2724,20 @@
           "body": "I don't see this as terribly contentious.  I would just do it, and highlight it for discussion in the changelog we send to the WG.\r\n\r\nAlso, I'm tempted to make codes 1-255 \"RFC Required\".",
           "createdAt": "2020-06-07T16:37:46Z",
           "updatedAt": "2020-06-07T16:37:46Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "That all sounds good to me",
+          "createdAt": "2020-06-08T15:41:30Z",
+          "updatedAt": "2020-06-08T15:41:30Z"
+        },
+        {
+          "author": "ericorth",
+          "authorAssociation": "NONE",
+          "body": "I still prefer #113, but I recognize that I'm clearly biased (because I opened #113 and because I only deal with client-side where the additional bytes are mostly free).  This proposal seems to be a reasonable compromise that greatly mitigates the main issue of 256 keys being completely insufficient for experimentation.  So overall, SGTM!\r\n\r\nRe WG discussion: I wouldn't expect this to be contentious enough to require discussion before adding to the next draft.\r\n\r\nRe a small RFC-Required block: Assuming the primary motivation would be to save the \"good\" low numbers for the really important things (rather than concerns over running out of points), I would argue that we should make it even stricter (\"Standards Action\") since I see no reason for Informational or Experimental drafts to get the distinction.",
+          "createdAt": "2020-06-08T16:54:51Z",
+          "updatedAt": "2020-06-08T16:56:31Z"
         }
       ]
     }
@@ -11988,7 +12002,7 @@
       "labels": [],
       "body": "This also covers the general case of WebSocket-like protocols.\r\n\r\nFixes #90",
       "createdAt": "2020-05-30T21:32:54Z",
-      "updatedAt": "2020-06-07T17:02:30Z",
+      "updatedAt": "2020-06-07T17:06:08Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
@@ -12006,6 +12020,13 @@
           "body": "Coincidentally, we were looking at WebSockets recently for cookies. It's a mess. :-( Whether this definition of \"HTTP-based\" works is... unclear. RFC 6455 does *not* map WebSockets to its corresponding http/https scheme. It believes WebSockets is an entirely independent protocol with an HTTP-looking handshake for convenience.\r\n\r\n>   The WebSocket Protocol is an independent TCP-based protocol.  Its\r\n>   only relationship to HTTP is that its handshake is interpreted by\r\n>   HTTP servers as an Upgrade request.\r\n\r\nBut this is an unhelpful way to specify it and was probably a mistake. It doesn't tell you how WebSockets interacts with cookies, HTTP auth, or redirects, and led to a mess of interop issues.\r\n\r\nFetch, accordingly, [overrides this](https://fetch.spec.whatwg.org/#websocket-protocol) and [maps the schemes to HTTP](https://fetch.spec.whatwg.org/#websocket-opening-handshake). This is partially a no-op because cookies don't check schemes, but we should [fix that](https://tools.ietf.org/html/draft-west-cookie-incrementalism-01). At that point we'll be in a weird situation where, without the WHATWG override of the IETF spec, WebSockets' interactions with cookies will be somewhere between incorrect and insufficiently specified. :-(\r\n\r\nHow that translates to what this specification should do, I don't know. It may make sense to just special-case WebSockets and declare the RFC 6455 specification strategy was a mistake and we shouldn't do it again. Then again, that still means new \"webby\" protocols that are less HTTP-adjacent (WebTransport?) will require separate SVCB records, which also seems poor. Every extra thing we stick in the query (scheme, port, etc.) weakens the security benefits (HTTPS upgrade, ECH).",
           "createdAt": "2020-05-30T22:01:50Z",
           "updatedAt": "2020-05-30T22:02:47Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@davidben Thanks for flagging the discrepancy.  I've tweaked the text to try to be more precise (without explaining the whole situation).",
+          "createdAt": "2020-06-07T17:06:08Z",
+          "updatedAt": "2020-06-07T17:06:08Z"
         }
       ],
       "reviews": []
@@ -12093,26 +12114,42 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NTQyNjc1",
       "title": "Clarify transport proxy behavior",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/159",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #147",
       "createdAt": "2020-05-31T00:46:32Z",
-      "updatedAt": "2020-05-31T00:46:32Z",
+      "updatedAt": "2020-06-11T02:05:30Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-proxy",
       "headRefOid": "c32458b34ffcb8330a19ec053b890cdb9ff2384c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-11T02:05:30Z",
+      "mergedAt": "2020-06-11T02:05:29Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "27bf3549b27475b4f67d7ff7d79bec6b50da9d32"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTQ0MDEz",
+          "commit": {
+            "abbreviatedOid": "c32458b"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T02:05:22Z",
+          "updatedAt": "2020-06-11T02:05:22Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 160,
@@ -12126,7 +12163,7 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #81",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-06-01T01:08:01Z",
+      "updatedAt": "2020-06-11T02:03:53Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
@@ -12144,6 +12181,13 @@
           "body": "This PR is firmly in bikeshed territory, and has no particular deadline, so it's a lower priority than any substantive PRs.",
           "createdAt": "2020-06-01T01:08:01Z",
           "updatedAt": "2020-06-01T01:08:01Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm not sold yet.  It's an interesting idea, but I think there is value in using the camelcase names for unambiguous references to fields and forms.  Common terms have more chances for confusion and ambiguity.  This may be a style thing.  I'd be more in-favor of just simplifying some of the camelcase terms that are overly long.",
+          "createdAt": "2020-06-11T02:03:53Z",
+          "updatedAt": "2020-06-11T02:03:53Z"
         }
       ],
       "reviews": []
