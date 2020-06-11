@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-11T02:06:07.680336+00:00",
+  "timestamp": "2020-06-11T14:35:12.427803+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -1388,7 +1388,7 @@
       "id": "MDU6SXNzdWU1MzUwOTcwMzE=",
       "title": "WebSockets should use HTTPSSVC",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/90",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1397,8 +1397,8 @@
       "labels": [],
       "body": "Despite having their own scheme (ws://, wss://), WebSockets should actually use HTTPSSVC.  This has a firm basis on the Fetch spec, which says that [each WebSocket has an equivalent http(s) URL](https://fetch.spec.whatwg.org/#websocket-opening-handshake), but it has come up as a point of confusion so I think it deserves a sentence in the draft.",
       "createdAt": "2019-12-09T18:11:31Z",
-      "updatedAt": "2020-05-29T19:54:20Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T02:22:29Z",
+      "closedAt": "2020-06-11T02:22:29Z",
       "comments": [
         {
           "author": "tfpauly",
@@ -1421,7 +1421,7 @@
       "id": "MDU6SXNzdWU1Mzc2OTA5NDY=",
       "title": "Does HSTS apply if you fall back to A?",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/91",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1431,8 +1431,8 @@
       "labels": [],
       "body": "We should clarify whether the HSTS implication applies to the fallback IPs, and also clarify that it _does_ apply to AliasForm.",
       "createdAt": "2019-12-13T18:05:22Z",
-      "updatedAt": "2020-05-29T22:09:55Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T14:32:57Z",
+      "closedAt": "2020-06-11T14:32:57Z",
       "comments": [
         {
           "author": "bemasc",
@@ -1469,7 +1469,7 @@
       "id": "MDU6SXNzdWU1Mzc3MDE1NjQ=",
       "title": "Consider requiring support for SNI",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/92",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1478,8 +1478,8 @@
       "labels": [],
       "body": "Clients that do HTTPSSVC should be modern enough to do SNI.",
       "createdAt": "2019-12-13T18:27:47Z",
-      "updatedAt": "2020-05-29T19:59:55Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T03:30:39Z",
+      "closedAt": "2020-06-11T03:30:39Z",
       "comments": []
     },
     {
@@ -1720,7 +1720,7 @@
       "labels": [],
       "body": "@miekg has asked for two related clarifications:\r\n1. How is it that the AliasForm and ServiceForm encodings are compatible?\r\n2. Why not reuse the TXT/SPF format?",
       "createdAt": "2020-01-08T15:30:04Z",
-      "updatedAt": "2020-01-12T13:25:38Z",
+      "updatedAt": "2020-06-11T02:52:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -1729,6 +1729,13 @@
           "body": "If this is previously discussed I am happy to read those emails.\r\n\r\nRe 1.: the text in the 01 draft is unclear to me that these two encoding (as proposed) are in fact identical.\r\n\r\nRe 2.: Easiest for us is to just re-use the TXT encoding, the draft talks about limit length (255 octets) per txt segment, which is true, but the total size can still be more than that. Downside is that parsing of the key, values must be done by the client, instead of the DNS client. But things like \\DDD are supported within TXT as well.\r\n\r\nSee https://github.com/miekg/dns/issues/1064 for our bug to add this.",
           "createdAt": "2020-01-12T13:25:38Z",
           "updatedAt": "2020-01-12T13:25:38Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has been extensively discussed in the WG.  Can we close this?",
+          "createdAt": "2020-06-11T02:52:16Z",
+          "updatedAt": "2020-06-11T02:52:16Z"
         }
       ]
     },
@@ -1941,7 +1948,7 @@
       "id": "MDU6SXNzdWU1NjkwNzk1OTA=",
       "title": "Define default port when unspecified for _port records",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/111",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -1950,8 +1957,8 @@
       "labels": [],
       "body": "We should reconsider the default port for:\r\n\r\n   _8443._foo.api.example.com. 7200 IN HTTPS 0 svc4.example.net.\r\n   svc4.example.net.  7200  IN HTTPS 3 . transport=\"tls\"\r\n\r\nie, where no port is specified.  In particular, should the port be 8443 (specified for the scheme) or 443 (default for https+transport).\r\nUsing the port from the scheme (8443) when no port is specified may be less confusing.\r\n",
       "createdAt": "2020-02-21T17:13:38Z",
-      "updatedAt": "2020-05-29T20:29:54Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T02:14:01Z",
+      "closedAt": "2020-06-11T02:14:01Z",
       "comments": [
         {
           "author": "enygren",
@@ -2155,7 +2162,7 @@
       "id": "MDU6SXNzdWU1NzgyNjg1OTg=",
       "title": "Improve description of QNAME structure",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/122",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -2166,9 +2173,17 @@
       ],
       "body": "Currently, the QNAME structure is described as a _port._scheme.domain, except \"mappings for SVCB MAY remove the port\".  This is potentially confusing.  We should align the terminology with the URI (URL?) RFCs, and discuss ports only in the context of HTTPS.\r\n\r\n> section 1.1 \r\n> \r\n> \u00a0_8765._baz.api.example.com. 7200 IN SVCB 0 svc4-baz.example.net.\r\n> \u00a0\r\n> \r\n> In my opinion, the mechanism that derives QNAME needs to be refined or maybe\r\n> the terminology being clarified. \r\n> \r\n> a) The current document describes how to generate the QNAME from an URI. The\r\n> QNAME contains a port number while some scheme do not allow or specify port\r\n> subcomponent. Not having the port specified could be particularly useful to\r\n> provide secure transport for schemes that are not necessarily secure for\r\n> example. One the other hand, a scheme that specify a port, may not necessarily\r\n> need to have it specified twined in the QNAME. I would be rather inclined to\r\n> have the port optional maybe at the expense of an additional RRset, but need\r\n> more thoughts. \u00a0\r\n> \u00a0 \r\n> b) It is also unclear to me why HTTPS:443 or HTTP:80 has a specific convention.\r\n> The convention tales place for the DNS resolution of a authority as opposed to\r\n> the DNS resolution of a FQDN. One possible reason I see could would be to\r\n> prevent having a distinction between http and https (which could be done\r\n> otherwise for example using alpn), \u00a0but I am wondering if there are other\r\n> rationale. So far, I do not see the need for a exception for the derivation of\r\n> the QNAME (nor for using a specific RRtype). \u00a0 \u00a0\r\n> \r\n> c) The current document, mentions several time HTTP service. The term service\r\n> seems to me ambiguous as it has been defined for the DNS service based\r\n> discovery in which case it means a web page. It seems to me preferable we keep\r\n> the scope of URI scheme and port authority. As a side note, when scheme is\r\n> thought as a service, the convention adopted by the document slightly differs\r\n> from the DNS based service Discovery which would use _baz._udp or eventually\r\n> _baz._tcp. The current approach may be simpler.. I would think this is mostly a\r\n> terminology issue. \u00a0\r\n>\r\n> section 2.3 \r\n> \r\n> \"\"\"\r\n> Protocol mappings for SVCB MAY remove the port or replace it with\r\n> \u00a0 \u00a0other protocol-specific information, but MUST retain the scheme in\r\n> \u00a0 \u00a0the QNAME. \u00a0\r\n> \"\"\"\r\n> \r\n> I understand that for any scheme, a definition of how scheme and port should be\r\n> defined when using SVBC. If that is correct, I would rather see that the other\r\n> way around, that is SVBC defining from the scheme definition the QNAME\r\n> derivation. The term MAY also suggest different interpretation will be\r\n> permitted, which could affect interoperability. \r\n> ",
       "createdAt": "2020-03-10T00:44:54Z",
-      "updatedAt": "2020-05-29T20:34:17Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2020-06-11T02:14:52Z",
+      "closedAt": "2020-06-11T02:14:51Z",
+      "comments": [
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Addressed in #157",
+          "createdAt": "2020-06-11T02:14:51Z",
+          "updatedAt": "2020-06-11T02:14:51Z"
+        }
+      ]
     },
     {
       "number": 123,
@@ -2685,7 +2700,7 @@
       "id": "MDU6SXNzdWU2Mjc0OTMwOTY=",
       "title": "Larger SvcParamKey space for experiments and first-come-first-served allocations",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/154",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -2694,8 +2709,8 @@
       ],
       "body": "Having only 256 experimental SvcParamKeys may not be enough.\r\nProposed would be to leave the first 32k as expert review,\r\nmost of the next 32k as first-come-first-served, and some\r\nsubset (256) as experimental/private-use.",
       "createdAt": "2020-05-29T19:31:27Z",
-      "updatedAt": "2020-06-08T16:56:31Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T02:55:45Z",
+      "closedAt": "2020-06-11T02:55:45Z",
       "comments": [
         {
           "author": "enygren",
@@ -10546,7 +10561,7 @@
       "id": "MDExOlB1bGxSZXF1ZXN0Mzg1ODI2MzUx",
       "title": "Simplify AliasForm wording",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/118",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -10555,17 +10570,19 @@
       ],
       "body": "The previous phrasing was redundant.",
       "createdAt": "2020-03-09T21:24:43Z",
-      "updatedAt": "2020-06-07T16:38:48Z",
+      "updatedAt": "2020-06-11T02:49:19Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "db3e29b4e108a3c13fa7ec6e88ba56e391541b87",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-alias-wording",
       "headRefOid": "b43c17ad9bb930b073859829d452d6a9f1061995",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-11T02:24:49Z",
+      "mergedAt": "2020-06-11T02:24:49Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "c22b30623f664504283ca5094ccb83d1f1d77c94"
+      },
       "comments": [
         {
           "author": "bemasc",
@@ -10588,6 +10605,52 @@
           "createdAt": "2020-03-09T22:40:57Z",
           "updatedAt": "2020-03-09T22:40:57Z",
           "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzkyNDMyMDE3",
+          "commit": {
+            "abbreviatedOid": "b43c17a"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "I guess adding the comment about the encoding of \".\" earlier would be redundant?  This is fine for now unless we get feedback.",
+          "createdAt": "2020-04-13T20:54:25Z",
+          "updatedAt": "2020-06-11T02:24:41Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "If we're going to have this special handling should we also mention it up in the wire format definition?  For example earlier:\r\n\r\n* the uncompressed, fully-qualified SvcDomainName, represented as a sequence of length-prefixed labels as in Section 3.1 of {{!RFC1035}}.  For the special case of a SvcDomainName with the value of \".\" (see {{svcdomainnamedot}}) this is represented as a single zero-legth label.",
+              "createdAt": "2020-04-13T20:54:25Z",
+              "updatedAt": "2020-06-11T02:24:41Z"
+            },
+            {
+              "originalPosition": 32,
+              "body": "(Did we want to make this addition?  Looks good otherwise.)",
+              "createdAt": "2020-05-14T02:47:36Z",
+              "updatedAt": "2020-06-11T02:24:41Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTU2OTI4",
+          "commit": {
+            "abbreviatedOid": "b43c17a"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-11T02:49:19Z",
+          "updatedAt": "2020-06-11T02:49:19Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "From an encoding point of view, this isn't a special case.  The encoding of \".\" is always the zero-length label in DNS.\r\n\r\nThere's a logical special case here (\".\" means the RR name), but I don't think we need to repeat that more than we already do.",
+              "createdAt": "2020-06-11T02:49:19Z",
+              "updatedAt": "2020-06-11T02:49:19Z"
+            }
+          ]
         }
       ]
     },
@@ -11995,24 +12058,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NTI2MjUz",
       "title": "Clarify interaction with WebSocket",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/155",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This also covers the general case of WebSocket-like protocols.\r\n\r\nFixes #90",
       "createdAt": "2020-05-30T21:32:54Z",
-      "updatedAt": "2020-06-07T17:06:08Z",
+      "updatedAt": "2020-06-11T02:22:29Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-websocket",
       "headRefOid": "11e9efbd5adf334bf9607e3dd879414babd63e2f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-11T02:22:29Z",
+      "mergedAt": "2020-06-11T02:22:29Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "a91c02c5ec21adb5a349d88e63d6bf5b2130c770"
+      },
       "comments": [
         {
           "author": "davidben",
@@ -12029,59 +12094,140 @@
           "updatedAt": "2020-06-07T17:06:08Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTQ5MDE5",
+          "commit": {
+            "abbreviatedOid": "11e9efb"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T02:22:20Z",
+          "updatedAt": "2020-06-11T02:22:20Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 156,
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NTI4MTYy",
       "title": "Clarify conditions for enabling HSTS",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/156",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #91",
       "createdAt": "2020-05-30T21:52:55Z",
-      "updatedAt": "2020-05-30T21:53:25Z",
+      "updatedAt": "2020-06-11T14:32:57Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-hsts-fallback",
-      "headRefOid": "1232c2d34c7eadeb3acd42c6d704c85fb84f5855",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "headRefOid": "4cfb3035ed167a0ed86e99a8827f994555b5b842",
+      "closedAt": "2020-06-11T14:32:57Z",
+      "mergedAt": "2020-06-11T14:32:57Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "9d29bfc8d1b413294278c14310460e5de9857212"
+      },
+      "comments": [
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "This PR seems reasonable, though @enygren's comment has now confused me. What does fallback mean here? (Did you mean another comment of mine? Doesn't look like I've commented on #79.)",
+          "createdAt": "2020-06-11T02:47:51Z",
+          "updatedAt": "2020-06-11T02:47:51Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Oops, I meant #91   (no idea why the typo)",
+          "createdAt": "2020-06-11T02:54:36Z",
+          "updatedAt": "2020-06-11T02:54:36Z"
+        },
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ah. No, a fallback wouldn't make sense, both semantically and for security. Semantically, by the time you've done an HSTS-like upgrade, you've had to pop up many layers to trigger something like a redirect. That no longer looks like the HTTPSSVC vs. A/AAAA alternate routes. (The client needs to actually change the URL here.) And, in terms of security, if the network can undo the upgrade by blocking the HTTPS upgrade, what was the point? Maybe as well do a plain 302 redirect at that point.",
+          "createdAt": "2020-06-11T05:02:06Z",
+          "updatedAt": "2020-06-11T05:02:06Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTQ4NDk5",
+          "commit": {
+            "abbreviatedOid": "1232c2d"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Did we want to allow clients to fallback?\r\nPerhaps I misunderstood @davidben's comment in #91.  David, do you have any concerns with where this lands?",
+          "createdAt": "2020-06-11T02:20:40Z",
+          "updatedAt": "2020-06-11T02:54:49Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4OTcyODY2",
+          "commit": {
+            "abbreviatedOid": "4cfb303"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T14:32:51Z",
+          "updatedAt": "2020-06-11T14:32:51Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 157,
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NTMzNDc1",
       "title": "Clarify port-related requirements",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/157",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #111 and #122",
       "createdAt": "2020-05-30T22:53:11Z",
-      "updatedAt": "2020-05-30T22:54:35Z",
+      "updatedAt": "2020-06-11T02:14:01Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-port",
       "headRefOid": "f309c0d7e58ff2d00286400eb9d9e2f37f03844b",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-11T02:14:01Z",
+      "mergedAt": "2020-06-11T02:14:01Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "2248c49c022e000afbfe40a90e5ab09f490926b6"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTQ2NDk0",
+          "commit": {
+            "abbreviatedOid": "f309c0d"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T02:13:55Z",
+          "updatedAt": "2020-06-11T02:13:55Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 158,
@@ -12095,7 +12241,7 @@
       "labels": [],
       "body": "Fixes #120",
       "createdAt": "2020-05-31T00:36:41Z",
-      "updatedAt": "2020-05-31T01:14:21Z",
+      "updatedAt": "2020-06-11T08:05:43Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
@@ -12106,8 +12252,37 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@marka63 Could you confirm that this addresses the ABNF problem in #120?",
+          "createdAt": "2020-06-11T02:43:25Z",
+          "updatedAt": "2020-06-11T02:43:25Z"
+        },
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "It appears to.",
+          "createdAt": "2020-06-11T08:05:43Z",
+          "updatedAt": "2020-06-11T08:05:43Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTQ0ODM0",
+          "commit": {
+            "abbreviatedOid": "6e0e097"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Might be good for someone who deeply understands this ABNF definition to review more deeply.",
+          "createdAt": "2020-06-11T02:08:08Z",
+          "updatedAt": "2020-06-11T02:08:08Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 159,
@@ -12191,6 +12366,191 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 161,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMyODAyOTUy",
+      "title": "Clarify need for SNI",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/161",
+      "state": "MERGED",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #92 \r\n\r\n(text derived from rfc7838 and rfc7540 which have a similar requirement)",
+      "createdAt": "2020-06-11T02:36:57Z",
+      "updatedAt": "2020-06-11T03:30:40Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "c22b30623f664504283ca5094ccb83d1f1d77c94",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-sni",
+      "headRefOid": "b24ef37471b2906081d1d19eca79e1d975a2be70",
+      "closedAt": "2020-06-11T03:30:39Z",
+      "mergedAt": "2020-06-11T03:30:39Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "b36fcc1b1198252d9214fb16a60c6b44ecc4df4c"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTU3OTY3",
+          "commit": {
+            "abbreviatedOid": "d262a88"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-11T02:52:44Z",
+          "updatedAt": "2020-06-11T02:52:45Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "```suggestion\r\nNote that the TLS SNI (and also the HTTP \"Host\" or \":authority\") will indicate \r\nthe origin, not the SvcDomainName.\r\n```",
+              "createdAt": "2020-06-11T02:52:44Z",
+              "updatedAt": "2020-06-11T02:56:40Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTU5Njkx",
+          "commit": {
+            "abbreviatedOid": "b24ef37"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T02:58:43Z",
+          "updatedAt": "2020-06-11T02:58:43Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 162,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMyODA2NTU0",
+      "title": "Different IANA policies for different SvcParamKey ranges",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/162",
+      "state": "MERGED",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #154",
+      "createdAt": "2020-06-11T02:50:26Z",
+      "updatedAt": "2020-06-11T02:55:45Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "c22b30623f664504283ca5094ccb83d1f1d77c94",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-iana-ranges",
+      "headRefOid": "abc4f6f1128e3c39c1de9c3ddbbff053d5b7538a",
+      "closedAt": "2020-06-11T02:55:45Z",
+      "mergedAt": "2020-06-11T02:55:45Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "c1dcfcc0fe75febd76926ed410c164f2b5137954"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTU4NzY0",
+          "commit": {
+            "abbreviatedOid": "abc4f6f"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-11T02:55:36Z",
+          "updatedAt": "2020-06-11T02:55:36Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 163,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMyODEyODgy",
+      "title": "SVCB-Used HTTP header",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/163",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #107 \r\nMay want working group discussion in dnsop and/or httpbis",
+      "createdAt": "2020-06-11T03:15:39Z",
+      "updatedAt": "2020-06-11T03:58:00Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-svcb-used",
+      "headRefOid": "740389a633ff6a16daceb9653048f4ebf16cef4d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I would choose one option for the behavior, and leave it at MAY.  I also think we probably don't want to do this unless we can convince people that it's not a privacy risk at all.",
+          "createdAt": "2020-06-11T03:58:00Z",
+          "updatedAt": "2020-06-11T03:58:00Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 164,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMyODE2NTEy",
+      "title": "disable-https-upgrade SvcParamKey",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/164",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #100 \r\nWill want working group discussion before merging.\r\n(End resolution may be to reject this.)",
+      "createdAt": "2020-06-11T03:28:59Z",
+      "updatedAt": "2020-06-11T04:34:37Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-disable-https-upgrade",
+      "headRefOid": "aa287bd7ea98327abaec96e6aa225e7659f47471",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTg1MzE4",
+          "commit": {
+            "abbreviatedOid": "aa287bd"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "How strongly is there a need for such a key? It seems a bit odd to define the key and then strongly discourage it. If anything, it should be marked as SHOULD NOT use or support, which seems tenuous.\n\nIf deployments need something like this in the future, I\u2019d prefer to see it as an extension. ",
+          "createdAt": "2020-06-11T04:32:10Z",
+          "updatedAt": "2020-06-11T04:34:37Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "Typo: tennt",
+              "createdAt": "2020-06-11T04:32:11Z",
+              "updatedAt": "2020-06-11T04:34:37Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
