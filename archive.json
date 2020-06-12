@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-11T14:35:12.427803+00:00",
+  "timestamp": "2020-06-12T02:17:08.142596+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -52,6 +52,11 @@
       "name": "editorial",
       "description": "",
       "color": "4af7a6"
+    },
+    {
+      "name": "proposed to close",
+      "description": "Pending feedback prior to closing out",
+      "color": "b3f22b"
     }
   ],
   "issues": [
@@ -1168,10 +1173,13 @@
       "author": "c-taylor",
       "authorAssociation": "NONE",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "proposed to close",
+        "question"
+      ],
       "body": "I believe that either this draft or a revision of rfc7838 should clarify the client behaviour or provide stronger guidance for the scenarios:\r\n- Fallback to origin from alternates\r\n-- Both with and without downgrade considerations\r\n- Multiple same priority alternates\r\n-- After random shuffle do I use one? all?\r\n-- Should client fail to origin or same priority?\r\n- Multiple differing priority alternates\r\n-- Fail down the tree or straight to origin?\r\n\r\n \r\n\r\nrfc7838 was not explicit here either, which has (probably) led to the fail-back having low implementation. Defined/predictable client failover behaviour is a big win.\r\n\r\nHappy to help with words if you think there's a place for this...",
       "createdAt": "2019-11-18T07:08:47Z",
-      "updatedAt": "2020-05-29T19:46:25Z",
+      "updatedAt": "2020-06-11T15:00:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -1290,10 +1298,12 @@
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "help wanted"
+      ],
       "body": "We need a careful implementor review on Section 4, particularly regarding what to put in the Additional section for negative responses (with and without DNSSEC).\r\n\r\nI also wonder how this would interact with the CHAIN query.",
       "createdAt": "2019-11-25T23:43:40Z",
-      "updatedAt": "2020-05-29T19:52:53Z",
+      "updatedAt": "2020-06-11T15:00:32Z",
       "closedAt": null,
       "comments": [
         {
@@ -1309,6 +1319,13 @@
           "body": "@marka63 Would you be able to review Section 4 with an eye toward DNSSEC and negative responses?  I'd like to make sure that the recommendations really make sense.",
           "createdAt": "2020-05-29T19:52:53Z",
           "updatedAt": "2020-05-29T19:52:53Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks like we're waiting on @marka63 to review Section 4 with an eye toward DNSSEC and negative responses before we can close this.",
+          "createdAt": "2020-06-11T14:58:14Z",
+          "updatedAt": "2020-06-11T14:58:14Z"
         }
       ]
     },
@@ -1478,9 +1495,45 @@
       "labels": [],
       "body": "Clients that do HTTPSSVC should be modern enough to do SNI.",
       "createdAt": "2019-12-13T18:27:47Z",
-      "updatedAt": "2020-06-11T03:30:39Z",
+      "updatedAt": "2020-06-11T16:12:46Z",
       "closedAt": "2020-06-11T03:30:39Z",
-      "comments": []
+      "comments": [
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@bemasc what is the rationale for this?",
+          "createdAt": "2020-06-11T14:38:00Z",
+          "updatedAt": "2020-06-11T14:38:00Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@chris-wood : Same as with the SNI requirement in Alt-Svc and HTTP/2.  Servers must be able to assume that they will have a way to provide the proper server certificate to a client based on either SNI or the inner-SNI in ECH without needing to have an IP address per service endpoint.\r\nOne use-case for HTTPSSVC is to allow the default A/AAAA records to point to a per-certificate-per-cluster virtual IP (limited to a subset of clusters) for legacy client support but where the SvcDomainName points to a name that covers a much broader set of server clusters that support multiplexing via SNI. Almost all clients do support SNI, but we prevent backslide to avoid causing problems with continued growth/scaling of HTTPS adoption. ",
+          "createdAt": "2020-06-11T15:26:57Z",
+          "updatedAt": "2020-06-11T15:26:57Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What seems strange (to me) is that HTTPSSVC is purely a DNS artifact, and can (in theory) be used without TLS. As a silly example, imagine we used HTTPSSVC to publish public keys used for a protocol that is *not* TLS. Imagine further that the client consuming one of these records only uses this other fictitious protocol, and doesn't implement TLS. Would this prevent said client from using the record? If so, that seems needlessly prohibitive. Perhaps the text should say that clients using HTTPSSVC records for subsequent TLS connections must support SNI, to be more clear? ",
+          "createdAt": "2020-06-11T15:32:07Z",
+          "updatedAt": "2020-06-11T15:32:07Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@chris-wood This requirement only applies to HTTPSSVC, not SVCB, so it's not used for any protocol other than HTTPS, i.e. TLS.  As such, I can't think of a way to encounter the problem you're describing (unless HTTP/4 doesn't use TLS...).",
+          "createdAt": "2020-06-11T16:05:38Z",
+          "updatedAt": "2020-06-11T16:05:38Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Got it. That does clarify!",
+          "createdAt": "2020-06-11T16:12:45Z",
+          "updatedAt": "2020-06-11T16:12:45Z"
+        }
+      ]
     },
     {
       "number": 95,
@@ -1717,10 +1770,12 @@
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "proposed to close"
+      ],
       "body": "@miekg has asked for two related clarifications:\r\n1. How is it that the AliasForm and ServiceForm encodings are compatible?\r\n2. Why not reuse the TXT/SPF format?",
       "createdAt": "2020-01-08T15:30:04Z",
-      "updatedAt": "2020-06-11T02:52:16Z",
+      "updatedAt": "2020-06-11T14:59:45Z",
       "closedAt": null,
       "comments": [
         {
@@ -2128,7 +2183,7 @@
       "id": "MDU6SXNzdWU1NzgyMzgwNTc=",
       "title": "basic-visible vs line continuation in master files",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/120",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "marka63",
       "authorAssociation": "NONE",
       "assignees": [
@@ -2137,8 +2192,8 @@
       "labels": [],
       "body": "basic-visible fails to exclude 0x28  '('   and 0x29  ')' which are line continuation characters in master files.\r\n\r\nfoo=(1)  will parse as \"foo=\", \"1\" in master files.   For it to be a single token it needs to be foo=\"(1)\" or foo=\\\\(1\\\\) ",
       "createdAt": "2020-03-09T23:00:38Z",
-      "updatedAt": "2020-05-29T20:33:40Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-11T14:37:30Z",
+      "closedAt": "2020-06-11T14:37:30Z",
       "comments": []
     },
     {
@@ -12234,24 +12289,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NTQxOTE1",
       "title": "Exclude parentheses from basic-visible",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/158",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #120",
       "createdAt": "2020-05-31T00:36:41Z",
-      "updatedAt": "2020-06-11T08:05:43Z",
+      "updatedAt": "2020-06-11T14:37:31Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-abnf",
       "headRefOid": "6e0e097ff4a86f8ff7cbf0d97e30b19ba27d410a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-11T14:37:31Z",
+      "mergedAt": "2020-06-11T14:37:30Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "4bc31b26ae28241145aa9a9512fda90b762ced97"
+      },
       "comments": [
         {
           "author": "bemasc",
@@ -12280,6 +12337,19 @@
           "body": "Might be good for someone who deeply understands this ABNF definition to review more deeply.",
           "createdAt": "2020-06-11T02:08:08Z",
           "updatedAt": "2020-06-11T02:08:08Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4OTc3MjA4",
+          "commit": {
+            "abbreviatedOid": "6e0e097"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "Merged following @marka63's review",
+          "createdAt": "2020-06-11T14:37:23Z",
+          "updatedAt": "2020-06-11T14:37:23Z",
           "comments": []
         }
       ]
@@ -12483,7 +12553,7 @@
       "labels": [],
       "body": "Fixes #107 \r\nMay want working group discussion in dnsop and/or httpbis",
       "createdAt": "2020-06-11T03:15:39Z",
-      "updatedAt": "2020-06-11T03:58:00Z",
+      "updatedAt": "2020-06-11T18:09:32Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
@@ -12501,6 +12571,13 @@
           "body": "I would choose one option for the behavior, and leave it at MAY.  I also think we probably don't want to do this unless we can convince people that it's not a privacy risk at all.",
           "createdAt": "2020-06-11T03:58:00Z",
           "updatedAt": "2020-06-11T03:58:00Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "After giving this some more thought, I think there is enough complexity here that we shouldn't delay this draft while we figure it out.  For example, it might make sense to say that the record ID is a 16-bit value indicated by a SvcParamKey (`record-id=12345`), and that `record-id` and `port` must not appear together.  That would (arguably) make this unambiguously privacy-positive: it reduces the exposed entropy without increasing the total entropy.\r\n\r\nI'm not sure that formulation would fly, but we should take our time and get this right.",
+          "createdAt": "2020-06-11T18:09:31Z",
+          "updatedAt": "2020-06-11T18:09:31Z"
         }
       ],
       "reviews": []
@@ -12517,7 +12594,7 @@
       "labels": [],
       "body": "Fixes #100 \r\nWill want working group discussion before merging.\r\n(End resolution may be to reject this.)",
       "createdAt": "2020-06-11T03:28:59Z",
-      "updatedAt": "2020-06-11T04:34:37Z",
+      "updatedAt": "2020-06-11T21:47:29Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
@@ -12528,7 +12605,50 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> How strongly is there a need for such a key? It seems a bit odd to define the key and then strongly discourage it.\r\n\r\nI agree: it's odd, at best.  The argument in favor is: imagine 10 million domains are CNAMEd to cdn.example.net, and 1% of them don't support HTTPS.  Currently, that means example.net can't deploy ECH for the other 99%.  Instead, they have to create cdn2.example.net, with HTTPSSVC, and convince them all to update their CNAMEs.\r\n\r\nI'm not sure how to feel about this problem.\r\n\r\n> If deployments need something like this in the future, I\u2019d prefer to see it as an extension.\r\n\r\nUnfortunately, this can't easily be done as a future extension, because, in the situation where it's needed, it only works if all clients support it.  Since clients ignore unrecognized SvcParamKeys, that means older clients would continue to enforce HSTS, thus breaking all the non-HTTPS domains.",
+          "createdAt": "2020-06-11T19:10:44Z",
+          "updatedAt": "2020-06-11T19:10:44Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I see the incentive of getting everything on a given CNAME supporting TLS at the same time as a positive thing. Isn't it still possible in a deployment to choose to separate out CNAMEs differently if you need only some to support ECH? That way, the burden of disabling uniform encryption is placed upon the server DNS deployment, not on the clients that now need to write codepaths to pass up ECH keys but also consider that the connection may not support TLS.\r\n\r\nIt feels like we should make things easy to be secure, but not optimize for cases that are insecure and should long-term be fixed.",
+          "createdAt": "2020-06-11T19:49:18Z",
+          "updatedAt": "2020-06-11T19:49:18Z"
+        },
+        {
+          "author": "ericorth",
+          "authorAssociation": "NONE",
+          "body": "\r\n> I agree: it's odd, at best. The argument in favor is: imagine 10 million domains are CNAMEd to cdn.example.net, and 1% of them don't support HTTPS. Currently, that means example.net can't deploy ECH for the other 99%. Instead, they have to create cdn2.example.net, with HTTPSSVC, and convince them all to update their CNAMEs.\r\n\r\nBut don't the 99% then lose the upgrade behavior? I'd call that much worse than forcing the last 1% to upgrade (or for them to switch to cdn2.example.net to keep working).\r\n\r\nOverall, I'm not a fan of disabling the upgrade, even with the newer \"compromise\" of only supporting it with ECH.  It's overall a good thing if HTTPSSVC and ECH force more HTTPS usage, and it seems a reasonable requirement in 2020.  The ECH-only part just adds an unnecessary (and kinda weird) complication that I'd really rather not support.",
+          "createdAt": "2020-06-11T20:39:57Z",
+          "updatedAt": "2020-06-11T20:39:57Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This comes down to the ability to make a risk/reward business case for enabling ECH for existing shared domains.  With this capability there may be a chance to make a business case from a risk/effort trade-off.  Without this capability I don't see those large shared domains ever getting ECH enabled.   ie, who is going to care enough and push hard enough to force taking the risk of breaking sites or risk making customers unhappy?  I could see CDNs with \"free tiers\" just enabling ECH for shared domains, but the risk/reward and business drivers may not exist yet in the commercial space.\r\n\r\nIt may be a reasonable decision to decide not to do this from a complexity perspective, but with the understanding that we should not then expect default ECH enablement for existing sites in some of the environments that would most benefit.",
+          "createdAt": "2020-06-11T21:32:14Z",
+          "updatedAt": "2020-06-11T21:32:14Z"
+        },
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Getting HTTPSSVC on those domains is still a benefit for load balancing, HTTP/3 deployment, and the HTTPS upgrade, no? And any risks around ECH itself would be there regardless.\r\n\r\nThis would make sense if moving to another CNAME to weather the HTTPS upgrade was the limiting factor against a hosting provider offering ECH by default. Is that really the case here?",
+          "createdAt": "2020-06-11T21:38:40Z",
+          "updatedAt": "2020-06-11T21:38:40Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "It's not just an issue of moving CNAMEs.  The issue is that some \"bulk\" CDN configurations have a mixture of HTTP-only, HTTPS-only, and HTTP+HTTPS mixed hostnames.  There's not always a clear differentiator between these, so enabling HSTS-style behavior must be opt-in which then precludes enabling ECH in anything other than an opt-in manner.",
+          "createdAt": "2020-06-11T21:47:28Z",
+          "updatedAt": "2020-06-11T21:47:28Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4NTg1MzE4",
@@ -12549,6 +12669,54 @@
               "updatedAt": "2020-06-11T04:34:37Z"
             }
           ]
+        }
+      ]
+    },
+    {
+      "number": 165,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMzMjU5MzQ2",
+      "title": "Update changelog",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/165",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-06-11T18:27:20Z",
+      "updatedAt": "2020-06-12T02:16:09Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "4bc31b26ae28241145aa9a9512fda90b762ced97",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-changelog",
+      "headRefOid": "93c22271b434af2ef8d1232d0638e98524aef145",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Ok, I'll add that.\n\nOn Thu, Jun 11, 2020, 5:44 PM Erik Nygren <notifications@github.com> wrote:\n\n> *@enygren* commented on this pull request.\n>\n> Do we want to add the alignment with the ESNI draft and the switch from\n> esniconfig to echconfig ? Otherwise looks fine (but I haven't fully\n> scrubbed the diffs)\n>\n> \u2014\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/MikeBishop/dns-alt-svc/pull/165#pullrequestreview-429311661>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AABO3SL6JST6Q5YW7ORRGQTRWFF2JANCNFSM4N3U4HQA>\n> .\n>\n",
+          "createdAt": "2020-06-11T22:55:33Z",
+          "updatedAt": "2020-06-11T22:55:33Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI5MzExNjYx",
+          "commit": {
+            "abbreviatedOid": "c9b67d4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Do we want to add the alignment with the ESNI draft and the switch from esniconfig to echconfig ?  Otherwise looks fine (but I haven't fully scrubbed the diffs)",
+          "createdAt": "2020-06-11T21:43:50Z",
+          "updatedAt": "2020-06-11T21:43:50Z",
+          "comments": []
         }
       ]
     }
