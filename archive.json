@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-12T02:17:08.142596+00:00",
+  "timestamp": "2020-06-12T19:23:52.444248+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2810,6 +2810,58 @@
           "updatedAt": "2020-06-08T16:56:31Z"
         }
       ]
+    },
+    {
+      "number": 166,
+      "id": "MDU6SXNzdWU2Mzc0NDc4NzA=",
+      "title": "Consider a \"mandatory\" key range",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/166",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "wg"
+      ],
+      "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.",
+      "createdAt": "2020-06-12T02:56:58Z",
+      "updatedAt": "2020-06-12T17:20:55Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 167,
+      "id": "MDU6SXNzdWU2Mzc5NTAyNzU=",
+      "title": "Whether to include weight as a parameter",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/167",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Moving this issue out of the text (even if we WONTFIX it for now):\r\n\r\n## Whether to include Weight\r\n\r\nSome other similar mechanisms such as SRV have a weight in addition\r\nto priority.  That is excluded here for simplicity.  It could always be\r\nadded as an optional SVCB parameter.",
+      "createdAt": "2020-06-12T19:06:12Z",
+      "updatedAt": "2020-06-12T19:06:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 168,
+      "id": "MDU6SXNzdWU2Mzc5NTQzMzg=",
+      "title": "SVCB record include service name in RDATA?",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/168",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "proposed to close"
+      ],
+      "body": "Moving from the draft to an issue.\r\nProposing to WONTFIX this.\r\n\r\nAnother open question is whether SVCB records\r\nshould be self-descriptive and include the service name\r\n(eg, \"https\") in the RDATA section to avoid ambiguity.\r\nPerhaps this could be included as an svc=\"baz\" parameter\r\nfor protocols that are not the default for the RR type?\r\nCurrent inclination is to not do so.",
+      "createdAt": "2020-06-12T19:15:11Z",
+      "updatedAt": "2020-06-12T19:15:11Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -12677,24 +12729,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDMzMjU5MzQ2",
       "title": "Update changelog",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/165",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2020-06-11T18:27:20Z",
-      "updatedAt": "2020-06-12T02:16:09Z",
+      "updatedAt": "2020-06-12T02:18:38Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "4bc31b26ae28241145aa9a9512fda90b762ced97",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-changelog",
       "headRefOid": "93c22271b434af2ef8d1232d0638e98524aef145",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-12T02:18:38Z",
+      "mergedAt": "2020-06-12T02:18:38Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "3cded7241830630f92ffa1039b5a9efcb6bea75d"
+      },
       "comments": [
         {
           "author": "bemasc",
