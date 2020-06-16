@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-12T19:23:52.444248+00:00",
+  "timestamp": "2020-06-16T21:46:38.133209+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -1143,7 +1143,7 @@
       "id": "MDU6SXNzdWU1MjI0ODc1MTg=",
       "title": "Bikeshed and finalize the record names",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/80",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
@@ -1152,8 +1152,8 @@
       ],
       "body": "We should finalize the record names with community input (along with pronunciation for SVCB).\r\nIt's possible that \"SVCB\" is just fine, but \"HTTPSSVC\" is a constant pain due to the double-S.\r\n\"SVCHTTPS\" might be slightly better.  \"HTTPS\" is great but makes text less readable.\r\n",
       "createdAt": "2019-11-13T21:38:09Z",
-      "updatedAt": "2020-03-09T19:45:45Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-12T20:12:25Z",
+      "closedAt": "2020-06-12T20:12:25Z",
       "comments": [
         {
           "author": "enygren",
@@ -2823,9 +2823,9 @@
       "labels": [
         "wg"
       ],
-      "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.",
+      "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.\r\nEDIT2: Using 1-255 seems like a very small range, but if we ever get close to running out, we can simply define a `mandatory` SvcParamKey in that range, and use it to extend the behavior indefinitely.  So if we choose a range, it can be small.",
       "createdAt": "2020-06-12T02:56:58Z",
-      "updatedAt": "2020-06-12T17:20:55Z",
+      "updatedAt": "2020-06-13T00:59:55Z",
       "closedAt": null,
       "comments": []
     },
@@ -2860,6 +2860,38 @@
       "body": "Moving from the draft to an issue.\r\nProposing to WONTFIX this.\r\n\r\nAnother open question is whether SVCB records\r\nshould be self-descriptive and include the service name\r\n(eg, \"https\") in the RDATA section to avoid ambiguity.\r\nPerhaps this could be included as an svc=\"baz\" parameter\r\nfor protocols that are not the default for the RR type?\r\nCurrent inclination is to not do so.",
       "createdAt": "2020-06-12T19:15:11Z",
       "updatedAt": "2020-06-12T19:15:11Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 171,
+      "id": "MDU6SXNzdWU2Mzg0NDU1ODM=",
+      "title": "\"NOT REQUIRED\" not a legit 2119 keyword",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/171",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\r\nIn the section \"Using SVCB with HTTPS and HTTP\" the text says \"NOT REQUIRED\" and while I agree the upper case adds the gravitas, it's not a legit 2119 keyword.\r\n\r\n",
+      "createdAt": "2020-06-14T22:44:18Z",
+      "updatedAt": "2020-06-14T22:44:18Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 172,
+      "id": "MDU6SXNzdWU2Mzk5ODg4MTk=",
+      "title": "We should change master to primary in Appendix A.3",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/172",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "FYI, I was just thinking we should be ahead of this. ",
+      "createdAt": "2020-06-16T21:38:48Z",
+      "updatedAt": "2020-06-16T21:38:48Z",
       "closedAt": null,
       "comments": []
     }
@@ -12773,6 +12805,100 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 169,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMzODQ4MDUz",
+      "title": "Rename HTTPSSVC to HTTPS RR",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/169",
+      "state": "MERGED",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #80 \r\n* Rename HTTPSSVC RR to HTTPS RR     \r\n* Rename \"an SVCB\" to \"a SVCB\"     \r\n* Removed \"design considerations and open issues\" section and some other \"to be removed\" text\r\n* Rename draft to draft-ietf-dnsop-svcb-https\r\n",
+      "createdAt": "2020-06-12T19:24:38Z",
+      "updatedAt": "2020-06-12T20:12:26Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "3cded7241830630f92ffa1039b5a9efcb6bea75d",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-rename-httpssvc",
+      "headRefOid": "b21ac595478036aecfd00e80d3dbc0d0fa1d86ba",
+      "closedAt": "2020-06-12T20:12:26Z",
+      "mergedAt": "2020-06-12T20:12:25Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "ff5cc8de4c1aacf13e5dedd29b5de0e5522d2145"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDMwMDEwOTA5",
+          "commit": {
+            "abbreviatedOid": "b21ac59"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-12T20:12:17Z",
+          "updatedAt": "2020-06-12T20:12:17Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 170,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM0MjEyNTE5",
+      "title": "Attrleaf is actually RFC8552",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/170",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Updated to reflect that Attrleaf draft is actually RFC8552\r\n\r\nI \"think\" I did this correctly - i'm more mmark than kramdown.\r\n",
+      "createdAt": "2020-06-14T22:38:10Z",
+      "updatedAt": "2020-06-14T22:38:10Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "ff5cc8de4c1aacf13e5dedd29b5de0e5522d2145",
+      "headRepository": "moonshiner/dns-alt-svc",
+      "headRefName": "master",
+      "headRefOid": "38b62a509cd5b1ae38cc54cc0f3ca5363d472f09",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 173,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM1NDgzMzM5",
+      "title": "s/master/primary/",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/173",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #172",
+      "createdAt": "2020-06-16T21:46:12Z",
+      "updatedAt": "2020-06-16T21:46:26Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "ff5cc8de4c1aacf13e5dedd29b5de0e5522d2145",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-master-to-primary",
+      "headRefOid": "58da5d1c52b46354503c4f305337191f9466a627",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
