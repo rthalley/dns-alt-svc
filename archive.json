@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-16T21:46:38.133209+00:00",
+  "timestamp": "2020-06-17T15:37:49.819755+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2875,24 +2875,39 @@
       "labels": [],
       "body": "\r\nIn the section \"Using SVCB with HTTPS and HTTP\" the text says \"NOT REQUIRED\" and while I agree the upper case adds the gravitas, it's not a legit 2119 keyword.\r\n\r\n",
       "createdAt": "2020-06-14T22:44:18Z",
-      "updatedAt": "2020-06-14T22:44:18Z",
+      "updatedAt": "2020-06-16T22:45:36Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "MikeBishop",
+          "authorAssociation": "OWNER",
+          "body": "Hm, I think that technically we want a \"MAY not implement Alt-Svc,\" but the naive reading of that is that you're not allowed to implement.  \"MAY choose not to implement Alt-Svc.\"\r\n\r\nAlternatively, do we need 2119 language here?  \"need not implement\" would communicate the right message.",
+          "createdAt": "2020-06-16T22:38:35Z",
+          "updatedAt": "2020-06-16T22:41:27Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "My opinion is we don't need the 2119 language.  I was offering the option if the authors feel they want one. ",
+          "createdAt": "2020-06-16T22:45:36Z",
+          "updatedAt": "2020-06-16T22:45:36Z"
+        }
+      ]
     },
     {
       "number": 172,
       "id": "MDU6SXNzdWU2Mzk5ODg4MTk=",
       "title": "We should change master to primary in Appendix A.3",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/172",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "FYI, I was just thinking we should be ahead of this. ",
       "createdAt": "2020-06-16T21:38:48Z",
-      "updatedAt": "2020-06-16T21:38:48Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-16T21:59:58Z",
+      "closedAt": "2020-06-16T21:59:58Z",
       "comments": []
     }
   ],
@@ -12879,25 +12894,35 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM1NDgzMzM5",
       "title": "s/master/primary/",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/173",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #172",
       "createdAt": "2020-06-16T21:46:12Z",
-      "updatedAt": "2020-06-16T21:46:26Z",
+      "updatedAt": "2020-06-16T22:00:04Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "ff5cc8de4c1aacf13e5dedd29b5de0e5522d2145",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-master-to-primary",
       "headRefOid": "58da5d1c52b46354503c4f305337191f9466a627",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "closedAt": "2020-06-16T21:59:58Z",
+      "mergedAt": "2020-06-16T21:59:58Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "f3e4433b39d4d66147acb149639c25dc8b5a0a1e"
+      },
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Thank you! I was on my to doing a pull request but you are too good to me\r\n",
+          "createdAt": "2020-06-16T21:50:16Z",
+          "updatedAt": "2020-06-16T21:50:16Z"
+        }
+      ],
       "reviews": []
     }
   ]
