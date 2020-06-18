@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-17T15:37:49.819755+00:00",
+  "timestamp": "2020-06-18T01:29:13.073178+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2825,9 +2825,24 @@
       ],
       "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.\r\nEDIT2: Using 1-255 seems like a very small range, but if we ever get close to running out, we can simply define a `mandatory` SvcParamKey in that range, and use it to extend the behavior indefinitely.  So if we choose a range, it can be small.",
       "createdAt": "2020-06-12T02:56:58Z",
-      "updatedAt": "2020-06-13T00:59:55Z",
+      "updatedAt": "2020-06-17T22:11:00Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "MikeBishop",
+          "authorAssociation": "OWNER",
+          "body": "We wouldn't want that meaning for all Standards Action values, though; certainly someone might define an optional-to-understand value in a standard.  Given than new values in each range might want to define either type of value, I'd be more inclined toward a `mandatory=` parameter which lists the parameters which must be understood to consider this entry.",
+          "createdAt": "2020-06-17T19:26:34Z",
+          "updatedAt": "2020-06-17T19:26:34Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I agree with @MikeBishop that we shouldn't necessarily tie the Standards Action range to being mandatory. I can see reasons to have mandatory keys that are in non-standard ranges, and reasons to have standardized values that aren't mandatory.\r\n\r\nBeyond that, I can see it being reasonable for the existing keys (ech) to be not supported by a client at first, while ALPN is, etc.\r\n\r\nI'd prefer to see a `mandatory=` parameter as well to allow the record to specify more clearly which parts it finds necessary. Right now, the value `0` is `Reserved for internal use`. Could this be used perhaps as the `mandatory` key? The value would be a list of other keys, and this would also have the nice benefit of being required to be first key in the list, so clients know up front if they support all the mandatory fields.",
+          "createdAt": "2020-06-17T22:11:00Z",
+          "updatedAt": "2020-06-17T22:11:00Z"
+        }
+      ]
     },
     {
       "number": 167,
@@ -2841,9 +2856,17 @@
       "labels": [],
       "body": "Moving this issue out of the text (even if we WONTFIX it for now):\r\n\r\n## Whether to include Weight\r\n\r\nSome other similar mechanisms such as SRV have a weight in addition\r\nto priority.  That is excluded here for simplicity.  It could always be\r\nadded as an optional SVCB parameter.",
       "createdAt": "2020-06-12T19:06:12Z",
-      "updatedAt": "2020-06-12T19:06:12Z",
+      "updatedAt": "2020-06-17T22:18:26Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I argue for \"no\".  You are going down the slippery slope of SRV. \r\n\r\nThe only places I've seen usage of SRV is  by - SIP, Kerberos,  and XMPP",
+          "createdAt": "2020-06-17T22:18:25Z",
+          "updatedAt": "2020-06-17T22:18:25Z"
+        }
+      ]
     },
     {
       "number": 168,
@@ -12693,7 +12716,7 @@
       "labels": [],
       "body": "Fixes #100 \r\nWill want working group discussion before merging.\r\n(End resolution may be to reject this.)",
       "createdAt": "2020-06-11T03:28:59Z",
-      "updatedAt": "2020-06-11T21:47:29Z",
+      "updatedAt": "2020-06-17T22:55:51Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
@@ -12746,6 +12769,27 @@
           "body": "It's not just an issue of moving CNAMEs.  The issue is that some \"bulk\" CDN configurations have a mixture of HTTP-only, HTTPS-only, and HTTP+HTTPS mixed hostnames.  There's not always a clear differentiator between these, so enabling HSTS-style behavior must be opt-in which then precludes enabling ECH in anything other than an opt-in manner.",
           "createdAt": "2020-06-11T21:47:28Z",
           "updatedAt": "2020-06-11T21:47:28Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "+1 to using the proposal in #166 to address this as an extension.",
+          "createdAt": "2020-06-17T22:11:59Z",
+          "updatedAt": "2020-06-17T22:11:59Z"
+        },
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Does that (or this PR, for that matter) actually disable the upgrade? #156 says you redirect to HTTPS on the mere presence of the HTTPS record, without following alias forms or anything.",
+          "createdAt": "2020-06-17T22:25:43Z",
+          "updatedAt": "2020-06-17T22:25:43Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Presumably, a client that has to discard the entire RR would not interpret it as being \"present\"?\r\n",
+          "createdAt": "2020-06-17T22:55:51Z",
+          "updatedAt": "2020-06-17T22:55:51Z"
         }
       ],
       "reviews": [
@@ -12868,25 +12912,33 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM0MjEyNTE5",
       "title": "Attrleaf is actually RFC8552",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/170",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Updated to reflect that Attrleaf draft is actually RFC8552\r\n\r\nI \"think\" I did this correctly - i'm more mmark than kramdown.\r\n",
       "createdAt": "2020-06-14T22:38:10Z",
-      "updatedAt": "2020-06-14T22:38:10Z",
+      "updatedAt": "2020-06-18T00:32:08Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "ff5cc8de4c1aacf13e5dedd29b5de0e5522d2145",
       "headRepository": "moonshiner/dns-alt-svc",
       "headRefName": "master",
-      "headRefOid": "38b62a509cd5b1ae38cc54cc0f3ca5363d472f09",
-      "closedAt": null,
+      "headRefOid": "babb166386358ea54d051cdeb3a3131b05eeda64",
+      "closedAt": "2020-06-18T00:32:08Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I will close this as I need to deal with all the CI stuff ",
+          "createdAt": "2020-06-18T00:32:08Z",
+          "updatedAt": "2020-06-18T00:32:08Z"
+        }
+      ],
       "reviews": []
     },
     {
@@ -12924,6 +12976,48 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 174,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM2MTY1NTQy",
+      "title": "minor fix of ABNF",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/174",
+      "state": "MERGED",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-06-18T00:46:11Z",
+      "updatedAt": "2020-06-18T01:28:34Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "f3e4433b39d4d66147acb149639c25dc8b5a0a1e",
+      "headRepository": "moonshiner/dns-alt-svc",
+      "headRefName": "tjw-fix-abnf",
+      "headRefOid": "85042d8aaa8f61251f6461e878338023236781a3",
+      "closedAt": "2020-06-18T01:28:34Z",
+      "mergedAt": "2020-06-18T01:28:34Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDMyODc5ODA2",
+          "commit": {
+            "abbreviatedOid": "85042d8"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-18T01:28:25Z",
+          "updatedAt": "2020-06-18T01:28:25Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
