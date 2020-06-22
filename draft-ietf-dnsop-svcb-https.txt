@@ -1725,11 +1725,11 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              June 2020
               Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
               July 2014, <https://www.rfc-editor.org/info/rfc7301>.
 
-   [Attrleaf] Crocker, D., "DNS Scoped Data Through "Underscore" Naming
-              of Attribute Leaves", Work in Progress, Internet-Draft,
-              draft-ietf-dnsop-attrleaf-16, 16 November 2018,
-              <http://www.ietf.org/internet-drafts/draft-ietf-dnsop-
-              attrleaf-16.txt>.
+   [Attrleaf] Crocker, D., "Scoped Interpretation of DNS Resource
+              Records through "Underscored" Naming of Attribute Leaves",
+              BCP 222, RFC 8552, DOI 10.17487/RFC8552, March 2019,
+              <https://www.rfc-editor.org/info/rfc8552>.
+
 
 
 
@@ -1764,8 +1764,8 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              June 2020
 
    [HTTP3]    Bishop, M., "Hypertext Transfer Protocol Version 3
               (HTTP/3)", Work in Progress, Internet-Draft, draft-ietf-
-              quic-http-20, 23 April 2019, <http://www.ietf.org/
-              internet-drafts/draft-ietf-quic-http-20.txt>.
+              quic-http-29, 9 June 2020, <http://www.ietf.org/internet-
+              drafts/draft-ietf-quic-http-29.txt>.
 
    [RFC1035]  Mockapetris, P.V., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
