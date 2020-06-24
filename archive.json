@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-22T18:17:55.166270+00:00",
+  "timestamp": "2020-06-24T16:29:22.294119+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -1219,7 +1219,7 @@
       ],
       "body": "Some of the CamelCase names could be improved.  For example, SvcFieldPriority is now used in AliasForm, so maybe it should just be SvcPriority or SvcIndex.",
       "createdAt": "2019-11-18T11:11:46Z",
-      "updatedAt": "2020-06-19T03:36:30Z",
+      "updatedAt": "2020-06-22T21:06:57Z",
       "closedAt": null,
       "comments": [
         {
@@ -1263,6 +1263,48 @@
           "body": "We should do that, but we will also have to expand the ABNF to ref;ect ot\r\n\r\nSVCParams = SVCParam *(SVCParam)\r\n",
           "createdAt": "2020-06-19T03:36:30Z",
           "updatedAt": "2020-06-19T03:36:30Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I like \"SvcPriority\" and \"SvcParams\".\r\n\r\nI wrote up a more radical proposal in #160 that gets rid of all the camel case names.  From that analysis, some comments:\r\n\r\n* AliasForm/ServiceForm have generated some confusion because they are in fact a single form as far as parsing is concerned.  I think \"mode\" is probably more accurate than \"form\".\r\n* \"SvcDomainName\" is potentially confusing, given that it appears in both ServiceForm and AliasForm, and can itself contain either ServiceForm or AliasForm records.  Also, \"DomainName\" seems redundant.\r\n* SvcRecordType is vestigial.  It's now computed implicitly from SvcFieldPriority.  I would rephrase to remove it entirely.",
+          "createdAt": "2020-06-22T19:46:56Z",
+          "updatedAt": "2020-06-22T19:46:56Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Perhaps \"TargetName\" or \"TargetDomain\" instead of \"SvcDomainName\" ?\r\nSvcParams and SvcPriority sound good.\r\nAliasMode/ServiceMode also seem fine if \"Form\" causes confusion.",
+          "createdAt": "2020-06-22T20:33:18Z",
+          "updatedAt": "2020-06-22T20:33:18Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I like \"TargetName\" - it is a fully qualified domain name and not just a domain name correct ?  \r\nThat should be more explicit",
+          "createdAt": "2020-06-22T20:42:26Z",
+          "updatedAt": "2020-06-22T20:42:26Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "One thing in favor of keeping SvcDomainName is that it is the Alt-Svc name, so having \"Svc\" is nice.",
+          "createdAt": "2020-06-22T20:43:34Z",
+          "updatedAt": "2020-06-22T20:43:34Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "But given the decoupling from Alt-Svc, \"TargetName\" might actually reduce confusion.",
+          "createdAt": "2020-06-22T20:48:55Z",
+          "updatedAt": "2020-06-22T20:48:55Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Fair!",
+          "createdAt": "2020-06-22T21:06:57Z",
+          "updatedAt": "2020-06-22T21:06:57Z"
         }
       ]
     },
@@ -1858,7 +1900,7 @@
       ],
       "body": "In digging into production use-cases, there may be scenarios where the \"HTTPSSVC means HTTPS-only\" is problematic.  For example, it may prevent a CDN from turning it on by default (as this means forcing everything to HTTPS-by-default which may not be possible for some customer content) which in-turns prevents turning on Encrypted SNI by default.\r\n\r\nLeaving the HSTS-like behavior as the default makes sense, but this asks the question as to whether an optional \"allow-insecure\" parameter should be included (with the default still being secure).  This opens up cans of worms from a security perspective but could ease deployment in some cases.",
       "createdAt": "2020-01-14T22:51:00Z",
-      "updatedAt": "2020-05-29T20:15:08Z",
+      "updatedAt": "2020-06-23T16:25:49Z",
       "closedAt": null,
       "comments": [
         {
@@ -1888,6 +1930,20 @@
           "body": "Possible compromise: `disable-https-upgrade` only applies if `echconfig` is also present.  This is extremely hacky and I'm not sure I really like it, but it would ensure that this is only used in cases where HTTPSSVC is actually providing some benefit to someone.",
           "createdAt": "2020-05-29T20:15:08Z",
           "updatedAt": "2020-05-29T20:15:08Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "What David said.  I don't see any point in continuing to cater to unsecured protocols.\r\n\r\nIn the earlier example Ben provided, the CNAME that the mix of secure and insecure customers refer to doesn't need to be singular.  You don't need new servers, just a separate CNAME target.  That seems entirely workable.",
+          "createdAt": "2020-06-23T09:06:40Z",
+          "updatedAt": "2020-06-23T09:06:40Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Agreed. If you want a bad mix of security, that's your burden for deployment.",
+          "createdAt": "2020-06-23T16:25:49Z",
+          "updatedAt": "2020-06-23T16:25:49Z"
         }
       ]
     },
@@ -2875,7 +2931,7 @@
       ],
       "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.\r\nEDIT2: Using 1-255 seems like a very small range, but if we ever get close to running out, we can simply define a `mandatory` SvcParamKey in that range, and use it to extend the behavior indefinitely.  So if we choose a range, it can be small.",
       "createdAt": "2020-06-12T02:56:58Z",
-      "updatedAt": "2020-06-18T02:43:12Z",
+      "updatedAt": "2020-06-24T15:52:38Z",
       "closedAt": null,
       "comments": [
         {
@@ -2898,6 +2954,41 @@
           "body": "I also like this idea of mandatory= parameter using SvcParamKey=0.\r\n\r\n(Would we want to also allow mandatory= to appear on Alias form but without any defined/allowed parameters.  That creates a future for parameters on Alias form but without needing to define any now?)",
           "createdAt": "2020-06-18T02:16:58Z",
           "updatedAt": "2020-06-18T02:16:58Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm OK with 0 -> `mandatory`, but I also like 1 -> `mandatory`, leaving 0 for use as some kind of null.\r\n\r\nI have some concerns about allowing it in AliasForm.  That would have several knock-on effects:\r\n* Recursive resolvers would have to parse the SvcFieldValue, to see if it contains an unrecognized mandatory key.\r\n* Multiple aliases in an RRSet would have to be allowed, to support recursive and clients that can't use one of the aliases due to a unsupported mandatory key.  This would then require some kind of preference ordering among multiple aliases, assuming that the new mandatory key is actually useful.\r\n\r\nThis proposal is already pretty complicated, and we don't have a use case for mandatory keys on aliases, so I think we're probably better off keeping `mandatory` ServiceForm-only, like the other keys.",
+          "createdAt": "2020-06-22T18:53:43Z",
+          "updatedAt": "2020-06-22T18:53:43Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "One problem with \"mandatory\" is how to deal with `alpn` and `port`.  These are both already mandatory: you can't connect if they are present and you don't understand and use them.  Some options:\r\n* Require every record that uses `port` or `alpn` to have a `mandatory` key.\r\n* Special-case these two keys as implicitly mandatory\r\n* Assign a range of mandatory keys (i.e. encode it as a flag in the key id)\r\n* Make keys mandatory by default, and define an `optional` key.\r\n\r\nI'm beginning to feel like the last option is the least error-prone and most comprehensible.  It would have some interesting side effects, such as allowing endpoints that not only support ECH but actually require it.",
+          "createdAt": "2020-06-24T03:13:13Z",
+          "updatedAt": "2020-06-24T03:13:13Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think optional is a saner default.  As such, I'd lean towards either allowing protocol bindings to specify a set of implicitly mandatory keys  (HTTPS would specify alpn and port.), or just special-casing those two in general. ",
+          "createdAt": "2020-06-24T14:20:35Z",
+          "updatedAt": "2020-06-24T14:20:35Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Optional is definitely the better default. Don't make keys mandatory in general.\r\n\r\nI'd say we can have those two keys implicitly mandatory if we really want (option 2)\u2014or just leave it to the deployment to mark what *they* think is mandatory (option 1). Yes, your use case for `port` is mandatory now, but that doesn't there couldn't be possible use cases in which you can have an alpn value that for some reason an implementation doesn't parse, but also have fields in the record that mean it shouldn't be thrown out.",
+          "createdAt": "2020-06-24T15:44:02Z",
+          "updatedAt": "2020-06-24T15:44:02Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Agree with \"don't make keys mandatory in general\" logic.  ",
+          "createdAt": "2020-06-24T15:52:38Z",
+          "updatedAt": "2020-06-24T15:52:38Z"
         }
       ]
     },
@@ -2958,15 +3049,15 @@
       "id": "MDU6SXNzdWU2Mzg0NDU1ODM=",
       "title": "\"NOT REQUIRED\" not a legit 2119 keyword",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/171",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "\r\nIn the section \"Using SVCB with HTTPS and HTTP\" the text says \"NOT REQUIRED\" and while I agree the upper case adds the gravitas, it's not a legit 2119 keyword.\r\n\r\n",
       "createdAt": "2020-06-14T22:44:18Z",
-      "updatedAt": "2020-06-18T03:27:13Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-22T18:41:31Z",
+      "closedAt": "2020-06-22T18:41:31Z",
       "comments": [
         {
           "author": "MikeBishop",
@@ -3012,15 +3103,15 @@
       "id": "MDU6SXNzdWU2NDA4ODAyMDQ=",
       "title": "Update document references",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/177",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Per Nits, these documents have updated versions:\r\n\r\n {{!ECH=I-D.ietf-tls-esni-07}})\r\n {{!HTTP3=I-D.draft-ietf-quic-http-29}} \r\n {{?I-D.draft-ietf-dnsop-aname-04}}\r\n\r\nand {{!Attrleaf=I-D.ietf-dnsop-attrleaf}} is now RFC8552\r\n",
       "createdAt": "2020-06-18T03:33:08Z",
-      "updatedAt": "2020-06-22T18:04:42Z",
-      "closedAt": null,
+      "updatedAt": "2020-06-22T18:35:11Z",
+      "closedAt": "2020-06-22T18:35:11Z",
       "comments": [
         {
           "author": "MikeBishop",
@@ -3044,6 +3135,441 @@
           "updatedAt": "2020-06-22T18:04:42Z"
         }
       ]
+    },
+    {
+      "number": 180,
+      "id": "MDU6SXNzdWU2NDM1Nzc3MjM=",
+      "title": "SRV language is unnecesarily perjorative",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/180",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> Address a set of long-standing issues due to HTTP(S) clients not implementing support for SRV records, as well as due to a limitation that a DNS name can not have both CNAME and NS RRs (as is the case for zone apex names)\r\n\r\nThis implies fault in clients for a refusal to implement, as opposed to SRV not providing sufficient advantages for HTTP(S) clients.\r\n\r\nRather than get into the why, it might be best to say which of the features of SRV are provided and why.  \r\n\r\nI might also separate out the point about NS and CNAME not playing well together.\r\n\r\n",
+      "createdAt": "2020-06-23T06:46:21Z",
+      "updatedAt": "2020-06-23T06:46:21Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 181,
+      "id": "MDU6SXNzdWU2NDM1NzgzNTM=",
+      "title": "EOFU: HSTS",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/181",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "HSTS is mentioned in Section 1.1, but it is not expanded or a citation provided.",
+      "createdAt": "2020-06-23T06:47:34Z",
+      "updatedAt": "2020-06-23T06:47:34Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 182,
+      "id": "MDU6SXNzdWU2NDM1ODExMjU=",
+      "title": "Non-normative normative language",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/182",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Seciton 1.2 is explicitly non-normative (whatever that means), but it uses some language that looks very much like normative requirements:\r\n\r\n> Clients must either use responses included in the additional section returned by the recursive resolver or perform necessary SVCB, A, and AAAA record resolutions.  DNS authoritative servers may attach in-bailiwick SVCB, A, AAAA, and CNAME records in the Additional Section to responses for a SVCB query.\r\n\r\nThe use of lowercase here means non-normative, but the choice of words is unfortunate.  Why not use different words:\r\n\r\n> Clients either use responses included in the additional section returned by the recursive resolver or perform necessary SVCB, A, and AAAA record resolutions.  DNS authoritative servers can attach in-bailiwick SVCB, A, AAAA, and CNAME records in the Additional Section to responses for a SVCB query.\r\n",
+      "createdAt": "2020-06-23T06:52:41Z",
+      "updatedAt": "2020-06-23T06:52:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 183,
+      "id": "MDU6SXNzdWU2NDM1ODM3ODc=",
+      "title": "Definition of \"origin server\"",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/183",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> The \"origin server\" is the server that the client would reach when accessing the origin in the absence of the SVCB record or an HTTPS Alt-Svc.\r\n\r\nHTTP has a definition of origin server that this is not compatible with.  In HTTP an \"origin server\" is a server that is authoritative.  As the goal of this document is to define alternative ways to reach a server that is authoritative, the definition this document uses is very confusing.\r\n\r\nI don't have a solid alternative at this point, but I might suggest that the notion of \"whatever you get when this record isn't used\" isn't a very useful distinction.  As a hypothetical, consider a protocol that only uses SVCB derivatives for discovery, which would obviously have no such concept.  It might be better to dispense with the notion of \"original server\" entirely.",
+      "createdAt": "2020-06-23T06:57:28Z",
+      "updatedAt": "2020-06-23T16:41:47Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "One example of where this term is used:\r\n\r\n> The \"port\" SvcParamKey defines the TCP or UDP port that should be used to contact this alternative service.  If this key is not present, clients SHALL use the origin server's port number.",
+          "createdAt": "2020-06-23T08:45:42Z",
+          "updatedAt": "2020-06-23T08:45:42Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "The only other place this is used is:\r\n```\r\nIf none of the options succeed, the\r\n       client SHOULD connect to the origin server directly.\r\n```\r\n\r\nIt seems like this term is used sparsely enough it can be dispensed with, and the sentences reworded.",
+          "createdAt": "2020-06-23T16:41:47Z",
+          "updatedAt": "2020-06-23T16:41:47Z"
+        }
+      ]
+    },
+    {
+      "number": 184,
+      "id": "MDU6SXNzdWU2NDM1ODUwMTY=",
+      "title": "64k priorities!",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/184",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I realize that this might be going against an established trend, but the notion that 65535 different values for priority might be useful is a little fanciful.  HTTP are proposing just 8, DSCP had 64, and neither has any real expectation that there will be any value in having all of those options.  Why not 255?",
+      "createdAt": "2020-06-23T06:59:44Z",
+      "updatedAt": "2020-06-23T17:10:55Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Mainly for consistency with existing DNS types.  MX, SRV, NAPTR, and URI all have a similar \"Priority\" or \"Preference\" field, and they are all 16-bit unsigned.\r\n\r\nI don't have a use case for more than 255 values, but I wouldn't want to break the pattern without a positive signal from the DNS experts.  I'm happy to solicit input from DNSOP if you think it's worth changing.",
+          "createdAt": "2020-06-23T16:51:44Z",
+          "updatedAt": "2020-06-23T16:51:44Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I'd argue for leaving this as-is. Is it more priorities than we need? Yes, but it also fits the existing DNS RR type implementations better.",
+          "createdAt": "2020-06-23T16:58:02Z",
+          "updatedAt": "2020-06-23T16:58:02Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It's true that Priority/Preference fields are 16-bit unsigned, but based on 20yr old decisions. \r\nI don't think I have seen anyone using a value > 255, and this is from years of looking at DNS zone data. \r\nIf it is left as is, I'd mention it's to align with those DNS RR Types.  ",
+          "createdAt": "2020-06-23T17:10:55Z",
+          "updatedAt": "2020-06-23T17:10:55Z"
+        }
+      ]
+    },
+    {
+      "number": 185,
+      "id": "MDU6SXNzdWU2NDM1ODk2Nzk=",
+      "title": "ABNF for values",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/185",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The definition of values allows for quoting, but the ABNF doesn't capture that.\r\n\r\n```\r\n   escaped-char  = \"\\\" (VCHAR / WSP)\r\n```\r\n\r\nThis implies that \"\\3\" is valid, where it is not.  Capturing this is not so difficult.\r\n\r\n```\r\n   basic-visible = %x21 / %x23-27 / %x2A-3A / %x3C-5B / %x5D-7E\r\n   unescaped = %x21 / %x23-27 / %x2A-2F / %x3C-5B / %x5D-7E\r\n   escaped-number = (%x30-31 2DIGIT) / (%x32 (%x30-34 DIGIT) / (%x35 %x30-35))\r\n   escaped-char  = \"\\\" (unescaped / WSP / escaped-number)\r\n```",
+      "createdAt": "2020-06-23T07:08:33Z",
+      "updatedAt": "2020-06-24T15:35:53Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "should \"%2A-3A\" be \" %x2A-3A\" ?\r\nsame for \" %2A-2F \" ?",
+          "createdAt": "2020-06-23T12:40:41Z",
+          "updatedAt": "2020-06-23T12:40:41Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Edited to add the 'x'.  As I copied this, I hope that this wasn't something I copied in.",
+          "createdAt": "2020-06-24T00:20:28Z",
+          "updatedAt": "2020-06-24T00:20:28Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I put a copy of the (updated) extracted ABNF in https://gist.github.com/moonshiner/3aa994227226c9e5b33dc808a8937574\r\n\r\nThis does run through 'bap' w/out errors. \r\n",
+          "createdAt": "2020-06-24T15:35:53Z",
+          "updatedAt": "2020-06-24T15:35:53Z"
+        }
+      ]
+    },
+    {
+      "number": 186,
+      "id": "MDU6SXNzdWU2NDM1OTM3OTg=",
+      "title": "Use colons before examples",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/186",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Such as in:\r\n\r\n```\r\n   As an example, the owner of example.com could publish this record\r\n\r\n   _8443._foo.api.example.com. 7200 IN SVCB 0 svc4.example.net.\r\n```\r\n\r\nText forms don't have clear delineation of example and text and without a colon it is harder to read.",
+      "createdAt": "2020-06-23T07:16:04Z",
+      "updatedAt": "2020-06-23T12:53:59Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "https://github.com/MikeBishop/dns-alt-svc/pull/198\r\n\r\nShould catch all those missing colons.  A double check before merging would be apprecriated",
+          "createdAt": "2020-06-23T12:53:59Z",
+          "updatedAt": "2020-06-23T12:53:59Z"
+        }
+      ]
+    },
+    {
+      "number": 187,
+      "id": "MDU6SXNzdWU2NDM1OTQ2ODc=",
+      "title": "Similar to CNAME",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/187",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\"When SvcRecordType is AliasForm, the SVCB record is to be treated similar to a CNAME alias pointing to SvcDomainName.\"\r\n\r\nIs this normative?  Because it reads as being normative, then it uses squishy words.  I think that this sentence is for setting intent, and could be reworded.\r\n\r\n",
+      "createdAt": "2020-06-23T07:17:41Z",
+      "updatedAt": "2020-06-23T07:17:41Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 188,
+      "id": "MDU6SXNzdWU2NDM1OTY1NTk=",
+      "title": "Aliases to A/AAAA records",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/188",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "It's not clear why this is useful as opposed to having a ServiceForm SVCB at the target of an alias.  Some words on the subject would be greatly appreciated.",
+      "createdAt": "2020-06-23T07:21:03Z",
+      "updatedAt": "2020-06-23T20:36:41Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It also, as I understand things, means a client which sees a chain of HTTPS alias forms must, at each stage in the process, issue new parallel A/AAAA/HTTPS queries since we can't assume that the three will get stapled together.",
+          "createdAt": "2020-06-23T20:36:41Z",
+          "updatedAt": "2020-06-23T20:36:41Z"
+        }
+      ]
+    },
+    {
+      "number": 189,
+      "id": "MDU6SXNzdWU2NDM1OTg5Mjg=",
+      "title": "Step 3 of client algorithm, SHOULD?",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/189",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> If one or more SVCB records of ServiceForm SvcRecordType are returned for HOST, clients should select the highest-priority option with acceptable parameters, \r\n\r\nIs this SHOULD select ?",
+      "createdAt": "2020-06-23T07:25:02Z",
+      "updatedAt": "2020-06-23T07:25:02Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 190,
+      "id": "MDU6SXNzdWU2NDM2MDM0Nzc=",
+      "title": "Privacy intent?",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/190",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "What does this mean (from S3.2)?\r\n\r\n> Clients using a domain-oriented transport proxy like HTTP CONNECT ([RFC7231] Section 4.3.6) or SOCKS5 ([RFC1928]) SHOULD disable SVCB support if performing SVCB queries would violate the client's privacy intent.\r\n\r\nIt's not clear what information is leaking and to whom here.  This likely needs more text that addresses assumptions about where the client is sending these SVCB queries.\r\n\r\nOf course, letting the proxy perform name resolution can improve privacy with respect to the resolver that a client chooses.  However, there are ways in which SVCB can enhance privacy in these configurations, especially if the proxy is not trusted with information about destinations.  It requires that you use DoT or DoH to a resolver that the client trusts to learn domain names.",
+      "createdAt": "2020-06-23T07:32:32Z",
+      "updatedAt": "2020-06-23T07:32:32Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 191,
+      "id": "MDU6SXNzdWU2NDM2MDU4MTk=",
+      "title": "Mandating DoS",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/191",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The text in Section 3.1 correctly identifies a number of ways in which a client might be denied access to a SVCB record.  I don't know if this is exhaustive, but it seems like a reasonable start.  It then mandates (using \"MUST NOT\") very specific behaviour.  That mandated behaviour ends up making the service effectively unreachable.\r\n\r\nIt is not appropriate for this document to set policy for clients in this way.  It is clear that this is biased toward ensuring that secured alternative methods for reaching a service are known to a client, but I don't think that this is the only way to achieve that goal.  All this does is make the system more likely to be brittle and prone to denial of service.",
+      "createdAt": "2020-06-23T07:36:25Z",
+      "updatedAt": "2020-06-24T03:25:24Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is a \"MUST NOT\" because otherwise ECH is vulnerable to a downgrade attack: if a MITM between Firefox and the DoH server drops just the packets containing SVCB responses (likely identifiable by size or timing), they will eventually time out.  If the client falls back to ordinary connection, they'll lose the ECH protection.  (QUIC makes this attack especially easy.)\r\n\r\nIf ECH doesn't need to be downgrade-resistant in this way, then we can relax the requirement, but the ECH experts I've talked to seem to think that this threat type is in-scope.",
+          "createdAt": "2020-06-23T17:05:56Z",
+          "updatedAt": "2020-06-23T17:05:56Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Why make the requirement generic though?  There is already text in Section 8.1 that addresses the problem of ECH downgrade (though it is not complete, see #196).",
+          "createdAt": "2020-06-24T00:27:35Z",
+          "updatedAt": "2020-06-24T00:27:35Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I remembered another reason: the downgrade protection also applies to the HTTPS upgrade functionality, so fallback-on-error would allow the MITM to disable HTTPS upgrade.\r\n\r\nAn alternative to the current spec would be: \"on error, the HTTPS upgrade still applies as if the record were present, and if the client supports ECH, it must abandon the connection entirely\".  That seems like more spec complexity for very limited gain (assuming most clients do implement ECH), but I think it would be safe.",
+          "createdAt": "2020-06-24T02:34:18Z",
+          "updatedAt": "2020-06-24T02:34:18Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We should not place any weight on this mechanism when it comes to downgrades.\r\n\r\nI'm not suggesting that ECH advice needs to change (except as described in #196, perhaps), but instead suggesting that the generic advice not be so strong.",
+          "createdAt": "2020-06-24T03:25:24Z",
+          "updatedAt": "2020-06-24T03:25:24Z"
+        }
+      ]
+    },
+    {
+      "number": 192,
+      "id": "MDU6SXNzdWU2NDM2NDI2OTM=",
+      "title": "Presentation of ALPN",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/192",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The presentation format for ALPN is not consistent with the generic presentation format.  It also includes unprintable characters.",
+      "createdAt": "2020-06-23T08:35:08Z",
+      "updatedAt": "2020-06-24T15:50:10Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "Apart from having to recognise \"\\\\,\" vs \",\" and having to remember which commas where escaped and which where not, APLN are still a optionally quoted string.  e.g. ALPN=\"x\\\\,y,z\" or ALPN=x\\\\,y,z",
+          "createdAt": "2020-06-24T07:41:47Z",
+          "updatedAt": "2020-06-24T07:42:51Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It is unnecessarily different.  And it's not clear that the same escaping rules apply.  In the presentation format I might include \\000 to include a literal NUL, but it appears to require the inclusion of a literal NUL preceded by a backslash in the ALPN format.\r\n\r\nIf the section said \"just like the presentation format, but you have to escape comma\" then it might be understandable, but the differences are inexplicable.",
+          "createdAt": "2020-06-24T07:57:23Z",
+          "updatedAt": "2020-06-24T07:57:23Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Larry Campbell (@lcampbel) also found this unclear in a thread on dnsop, so it does seem like we should clarify. ",
+          "createdAt": "2020-06-24T14:24:59Z",
+          "updatedAt": "2020-06-24T14:25:26Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "How about a couple of examples? ",
+          "createdAt": "2020-06-24T15:50:10Z",
+          "updatedAt": "2020-06-24T15:50:10Z"
+        }
+      ]
+    },
+    {
+      "number": 193,
+      "id": "MDU6SXNzdWU2NDM2NDUzMjQ=",
+      "title": "Remove no-default-alpn",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/193",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is of no lasting value and it only represents a marginal gain in space for a non-trivial gain in complexity.  Having an ALPN field in every HTTPS record just isn't that many bytes (2+2+3=7 for just \"h2\", 2+2+3+9=16 for \"h2,http/1.1\").\r\n\r\nI've raised this a couple of times in the past, but I never received a satisfactory response.",
+      "createdAt": "2020-06-23T08:39:10Z",
+      "updatedAt": "2020-06-24T03:02:41Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The goal here was not efficiency of encoding, it was to avoid a certain category of administrative mistakes.  Specifically, without this in place, it would be easy for a zone owner to add a single record with \"alpn=h3 echconfig=...\", test locally, see everything is working, and not realize that they just disabled their website for ~10% of users (who don't have UDP routability).\r\n\r\nThis represents something of a compromise between participants who wanted to be able to run QUIC and TCP on separate endpoints (or even QUIC-only services in unusual situations), and participants who wanted HTTPS-over-TCP to be required for every endpoint.",
+          "createdAt": "2020-06-23T12:02:50Z",
+          "updatedAt": "2020-06-23T12:02:50Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I don't find that sort of defensive design useful relative to the complexity it adds.  And it makes the configuration less transparent.",
+          "createdAt": "2020-06-24T00:19:24Z",
+          "updatedAt": "2020-06-24T00:19:24Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "The `no-default-alpn` business is the result of a Very Long Debate that I would prefer not to reopen, but it's not something anyone is particularly happy with.  Currently, getting rid of it would result in records being unusable in the default state.  To fix this, we would have to give `alpn` a default value of `http/1.1` (for the HTTPS RR) if the key is absent.\r\n\r\nIn the design you're proposing, `alpn=h2` means that you dropped support for HTTP/1.1-only clients.  (I believe even Chrome is sometimes HTTP/1.1-only, e.g. for WebSockets).  That strikes me as more likely to result in swearing sysadmins than the current design, and same for the `alpn=h3` case.\r\n\r\nTo put it another way, I think there are likely to be many orders of magnitude more zone owners configuring these RRs than software developers implementing them, so we should prioritize the ease of (working) configuration over the ease of implementation.",
+          "createdAt": "2020-06-24T03:02:41Z",
+          "updatedAt": "2020-06-24T03:02:41Z"
+        }
+      ]
+    },
+    {
+      "number": 194,
+      "id": "MDU6SXNzdWU2NDM2NDg2ODk=",
+      "title": "Advice regarding construction of ALPN extension in TLS",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/194",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": ">    Clients MUST include an \"application_layer_protocol_negotiation\" extension in their ClientHello with a ProtocolNameList that includes at least one ID from the ALPN set.  Clients SHOULD also include any other values that they support and could negotiate on that connection with equivalent or better security properties.  For example, if the ALPN set only contains \"http/1.1\", the client could include \"http/1.1\" and \"h2\" in the ProtocolNameList.\r\n\r\nThis could be read to imply that a client conditions its choice of ALPN parameter in a TLS ClientHello based on what it learns from SVCB.  This is dangerous as it exposes the connection to potential downgrade attacks.  Though it tries to recommend that \"better\" options be chosen, this is a determination that the server makes in ALPN, not the client.  This document should instead mandate that clients construct an ALPN extension containing all protocols that they are willing to use.",
+      "createdAt": "2020-06-23T08:44:13Z",
+      "updatedAt": "2020-06-23T08:44:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 195,
+      "id": "MDU6SXNzdWU2NDM2NTIzMzg=",
+      "title": "Dual use of references symbolic names as words",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/195",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "As an editorial convention, this is hard to follow because the words used to identify a reference also form part of the sentence.\r\n\r\ne.g., \"CNAME or [DNAME]\", \"By removing the [Attrleaf] labels used in SVCB\".",
+      "createdAt": "2020-06-23T08:49:15Z",
+      "updatedAt": "2020-06-24T15:56:09Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "does \"By removing the underscore-prefixed label used in SVCB\"  sound better? ",
+          "createdAt": "2020-06-24T15:56:09Z",
+          "updatedAt": "2020-06-24T15:56:09Z"
+        }
+      ]
+    },
+    {
+      "number": 196,
+      "id": "MDU6SXNzdWU2NDM2NjE0OTI=",
+      "title": "Unclear precedence rules",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/196",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "At one level, the precedence rules for this specification could be simple: take the RRs with the lowest priority and select at random between them.  This is clearly the case for the 0/other split.\r\n\r\nBut it isn't that simple, because RRs with lower priority might not have options that the client supports.  So some configurations are eliminated.\r\n\r\nMoreover, there are cases where server/operator preference and client preference might be in tension.  Let's say that the client greatly prefers HTTP/3 over HTTP/1.1.  Is it required to use an HTTPS RR with HTTP/1.1 and a lower priority if a higher priority supports HTTP/3?\r\n\r\nMore difficult, what if the higher priority has echconfig and the lower priority one does not?  Section 8.1 might be read to imply that echconfig overrides other considerations, but it isn't very clear on that point.  Also, we have to consider an echconfig that the client does not support specially, as that does not imply that the RR lacks echconfig.",
+      "createdAt": "2020-06-23T09:01:22Z",
+      "updatedAt": "2020-06-23T09:01:22Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -12649,7 +13175,7 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #81",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-06-11T02:03:53Z",
+      "updatedAt": "2020-06-22T20:37:16Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
@@ -12674,6 +13200,13 @@
           "body": "I'm not sold yet.  It's an interesting idea, but I think there is value in using the camelcase names for unambiguous references to fields and forms.  Common terms have more chances for confusion and ambiguity.  This may be a style thing.  I'd be more in-favor of just simplifying some of the camelcase terms that are overly long.",
           "createdAt": "2020-06-11T02:03:53Z",
           "updatedAt": "2020-06-11T02:03:53Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I agree with @enygren that the more common names seem a bit too generic, and liable for confusion when referenced out of context. I'd prefer to keep with the existing style.",
+          "createdAt": "2020-06-22T20:37:16Z",
+          "updatedAt": "2020-06-22T20:37:16Z"
         }
       ],
       "reviews": []
@@ -13164,7 +13697,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2020-06-18T00:46:11Z",
-      "updatedAt": "2020-06-18T01:28:34Z",
+      "updatedAt": "2020-06-23T12:24:53Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "f3e4433b39d4d66147acb149639c25dc8b5a0a1e",
@@ -13199,26 +13732,42 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM2MTg4MjMz",
       "title": "Switch NOT REQUIRED to non-2119 language",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/175",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #171",
       "createdAt": "2020-06-18T02:22:13Z",
-      "updatedAt": "2020-06-18T02:22:13Z",
+      "updatedAt": "2020-06-22T18:41:32Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-not-required",
       "headRefOid": "6726e47cd3dc8bb659bd294d2557917cc6b0bf1c",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-06-22T18:41:31Z",
+      "mergedAt": "2020-06-22T18:41:31Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM1MTgyMTQy",
+          "commit": {
+            "abbreviatedOid": "6726e47"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-22T18:41:27Z",
+          "updatedAt": "2020-06-22T18:41:27Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 176,
@@ -13232,7 +13781,7 @@
       "labels": [],
       "body": "Editorial attempt to address feedback from @moonshiner by clarifying the HTTPS record definition.",
       "createdAt": "2020-06-18T02:31:55Z",
-      "updatedAt": "2020-06-18T02:53:06Z",
+      "updatedAt": "2020-06-22T18:41:04Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3",
@@ -13252,28 +13801,49 @@
           "updatedAt": "2020-06-18T02:53:06Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM1MTgxODUy",
+          "commit": {
+            "abbreviatedOid": "5a83215"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-22T18:40:58Z",
+          "updatedAt": "2020-06-22T18:41:04Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "We defined the term \"SVCB-compatible\" for this purpose in the terminology section.  I'd prefer to maintain consistency across the document if possible, e.g.\r\n```suggestion\r\nOther SVCB-compatible resource record types\r\n```",
+              "createdAt": "2020-06-22T18:40:58Z",
+              "updatedAt": "2020-06-22T18:41:04Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 178,
       "id": "MDExOlB1bGxSZXF1ZXN0NDM2MjA3MjU1",
       "title": "updated doc references",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/178",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Issue 177",
       "createdAt": "2020-06-18T03:36:10Z",
-      "updatedAt": "2020-06-18T03:39:34Z",
+      "updatedAt": "2020-06-24T16:29:06Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3",
       "headRepository": "moonshiner/dns-alt-svc",
       "headRefName": "tjw-ref-updates",
       "headRefOid": "25deb76f5369aec344000c8294e3f7ebba3db5c6",
-      "closedAt": null,
+      "closedAt": "2020-06-24T16:29:06Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -13284,9 +13854,204 @@
           "body": "the testing did not approve of draft-tls-esni-07, so removed the -07 for now",
           "createdAt": "2020-06-18T03:39:34Z",
           "updatedAt": "2020-06-18T03:39:34Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks like this is blocked due to collision with #179 ",
+          "createdAt": "2020-06-22T18:36:00Z",
+          "updatedAt": "2020-06-22T18:36:00Z"
+        },
+        {
+          "author": "MikeBishop",
+          "authorAssociation": "OWNER",
+          "body": "Actually, I think it's addressed by a combination of #179 and some others I found and have a PR for.",
+          "createdAt": "2020-06-24T16:29:06Z",
+          "updatedAt": "2020-06-24T16:29:06Z"
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 179,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM4MTA0Nzc5",
+      "title": "Fix up references",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/179",
+      "state": "MERGED",
+      "author": "MikeBishop",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #177, plus a few things I found along the way.",
+      "createdAt": "2020-06-22T18:19:50Z",
+      "updatedAt": "2020-06-22T18:35:11Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0c53419523164c6822ed3b9c078e5e7db2bbe3ab",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "references",
+      "headRefOid": "29793f8d73ca5153afc2a864dcf0ede9e54a6818",
+      "closedAt": "2020-06-22T18:35:11Z",
+      "mergedAt": "2020-06-22T18:35:10Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "1cf5f200375fd73b25582f13accd84bbb75b7595"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM1MTc4MTU2",
+          "commit": {
+            "abbreviatedOid": "29793f8"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-22T18:35:05Z",
+          "updatedAt": "2020-06-22T18:35:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 197,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM4NTM4NTgw",
+      "title": "added RRType requests in IANA Considerations",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/197",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Make specific IANA requests in the IANA Considerations section",
+      "createdAt": "2020-06-23T12:30:10Z",
+      "updatedAt": "2020-06-23T12:30:10Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
+      "headRepository": "moonshiner/dns-alt-svc",
+      "headRefName": "tjw-iana-section",
+      "headRefOid": "87f441480175d7504365104ff9c2f46056dfd998",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 198,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM4NTUxMDAx",
+      "title": "added colons to clean up the text",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/198",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This should cover all the missing colons mentioned \r\n\r\nhttps://github.com/MikeBishop/dns-alt-svc/issues/186\r\n",
+      "createdAt": "2020-06-23T12:53:21Z",
+      "updatedAt": "2020-06-23T12:53:21Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
+      "headRepository": "moonshiner/dns-alt-svc",
+      "headRefName": "tjw-add-colons",
+      "headRefOid": "631091e4707c7bc60f4a033360655068fcd8f540",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 199,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM4OTQ1NzI0",
+      "title": "Incorporate comments from implementer review",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/199",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We got some tweaks from a server implementer review\r\n* Everything additional should go in Additional\r\n* Authoritatives should include DNSSEC for the in-bailiwick followup records\r\n* Harmonize #recursive-behavior with #incomplete-responses",
+      "createdAt": "2020-06-24T03:58:53Z",
+      "updatedAt": "2020-06-24T15:42:22Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-implementer-review",
+      "headRefOid": "a177de97c6c0b09a56657a99609867c0bb3f35af",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2NzU5MzY4",
+          "commit": {
+            "abbreviatedOid": "a177de9"
+          },
+          "author": "wtoorop",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-24T15:26:00Z",
+          "updatedAt": "2020-06-24T15:26:01Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Including useful records in the additional section, is called additional section processing in RFC1035.\r\nWhen comparing SVCB with MX and SRV, note that MX and SRV may not refer to an alias. This is documented in https://tools.ietf.org/html/rfc2181#section-10.3 and in https://tools.ietf.org/html/rfc2782 on page 4, quoting: \"The name MUST NOT be an alias\".",
+              "createdAt": "2020-06-24T15:26:01Z",
+              "updatedAt": "2020-06-24T15:26:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2NzYwMzEx",
+          "commit": {
+            "abbreviatedOid": "a177de9"
+          },
+          "author": "wtoorop",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-24T15:27:01Z",
+          "updatedAt": "2020-06-24T15:27:01Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "I suggest to remove the text in parenthesis.",
+              "createdAt": "2020-06-24T15:27:01Z",
+              "updatedAt": "2020-06-24T15:27:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2Nzc0MjI5",
+          "commit": {
+            "abbreviatedOid": "a177de9"
+          },
+          "author": "wtoorop",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-24T15:42:21Z",
+          "updatedAt": "2020-06-24T15:42:22Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "So, comparing this to SRV serving by Unbound: Unbound will include useful RR's in the additional section (i.e. address records for the SRV targets) when they can be found in cache.\r\nThe current text states that ``\"resolve\" means the resolver's ordinary recursive resolution procedure'' rather firmly (verbatim on line 637 actually), but this ignores the modus operandi of providing helpful records from cache (for which you can be certain that it will help improve performance; opposed to doing additional recursive resolution).\r\nGetting the RRs for the additional from cache also plays along nicely with the authoritative providing the A, AAAA and SVCB records which it has in-bailiwick in the additional section.",
+              "createdAt": "2020-06-24T15:42:22Z",
+              "updatedAt": "2020-06-24T15:42:22Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
