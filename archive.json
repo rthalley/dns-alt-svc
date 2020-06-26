@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-24T16:29:22.294119+00:00",
+  "timestamp": "2020-06-26T01:38:00.535011+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3523,13 +3523,30 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": ">    Clients MUST include an \"application_layer_protocol_negotiation\" extension in their ClientHello with a ProtocolNameList that includes at least one ID from the ALPN set.  Clients SHOULD also include any other values that they support and could negotiate on that connection with equivalent or better security properties.  For example, if the ALPN set only contains \"http/1.1\", the client could include \"http/1.1\" and \"h2\" in the ProtocolNameList.\r\n\r\nThis could be read to imply that a client conditions its choice of ALPN parameter in a TLS ClientHello based on what it learns from SVCB.  This is dangerous as it exposes the connection to potential downgrade attacks.  Though it tries to recommend that \"better\" options be chosen, this is a determination that the server makes in ALPN, not the client.  This document should instead mandate that clients construct an ALPN extension containing all protocols that they are willing to use.",
       "createdAt": "2020-06-23T08:44:13Z",
-      "updatedAt": "2020-06-23T08:44:13Z",
+      "updatedAt": "2020-06-26T01:37:19Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "MikeBishop",
+          "authorAssociation": "OWNER",
+          "body": "I think that depends on how you define \"downgrade.\"  The existing text says that the client includes:\r\n- At least one ALPN token from the SVCB record(s)\r\n- Any protocol the client supports which it considers \"better\" than the least-preferable selected token, even if not in the SVCB record\r\n\r\nBut the point that it leads to selection involving the client's definition of \"better\" versus the server's is certainly a fair point.",
+          "createdAt": "2020-06-24T20:51:10Z",
+          "updatedAt": "2020-06-24T20:51:10Z"
+        },
+        {
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Wait, I remember this \"better\" formulation already came up and was rejected, for precisely this reason. The network does not get to influence the selected ALPN protocol. This notion of \"better\" breaks any formal notion of downgrade protection. It also has practical consequences beyond downgrades: even if client and server agree that h2 is better than http/1.1, the current draft text makes h2 SVCB into a deployment hazard if, say, the server needed to rollback h2.\r\n\r\nI agree with Martin that this text needs to change. Both http/1.1 and h2 SVCB records must result in the *exact* same ALPN advertisement, namely all the client's accepted protocols. The only acceptable filtering is that inherent to collections of compatible ALPNs. Beyond that, SVCB stays out of the TLS ALPN negotation.",
+          "createdAt": "2020-06-25T05:19:10Z",
+          "updatedAt": "2020-06-25T05:26:14Z"
+        }
+      ]
     },
     {
       "number": 195,
@@ -13836,7 +13853,7 @@
       "labels": [],
       "body": "Issue 177",
       "createdAt": "2020-06-18T03:36:10Z",
-      "updatedAt": "2020-06-24T16:29:06Z",
+      "updatedAt": "2020-06-24T17:27:16Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3",
@@ -13926,7 +13943,7 @@
       "labels": [],
       "body": "Make specific IANA requests in the IANA Considerations section",
       "createdAt": "2020-06-23T12:30:10Z",
-      "updatedAt": "2020-06-23T12:30:10Z",
+      "updatedAt": "2020-06-24T17:12:46Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
@@ -13938,7 +13955,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2ODQ3MTg5",
+          "commit": {
+            "abbreviatedOid": "87f4414"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-24T17:12:46Z",
+          "updatedAt": "2020-06-24T17:12:46Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 198,
@@ -14052,6 +14083,74 @@
           ]
         }
       ]
+    },
+    {
+      "number": 200,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM5MzE3ODYw",
+      "title": "Fix more references",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/200",
+      "state": "MERGED",
+      "author": "MikeBishop",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-06-24T16:29:41Z",
+      "updatedAt": "2020-06-24T17:10:24Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "references",
+      "headRefOid": "94690bf429d8cd4df7ba2e9fc9e24c658c788bfd",
+      "closedAt": "2020-06-24T17:10:24Z",
+      "mergedAt": "2020-06-24T17:10:24Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "3d1b580ed11645e889e55bc5e276dbab383414c8"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2ODQ1MTg4",
+          "commit": {
+            "abbreviatedOid": "94690bf"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-24T17:10:03Z",
+          "updatedAt": "2020-06-24T17:10:03Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 201,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQwMzM2MTI1",
+      "title": "Adjust advice on populating the client's ALPN set",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/201",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses #194",
+      "createdAt": "2020-06-26T01:37:36Z",
+      "updatedAt": "2020-06-26T01:37:36Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "3d1b580ed11645e889e55bc5e276dbab383414c8",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-better",
+      "headRefOid": "73cd4ee8653bbb3a7771570537d398df6650376c",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
