@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-06-28T17:11:03.832832+00:00",
+  "timestamp": "2020-07-01T01:19:23.630414+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3224,10 +3224,12 @@
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "proposed to close"
+      ],
       "body": "I realize that this might be going against an established trend, but the notion that 65535 different values for priority might be useful is a little fanciful.  HTTP are proposing just 8, DSCP had 64, and neither has any real expectation that there will be any value in having all of those options.  Why not 255?",
       "createdAt": "2020-06-23T06:59:44Z",
-      "updatedAt": "2020-06-28T03:43:48Z",
+      "updatedAt": "2020-06-30T19:49:56Z",
       "closedAt": null,
       "comments": [
         {
@@ -3257,6 +3259,13 @@
           "body": "It's odd to want to retain this for consistency with other types and also have no qualms about changing the meaning of the name \".\".",
           "createdAt": "2020-06-28T03:43:48Z",
           "updatedAt": "2020-06-28T03:43:48Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I propose leaving this as 64k for consistency and closing.",
+          "createdAt": "2020-06-30T19:49:44Z",
+          "updatedAt": "2020-06-30T19:49:44Z"
         }
       ]
     },
@@ -3268,11 +3277,13 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "The definition of values allows for quoting, but the ABNF doesn't capture that.\r\n\r\n```\r\n   escaped-char  = \"\\\" (VCHAR / WSP)\r\n```\r\n\r\nThis implies that \"\\3\" is valid, where it is not.  Capturing this is not so difficult.\r\n\r\n```\r\n   basic-visible = %x21 / %x23-27 / %x2A-3A / %x3C-5B / %x5D-7E\r\n   unescaped = %x21 / %x23-27 / %x2A-2F / %x3C-5B / %x5D-7E\r\n   escaped-number = (%x30-31 2DIGIT) / (%x32 (%x30-34 DIGIT) / (%x35 %x30-35))\r\n   escaped-char  = \"\\\" (unescaped / WSP / escaped-number)\r\n```",
       "createdAt": "2020-06-23T07:08:33Z",
-      "updatedAt": "2020-06-24T15:35:53Z",
+      "updatedAt": "2020-06-28T17:11:24Z",
       "closedAt": null,
       "comments": [
         {
@@ -3607,7 +3618,7 @@
       "labels": [],
       "body": "For every other type the next name to be looked up is embedded in the rdata itself.  Additional \".\" often means \"no such service\".   For BIND adding \".\" is owner name meant touching 102 files as every other RR types method for processing additional data needed to changed as well as every place where additional data is added to the response.\r\n\r\nI'm wondering if making \".\" special like this is worth it? \r\n\r\nI'm also wondering if we should be giving up the ability to signal \"no such service\" as is done in SRV, MX is worth it?",
       "createdAt": "2020-06-27T00:40:30Z",
-      "updatedAt": "2020-06-28T04:03:52Z",
+      "updatedAt": "2020-06-29T02:07:50Z",
       "closedAt": null,
       "comments": [
         {
@@ -3630,6 +3641,27 @@
           "body": "Would using something else with the same meaning help?  For example, \"=\" or \"~\" or \"^\" or something might avoid confusion with other uses of \".\"  (which would then just be a single label containing that character in the wire format).",
           "createdAt": "2020-06-28T04:03:52Z",
           "updatedAt": "2020-06-28T04:03:52Z"
+        },
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "> > For BIND adding \".\" is owner name meant touching 102 files as every other RR types method for processing additional data needed to changed\r\n> \r\n> That's definitely surprising! We didn't think this would be complicated to implement.\r\n\r\nYou changed the additional section processing paradigm.  Most of those 102 files was saying \"the owner name is not used in this method\".  Part of it was actually passing the name from higher up in the calling stack.  When a nameserver looks up the addresses associates with a NS record it doesn't care about the owner name of the NS record.  It just looks at the RDATA of the record.  The same applies for every other record except these two proposed ones.\r\n\r\nhttps://gitlab.isc.org/isc-projects/bind9/-/merge_requests/2135/diffs?commit_id=232cb0d53bd3ba4f9b3fb0d80d903916b917627c\r\n\r\n> > I'm wondering if making \".\" special like this is worth it?\r\n> \r\n> The most important thing to me is that we have a way to encourage SvcDomainName == owner name when editing the zone file, because this reduces latency under certain conditions. Perhaps we could use `*` or `-` instead of `.` in the zone file.\r\n\r\nYou are assuming that it will take a lot of time for recursive servers to learn about these records.   That is not reality.\r\nSome nameservers do speculative lookups of records missed (no RRset, no cached no data, no cached nxdomain) when doing additional section processing.  BIND does one lookup but it could be made to do more.\r\n\r\n> Repeating the owner name, without the benefit of name compression, is a bit annoying. Can you think of a way to avoid the duplication that would be easier for BIND? It's too bad we don't have a name-compression mode that works within an RR.\r\n\r\nWell if you really want it you would need to signal that the client supports intra RR compress for these types.  That is easy enough to do with a EDNS option (option code + list of types the client supports intra RR compression for).  You would need to get a label type assigned for intra RR compression pointers.   IANA already maintains a registry.  The server would need to do case sensitive compression to preserve DNSSEC signatures for when the record was returned to canonical form for DNSSEC processing.\r\n\r\nhttps://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-10\r\n\r\n> > I'm also wondering if we should be giving up the ability to signal \"no such service\" as is done in SRV, MX is worth it?\r\n> \r\n>  I haven't heard anyone ask for this, so I don't consider it a priority. If there's an easy way to signal it I'd be OK with including it, but we'd have to think carefully about what it means. (If there's no HTTPS service, does that mean there's no HTTP service either? What if there are multiple RRs, and only one has this flag?)\r\n\r\n",
+          "createdAt": "2020-06-29T00:03:38Z",
+          "updatedAt": "2020-06-29T00:03:38Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Most of those 102 files was saying \"the owner name is not used in this method\".\r\n\r\nThanks for clarifying.  I presume you're referring to [this change](https://gitlab.isc.org/isc-projects/bind9/-/commit/232cb0d53bd3ba4f9b3fb0d80d903916b917627c) in your experimental branch.\r\n\r\nI'm not familiar with the BIND code, but this seems like a reasonable implementation to me, and suggests that the current spec is not too bad.\r\n\r\n> You are assuming that it will take a lot of time for recursive servers to learn about these records.\r\n\r\nMostly I'm just counting roundtrips.  SVCB queries are always issued in parallel to A/AAAA queries, so if SvcDomainName == owner-name, then there are already queries in flight for the necessary addresses (0 extra roundtrips).  Anything that requires a followup query, whether by the recursive or by the client, adds some amount of latency.\r\n\r\n> Well if you really want it you would need to signal that the client supports intra RR compress for these types. That is easy enough to do with a EDNS option ...\r\n\r\nIf something like this already existed I think we would use it here, but inventing and standardizing it seems like a big project, not justified by the size of the problem.\r\n\r\nI was thinking of something to avoid special-casing \".\" in this way, e.g. \"The SvcDomainName is represented with a one-octet length prefix, followed by a buffer of that length.  The buffer contains a domain name that fills the buffer.  If the name is fully-qualified (ending in an empty label) then it is an absolute name; otherwise it is relative to the owner name.\".  However, I expect this would make your implementation more complex, not less, so I'm not suggesting this change.",
+          "createdAt": "2020-06-29T01:08:10Z",
+          "updatedAt": "2020-06-29T01:08:10Z"
+        },
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "> > Most of those 102 files was saying \"the owner name is not used in this method\".\r\n> \r\n> Thanks for clarifying. I presume you're referring to [this change](https://gitlab.isc.org/isc-projects/bind9/-/commit/232cb0d53bd3ba4f9b3fb0d80d903916b917627c) in your experimental branch.\r\n> \r\n> I'm not familiar with the BIND code, but this seems like a reasonable implementation to me, and suggests that the current spec is not too bad.\r\n> \r\n> > You are assuming that it will take a lot of time for recursive servers to learn about these records.\r\n> \r\n> Mostly I'm just counting roundtrips. SVCB queries are always issued in parallel to A/AAAA queries, so if SvcDomainName == owner-name, then there are already queries in flight for the necessary addresses (0 extra roundtrips). Anything that requires a followup query, whether by the recursive or by the client, adds some amount of latency.\r\n\r\nWhich has to be weighed up against how often it would actually save a query once support for these records is reasonably well deployed.   The only time when the name must differ is when a wildcard record is in use and the looked up name doesn't match target name.   The authoritative servers will be returning the target data as additional records.  Recursive server will accept such records as they will be in bailiwick.  Those records will then be returned to the client.\r\n\r\nIt will also provide no benefit for anything that is using a underscore prefix label.   Which reminds me that I need to add code to detect and prevent such wasted queries.   That's additional code that will need to be added to every client.  \".\" should only be mapped to the owner name for LDH owner names. \r\n> > Well if you really want it you would need to signal that the client supports intra RR compress for these types. That is easy enough to do with a EDNS option ...\r\n> \r\n> If something like this already existed I think we would use it here, but inventing and standardizing it seems like a big project, not justified by the size of the problem.\r\n> \r\n> I was thinking of something to avoid special-casing \".\" in this way, e.g. \"The SvcDomainName is represented with a one-octet length prefix, followed by a buffer of that length. The buffer contains a domain name that fills the buffer. If the name is fully-qualified (ending in an empty label) then it is an absolute name; otherwise it is relative to the owner name.\". However, I expect this would make your implementation more complex, not less, so I'm not suggesting this change.\r\n\r\n",
+          "createdAt": "2020-06-29T02:07:50Z",
+          "updatedAt": "2020-06-29T02:07:50Z"
         }
       ]
     }
@@ -13988,18 +14020,26 @@
       "labels": [],
       "body": "Make specific IANA requests in the IANA Considerations section",
       "createdAt": "2020-06-23T12:30:10Z",
-      "updatedAt": "2020-06-24T17:12:46Z",
+      "updatedAt": "2020-06-30T19:44:30Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
+      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "moonshiner/dns-alt-svc",
       "headRefName": "tjw-iana-section",
-      "headRefOid": "87f441480175d7504365104ff9c2f46056dfd998",
+      "headRefOid": "e1ab2a4e17eff50bca13aa483fb675d5b7f1f17a",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I updated this with the IANA Values that have been assigned.  \r\n\r\n",
+          "createdAt": "2020-06-30T19:44:30Z",
+          "updatedAt": "2020-06-30T19:44:30Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2ODQ3MTg5",
@@ -14225,13 +14265,13 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-06-27T22:31:07Z",
+      "updatedAt": "2020-07-01T01:18:53Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "3d1b580ed11645e889e55bc5e276dbab383414c8",
+      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-escape",
-      "headRefOid": "9307a30ca12a5bce4006d2887b4e5f638b54fd10",
+      "headRefOid": "b05042c217ce9154712a3efdbdddee1f894f8498",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14254,7 +14294,7 @@
               "originalPosition": 96,
               "body": "The double quotes are part of the second alpn-id. so this should read.\r\n\r\nThis would be decoded as three `alpn-id`s: 'example1', '\"weird, why?\"', and\r\n'example2'.\r\n ",
               "createdAt": "2020-06-26T04:56:13Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14274,7 +14314,7 @@
               "originalPosition": 83,
               "body": "Why doesn't this just say \"unescaped comma\"?  \\044 really does not buy anything over \"\\\\,\" when parsing.   So is '\\\\,' now also a separator or is it a syntax error?",
               "createdAt": "2020-06-26T05:13:26Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14294,7 +14334,7 @@
               "originalPosition": 96,
               "body": "In this PR, this example is first parsed to a sequence of three `char-string`s: `example1`, `\"weird\\044 why?\"`, and `example2`.  Then the character-string decoding algorithm is applied to each `char-string`, yielding `example1`, `weird, why?`, and `example2`.  This is because double-quotes are optional in `char-string`.\r\n\r\nMy goal here is to make the parsing algorithm easy to implement, so please suggest changes.  I proposed this formulation to minimize the amount of new parsing code required (reuse the same decoding algorithm), while making sure that all `alpn-id`s are representable, including those that contain commas and spaces. ",
               "createdAt": "2020-06-26T12:52:41Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14314,7 +14354,7 @@
               "originalPosition": 83,
               "body": "The proposed algorithm here is \"character-string decode, split on commas, character-string decode again\".  Therefore:\r\n* `alpn=ex1,ex2\\,ex3` is `ex1`, `ex2`, and  `ex3`, because the first-pass decoding unescapes the entire value\r\n* `alpn=ex1,ex2\\\\,ex3` is presumably a syntax error, because `ex2\\` is not a valid character-string, because `\\` is supposed to escape something but there is nothing to escape.\r\n* `alpn=ex1,ex2\\\\\\\\,ex3` is `ex1`, `ex2\\`, and `ex3`",
               "createdAt": "2020-06-26T16:10:13Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14334,7 +14374,7 @@
               "originalPosition": 83,
               "body": "If you do this then \"foo\\044bar\" becomes \"foo,bar\"  which becomes \"foo\" and \"bar\".   Following your method you would have to have \"foo\\\\\\\\044bar\" which becomes \"foo\\044bar\" which becomes \"foo,bar\".   And to get a alpn-id that is \"foo\\044bar\" I would need to enter \"foo\\\\\\\\\\\\\\\\044bar\"  (4 backslashes) instead of \"foo\\\\\\\\044bar\" (2 backslashes).\r\n\r\nAll this for not extending the existing character string parser to know if comma is a special or not.  'if (comma_processing && c == ',' && !escaped) end-of-alpn-id;\". ",
               "createdAt": "2020-06-26T21:35:08Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14354,7 +14394,7 @@
               "originalPosition": 96,
               "body": "Detecting escaped commas is dead easy.  GO LOOK AT HOW BIND DOES IT.  All this just makes it harder for the person entering the data.  ",
               "createdAt": "2020-06-26T21:39:58Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14374,7 +14414,7 @@
               "originalPosition": 96,
               "body": "Also the point of using quoted strings is to turn off special processing to get the full token at places that would otherwise terminate the token.   Once you have the full token you don't need to drop them a second time.",
               "createdAt": "2020-06-26T22:13:10Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14394,7 +14434,7 @@
               "originalPosition": 96,
               "body": "And so you don't have to search around in the repository to find it. \r\n\r\nAt this point the double quotes have been processed.  The token still contains all the escapes.\r\n\r\n```\r\n+static isc_result_t\r\n+alpn_fromtxt(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       isc_textregion_t source0 = *source;\r\n+       do {\r\n+               RETERR(commatxt_fromtext(&source0, true, target));\r\n+       } while (source0.length != 0);\r\n+       return (ISC_R_SUCCESS);\r\n+}\r\n```\r\n\r\n```\r\n@@ -1390,7 +1432,8 @@ name_length(const dns_name_t *name) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+commatxt_totext(isc_region_t *source, bool quote, bool comma,\r\n+               isc_buffer_t *target) {\r\n        unsigned int tl;\r\n        unsigned int n;\r\n        unsigned char *sp;\r\n@@ -1435,10 +1478,12 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n                /*\r\n                 * Escape double quote and backslash.  If we are not\r\n                 * enclosing the string in double quotes also escape\r\n-                * at sign and semicolon.\r\n+                * at sign and semicolon unless comma is set.  If\r\n+                * comma is set then escape commas.\r\n                 */\r\n-               if (*sp == 0x22 || *sp == 0x5c ||\r\n-                   (!quote && (*sp == 0x40 || *sp == 0x3b))) {\r\n+               if (*sp == 0x22 || *sp == 0x5c || (comma && *sp == 0x2c) ||\r\n+                   (!comma && !quote && (*sp == 0x40 || *sp == 0x3b)))\r\n+               {\r\n                        if (tl < 2) {\r\n                                return (ISC_R_NOSPACE);\r\n                        }\r\n@@ -1465,9 +1510,14 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+       return (commatxt_totext(source, quote, false, target));\r\n+}\r\n+\r\n+static isc_result_t\r\n+commatxt_fromtext(isc_textregion_t *source, bool comma, isc_buffer_t *target) {\r\n        isc_region_t tregion;\r\n-       bool escape;\r\n+       bool escape, seen_comma = false;\r\n        unsigned int n, nrem;\r\n        char *s;\r\n        unsigned char *t;\r\n@@ -1496,6 +1546,10 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        }\r\n        while (n-- != 0) {\r\n                c = (*s++) & 0xff;\r\n+               if (comma && !escape && c == ',') {\r\n+                       seen_comma = true;\r\n+                       break;\r\n+               }\r\n                if (escape && (d = decvalue((char)c)) != -1) {\r\n                        c = d;\r\n                        if (n == 0) {\r\n@@ -1534,11 +1588,32 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        if (escape) {\r\n                return (DNS_R_SYNTAX);\r\n        }\r\n+       if (comma) {\r\n+               /*\r\n+                * Disallow empty ALPN at start or in the middle.\r\n+                */\r\n+               if (s == source->base || (seen_comma && s == source->base + 1))\r\n+               {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+               isc_textregion_consume(source, s - source->base);\r\n+               /*\r\n+                * Disallow empty ALPN at end.\r\n+                */\r\n+               if (seen_comma && source->length == 0) {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+       }\r\n        *tregion.base = (unsigned char)(t - tregion.base - 1);\r\n        isc_buffer_add(target, *tregion.base + 1);\r\n        return (ISC_R_SUCCESS);\r\n }\r\n\r\n +static isc_result_t\r\n+txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       return (commatxt_fromtext(source, false, target));\r\n+}\r\n+\r\n static isc_result_t\r\n txt_fromwire(isc_buffer_t *source, isc_buffer_t *target) {\r\n        unsigned int n;\r\n```",
               "createdAt": "2020-06-27T00:05:34Z",
-              "updatedAt": "2020-06-27T22:29:30Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         },
@@ -14414,11 +14454,65 @@
               "originalPosition": 96,
               "body": "OK, I've updated the PR to reflect this approach.  Please review.",
               "createdAt": "2020-06-27T22:31:06Z",
-              "updatedAt": "2020-06-27T22:31:07Z"
+              "updatedAt": "2020-07-01T01:18:53Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM5NTQyMzI5",
+          "commit": {
+            "abbreviatedOid": "9307a30"
+          },
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-06-29T22:21:50Z",
+          "updatedAt": "2020-06-29T22:21:50Z",
+          "comments": [
+            {
+              "originalPosition": 96,
+              "body": "I would say that they are key value pairs.  If the definition of a value consists of a list (i.e. ipv4hints, ipv6hints, alpn) the list elements are separated by a unescaped \",\".  To add a literal comma to an element in a list, the comma must be escaped.   At the moment you have everything defined to be a list including the generic form which clearly is not a list.",
+              "createdAt": "2020-06-29T22:21:50Z",
+              "updatedAt": "2020-07-01T01:18:53Z"
             }
           ]
         }
       ]
+    },
+    {
+      "number": 204,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQxMDk4Mzg2",
+      "title": "Remove use of \"origin\" for non-HTTP schemes",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/204",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The use of \"origin\" for non-HTTP schemes, and the use of \"origin server\"\r\nto mean only the normal server, were generating confusion.  This PR\r\naligns terminology with the URI specification and limits the use of\r\n\"origin\" to HTTP.\r\n\r\nFixes #183",
+      "createdAt": "2020-06-28T18:51:58Z",
+      "updatedAt": "2020-06-28T22:11:23Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-origin",
+      "headRefOid": "a3f8b14c49f7720e3165bc20971ee4a8dcbab0ee",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@martinthomson Does this address your concern related to \"origin server\"?",
+          "createdAt": "2020-06-28T22:11:23Z",
+          "updatedAt": "2020-06-28T22:11:23Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
