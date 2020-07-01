@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-01T01:19:23.630414+00:00",
+  "timestamp": "2020-07-01T14:28:54.554857+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2925,13 +2925,15 @@
       "state": "OPEN",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [
         "wg"
       ],
       "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.\r\nEDIT2: Using 1-255 seems like a very small range, but if we ever get close to running out, we can simply define a `mandatory` SvcParamKey in that range, and use it to extend the behavior indefinitely.  So if we choose a range, it can be small.",
       "createdAt": "2020-06-12T02:56:58Z",
-      "updatedAt": "2020-06-24T15:52:38Z",
+      "updatedAt": "2020-07-01T02:49:26Z",
       "closedAt": null,
       "comments": [
         {
@@ -2989,6 +2991,13 @@
           "body": "Agree with \"don't make keys mandatory in general\" logic.  ",
           "createdAt": "2020-06-24T15:52:38Z",
           "updatedAt": "2020-06-24T15:52:38Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK, I've written up a PR for \"mandatory\", #205, reflecting the input here.\r\n\r\nOne difference: I didn't reorder the list of IANA codepoints.  I'm happy to do that if people have feelings about which number should mean what.",
+          "createdAt": "2020-07-01T02:49:26Z",
+          "updatedAt": "2020-07-01T02:49:26Z"
         }
       ]
     },
@@ -3229,7 +3238,7 @@
       ],
       "body": "I realize that this might be going against an established trend, but the notion that 65535 different values for priority might be useful is a little fanciful.  HTTP are proposing just 8, DSCP had 64, and neither has any real expectation that there will be any value in having all of those options.  Why not 255?",
       "createdAt": "2020-06-23T06:59:44Z",
-      "updatedAt": "2020-06-30T19:49:56Z",
+      "updatedAt": "2020-07-01T11:45:32Z",
       "closedAt": null,
       "comments": [
         {
@@ -3266,6 +3275,13 @@
           "body": "I propose leaving this as 64k for consistency and closing.",
           "createdAt": "2020-06-30T19:49:44Z",
           "updatedAt": "2020-06-30T19:49:44Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I've made a note to mention this when we do a WGLC to see what the WG says",
+          "createdAt": "2020-07-01T11:45:32Z",
+          "updatedAt": "2020-07-01T11:45:32Z"
         }
       ]
     },
@@ -14265,13 +14281,13 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-07-01T01:18:53Z",
+      "updatedAt": "2020-07-01T14:28:36Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-escape",
-      "headRefOid": "b05042c217ce9154712a3efdbdddee1f894f8498",
+      "headRefOid": "f1b7e421711ec387461614f8c5684b8a9ac257f2",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14294,7 +14310,7 @@
               "originalPosition": 96,
               "body": "The double quotes are part of the second alpn-id. so this should read.\r\n\r\nThis would be decoded as three `alpn-id`s: 'example1', '\"weird, why?\"', and\r\n'example2'.\r\n ",
               "createdAt": "2020-06-26T04:56:13Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14314,7 +14330,7 @@
               "originalPosition": 83,
               "body": "Why doesn't this just say \"unescaped comma\"?  \\044 really does not buy anything over \"\\\\,\" when parsing.   So is '\\\\,' now also a separator or is it a syntax error?",
               "createdAt": "2020-06-26T05:13:26Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14334,7 +14350,7 @@
               "originalPosition": 96,
               "body": "In this PR, this example is first parsed to a sequence of three `char-string`s: `example1`, `\"weird\\044 why?\"`, and `example2`.  Then the character-string decoding algorithm is applied to each `char-string`, yielding `example1`, `weird, why?`, and `example2`.  This is because double-quotes are optional in `char-string`.\r\n\r\nMy goal here is to make the parsing algorithm easy to implement, so please suggest changes.  I proposed this formulation to minimize the amount of new parsing code required (reuse the same decoding algorithm), while making sure that all `alpn-id`s are representable, including those that contain commas and spaces. ",
               "createdAt": "2020-06-26T12:52:41Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14354,7 +14370,7 @@
               "originalPosition": 83,
               "body": "The proposed algorithm here is \"character-string decode, split on commas, character-string decode again\".  Therefore:\r\n* `alpn=ex1,ex2\\,ex3` is `ex1`, `ex2`, and  `ex3`, because the first-pass decoding unescapes the entire value\r\n* `alpn=ex1,ex2\\\\,ex3` is presumably a syntax error, because `ex2\\` is not a valid character-string, because `\\` is supposed to escape something but there is nothing to escape.\r\n* `alpn=ex1,ex2\\\\\\\\,ex3` is `ex1`, `ex2\\`, and `ex3`",
               "createdAt": "2020-06-26T16:10:13Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14374,7 +14390,7 @@
               "originalPosition": 83,
               "body": "If you do this then \"foo\\044bar\" becomes \"foo,bar\"  which becomes \"foo\" and \"bar\".   Following your method you would have to have \"foo\\\\\\\\044bar\" which becomes \"foo\\044bar\" which becomes \"foo,bar\".   And to get a alpn-id that is \"foo\\044bar\" I would need to enter \"foo\\\\\\\\\\\\\\\\044bar\"  (4 backslashes) instead of \"foo\\\\\\\\044bar\" (2 backslashes).\r\n\r\nAll this for not extending the existing character string parser to know if comma is a special or not.  'if (comma_processing && c == ',' && !escaped) end-of-alpn-id;\". ",
               "createdAt": "2020-06-26T21:35:08Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14394,7 +14410,7 @@
               "originalPosition": 96,
               "body": "Detecting escaped commas is dead easy.  GO LOOK AT HOW BIND DOES IT.  All this just makes it harder for the person entering the data.  ",
               "createdAt": "2020-06-26T21:39:58Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14414,7 +14430,7 @@
               "originalPosition": 96,
               "body": "Also the point of using quoted strings is to turn off special processing to get the full token at places that would otherwise terminate the token.   Once you have the full token you don't need to drop them a second time.",
               "createdAt": "2020-06-26T22:13:10Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14434,7 +14450,7 @@
               "originalPosition": 96,
               "body": "And so you don't have to search around in the repository to find it. \r\n\r\nAt this point the double quotes have been processed.  The token still contains all the escapes.\r\n\r\n```\r\n+static isc_result_t\r\n+alpn_fromtxt(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       isc_textregion_t source0 = *source;\r\n+       do {\r\n+               RETERR(commatxt_fromtext(&source0, true, target));\r\n+       } while (source0.length != 0);\r\n+       return (ISC_R_SUCCESS);\r\n+}\r\n```\r\n\r\n```\r\n@@ -1390,7 +1432,8 @@ name_length(const dns_name_t *name) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+commatxt_totext(isc_region_t *source, bool quote, bool comma,\r\n+               isc_buffer_t *target) {\r\n        unsigned int tl;\r\n        unsigned int n;\r\n        unsigned char *sp;\r\n@@ -1435,10 +1478,12 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n                /*\r\n                 * Escape double quote and backslash.  If we are not\r\n                 * enclosing the string in double quotes also escape\r\n-                * at sign and semicolon.\r\n+                * at sign and semicolon unless comma is set.  If\r\n+                * comma is set then escape commas.\r\n                 */\r\n-               if (*sp == 0x22 || *sp == 0x5c ||\r\n-                   (!quote && (*sp == 0x40 || *sp == 0x3b))) {\r\n+               if (*sp == 0x22 || *sp == 0x5c || (comma && *sp == 0x2c) ||\r\n+                   (!comma && !quote && (*sp == 0x40 || *sp == 0x3b)))\r\n+               {\r\n                        if (tl < 2) {\r\n                                return (ISC_R_NOSPACE);\r\n                        }\r\n@@ -1465,9 +1510,14 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+       return (commatxt_totext(source, quote, false, target));\r\n+}\r\n+\r\n+static isc_result_t\r\n+commatxt_fromtext(isc_textregion_t *source, bool comma, isc_buffer_t *target) {\r\n        isc_region_t tregion;\r\n-       bool escape;\r\n+       bool escape, seen_comma = false;\r\n        unsigned int n, nrem;\r\n        char *s;\r\n        unsigned char *t;\r\n@@ -1496,6 +1546,10 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        }\r\n        while (n-- != 0) {\r\n                c = (*s++) & 0xff;\r\n+               if (comma && !escape && c == ',') {\r\n+                       seen_comma = true;\r\n+                       break;\r\n+               }\r\n                if (escape && (d = decvalue((char)c)) != -1) {\r\n                        c = d;\r\n                        if (n == 0) {\r\n@@ -1534,11 +1588,32 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        if (escape) {\r\n                return (DNS_R_SYNTAX);\r\n        }\r\n+       if (comma) {\r\n+               /*\r\n+                * Disallow empty ALPN at start or in the middle.\r\n+                */\r\n+               if (s == source->base || (seen_comma && s == source->base + 1))\r\n+               {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+               isc_textregion_consume(source, s - source->base);\r\n+               /*\r\n+                * Disallow empty ALPN at end.\r\n+                */\r\n+               if (seen_comma && source->length == 0) {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+       }\r\n        *tregion.base = (unsigned char)(t - tregion.base - 1);\r\n        isc_buffer_add(target, *tregion.base + 1);\r\n        return (ISC_R_SUCCESS);\r\n }\r\n\r\n +static isc_result_t\r\n+txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       return (commatxt_fromtext(source, false, target));\r\n+}\r\n+\r\n static isc_result_t\r\n txt_fromwire(isc_buffer_t *source, isc_buffer_t *target) {\r\n        unsigned int n;\r\n```",
               "createdAt": "2020-06-27T00:05:34Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14454,7 +14470,7 @@
               "originalPosition": 96,
               "body": "OK, I've updated the PR to reflect this approach.  Please review.",
               "createdAt": "2020-06-27T22:31:06Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
             }
           ]
         },
@@ -14474,7 +14490,147 @@
               "originalPosition": 96,
               "body": "I would say that they are key value pairs.  If the definition of a value consists of a list (i.e. ipv4hints, ipv6hints, alpn) the list elements are separated by a unescaped \",\".  To add a literal comma to an element in a list, the comma must be escaped.   At the moment you have everything defined to be a list including the generic form which clearly is not a list.",
               "createdAt": "2020-06-29T22:21:50Z",
-              "updatedAt": "2020-07-01T01:18:53Z"
+              "updatedAt": "2020-07-01T14:28:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDg3Njc3",
+          "commit": {
+            "abbreviatedOid": "b05042c"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T01:23:51Z",
+          "updatedAt": "2020-07-01T01:23:52Z",
+          "comments": [
+            {
+              "originalPosition": 96,
+              "body": "OK, I've changed the text to reflect this idea.",
+              "createdAt": "2020-07-01T01:23:51Z",
+              "updatedAt": "2020-07-01T14:28:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDkyMjM5",
+          "commit": {
+            "abbreviatedOid": "b05042c"
+          },
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T01:39:35Z",
+          "updatedAt": "2020-07-01T01:39:35Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "s/splitting on commas/splitting on unescaped commas/",
+              "createdAt": "2020-07-01T01:39:35Z",
+              "updatedAt": "2020-07-01T14:28:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDkzMjE5",
+          "commit": {
+            "abbreviatedOid": "b05042c"
+          },
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T01:43:07Z",
+          "updatedAt": "2020-07-01T01:43:07Z",
+          "comments": [
+            {
+              "originalPosition": 114,
+              "body": "It would be useful to never have to apply escape processing to port so append.  \"No escape processing should be applied to the port value.\"",
+              "createdAt": "2020-07-01T01:43:07Z",
+              "updatedAt": "2020-07-01T14:28:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNDkzNTY5",
+          "commit": {
+            "abbreviatedOid": "b05042c"
+          },
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T01:44:23Z",
+          "updatedAt": "2020-07-01T01:44:23Z",
+          "comments": [
+            {
+              "originalPosition": 123,
+              "body": "Similarly disallow escape processing for ipv4hints and ipv6hints.",
+              "createdAt": "2020-07-01T01:44:23Z",
+              "updatedAt": "2020-07-01T14:28:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwOTIyMjM4",
+          "commit": {
+            "abbreviatedOid": "f1b7e42"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T14:28:18Z",
+          "updatedAt": "2020-07-01T14:28:18Z",
+          "comments": [
+            {
+              "originalPosition": 123,
+              "body": "Done",
+              "createdAt": "2020-07-01T14:28:18Z",
+              "updatedAt": "2020-07-01T14:28:18Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwOTIyMjcy",
+          "commit": {
+            "abbreviatedOid": "f1b7e42"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T14:28:19Z",
+          "updatedAt": "2020-07-01T14:28:20Z",
+          "comments": [
+            {
+              "originalPosition": 114,
+              "body": "Done",
+              "createdAt": "2020-07-01T14:28:20Z",
+              "updatedAt": "2020-07-01T14:28:20Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwOTIyNTE0",
+          "commit": {
+            "abbreviatedOid": "f1b7e42"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T14:28:35Z",
+          "updatedAt": "2020-07-01T14:28:36Z",
+          "comments": [
+            {
+              "originalPosition": 37,
+              "body": "Done",
+              "createdAt": "2020-07-01T14:28:35Z",
+              "updatedAt": "2020-07-01T14:28:36Z"
             }
           ]
         }
@@ -14513,6 +14669,233 @@
         }
       ],
       "reviews": []
+    },
+    {
+      "number": 205,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQyNDA2MzE5",
+      "title": "Define a \"mandatory\" SvcParamKey",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/205",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #166",
+      "createdAt": "2020-07-01T02:46:45Z",
+      "updatedAt": "2020-07-01T04:15:35Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-mandatory",
+      "headRefOid": "83f89c4d4854cf19bf419fbe79df506dc4ba3543",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTEzMTU2",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T02:53:56Z",
+          "updatedAt": "2020-07-01T02:53:56Z",
+          "comments": [
+            {
+              "originalPosition": 19,
+              "body": "Overriding or adding to the default set?  The later seems more usable?",
+              "createdAt": "2020-07-01T02:53:56Z",
+              "updatedAt": "2020-07-01T02:53:56Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTEzNzE4",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T02:56:02Z",
+          "updatedAt": "2020-07-01T02:56:02Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "Is there a reason to switch between the words \"essential\" and \"mandatory\"?  Using both is somewhat distracting.",
+              "createdAt": "2020-07-01T02:56:02Z",
+              "updatedAt": "2020-07-01T02:56:02Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTE1MTUy",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T03:01:29Z",
+          "updatedAt": "2020-07-01T03:01:29Z",
+          "comments": [
+            {
+              "originalPosition": 71,
+              "body": "Should explicitly state that if the set of compatible ServiceForm HTTPS RRs is empty (such as due to all requiring a mandatory key not supported) that clients MUST NOT apply the HSTS-like behavior?  (It's implicit here, but may be worth calling out outright.)",
+              "createdAt": "2020-07-01T03:01:29Z",
+              "updatedAt": "2020-07-01T03:01:29Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTE1NTEz",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T03:02:46Z",
+          "updatedAt": "2020-07-01T03:02:46Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "Did we want to give it ID 0 ?  (I liked the idea of having it first.)  I guess we can't make it 1 because we don't want to move alpn? ",
+              "createdAt": "2020-07-01T03:02:46Z",
+              "updatedAt": "2020-07-01T03:02:46Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTE1ODcy",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T03:04:06Z",
+          "updatedAt": "2020-07-01T03:04:06Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "I'd add a note here that if no ServiceForm RRs in the RRset are compatible then the client must treat the RRset as empty.",
+              "createdAt": "2020-07-01T03:04:06Z",
+              "updatedAt": "2020-07-01T03:04:06Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTIxNjY0",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T03:26:05Z",
+          "updatedAt": "2020-07-01T03:26:06Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "I\u2019d prefer to stick with \u201cmandatory\u201d and \u201cdefault mandatory set\u201d.  Agreed that the mix is a bit confusing. ",
+              "createdAt": "2020-07-01T03:26:05Z",
+              "updatedAt": "2020-07-01T03:26:06Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTIyMDE5",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T03:27:24Z",
+          "updatedAt": "2020-07-01T03:27:25Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "I\u2019d rather us not move alpn if that\u2019s okay :)\r\n\r\nAny reason not to give this 0? It is a meta-key, so making it 0 seems elegant. ",
+              "createdAt": "2020-07-01T03:27:24Z",
+              "updatedAt": "2020-07-01T03:27:25Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTMzMDA3",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T04:11:03Z",
+          "updatedAt": "2020-07-01T04:11:03Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "We'd previously discussed leaving 0 unassigned so that APIs could use it to mean something like \"null\".  If we don't think that's actually useful then I'm OK with making this 0.",
+              "createdAt": "2020-07-01T04:11:03Z",
+              "updatedAt": "2020-07-01T04:11:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTMzNzg2",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T04:14:03Z",
+          "updatedAt": "2020-07-01T04:14:03Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "I chose this wording because \"mandatory\", in my view, is extremely confusing: \"mandatory\" sounds like domain owners are required to publish or use the \"mandatory\" keys, and clients are expected to enforce that they are present (neither of which is true).  These keys aren't \"mandatory\"; they're \"mandatory-to-understand-if-present\".  \"Non-ignorable\".\r\n\r\nIf you can think of a clearer way to express this I would appreciate a suggestion!",
+              "createdAt": "2020-07-01T04:14:03Z",
+              "updatedAt": "2020-07-01T04:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQwNTM0MTc2",
+          "commit": {
+            "abbreviatedOid": "83f89c4"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T04:15:35Z",
+          "updatedAt": "2020-07-01T04:15:35Z",
+          "comments": [
+            {
+              "originalPosition": 19,
+              "body": "Overriding seems more powerful, since it allows making default-essential keys optional.  Given that this feature should be very rare, I figured usability was not too important.\r\n\r\nThen again, maybe clients have to have an understanding of all the default-essential keys for a scheme anyway, so I guess we can just make it additive.",
+              "createdAt": "2020-07-01T04:15:35Z",
+              "updatedAt": "2020-07-01T04:15:35Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
