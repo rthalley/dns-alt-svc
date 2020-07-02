@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-01T14:28:54.554857+00:00",
+  "timestamp": "2020-07-02T01:15:13.811087+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3238,7 +3238,7 @@
       ],
       "body": "I realize that this might be going against an established trend, but the notion that 65535 different values for priority might be useful is a little fanciful.  HTTP are proposing just 8, DSCP had 64, and neither has any real expectation that there will be any value in having all of those options.  Why not 255?",
       "createdAt": "2020-06-23T06:59:44Z",
-      "updatedAt": "2020-07-01T11:45:32Z",
+      "updatedAt": "2020-07-01T17:36:46Z",
       "closedAt": null,
       "comments": [
         {
@@ -3282,6 +3282,20 @@
           "body": "I've made a note to mention this when we do a WGLC to see what the WG says",
           "createdAt": "2020-07-01T11:45:32Z",
           "updatedAt": "2020-07-01T11:45:32Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Given the code point assignment for the RR types and this being a wire-format change, we should either change this ASAP or leave it as-is.",
+          "createdAt": "2020-07-01T14:44:41Z",
+          "updatedAt": "2020-07-01T14:44:41Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Indeed. We can't really change this if we have the wire format stable. If we do anything, let's have editorial text explaining why it's a 16-bit field.",
+          "createdAt": "2020-07-01T17:36:45Z",
+          "updatedAt": "2020-07-01T17:36:45Z"
         }
       ]
     },
@@ -14255,19 +14269,80 @@
       "labels": [],
       "body": "Addresses #194",
       "createdAt": "2020-06-26T01:37:36Z",
-      "updatedAt": "2020-06-26T01:37:36Z",
+      "updatedAt": "2020-07-02T01:14:35Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "3d1b580ed11645e889e55bc5e276dbab383414c8",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-better",
-      "headRefOid": "73cd4ee8653bbb3a7771570537d398df6650376c",
+      "headRefOid": "925b4f6b24a7055bb039fff62780124907190a00",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMDg3NjMz",
+          "commit": {
+            "abbreviatedOid": "73cd4ee"
+          },
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Thanks! One quick question below.",
+          "createdAt": "2020-07-01T18:02:03Z",
+          "updatedAt": "2020-07-01T18:02:42Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "I'm not quite following this sentence (old and new version). Is it saying the same thing as the SHOULD above or something else?",
+              "createdAt": "2020-07-01T18:02:03Z",
+              "updatedAt": "2020-07-02T01:14:35Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMTQ5NTA4",
+          "commit": {
+            "abbreviatedOid": "73cd4ee"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T19:43:44Z",
+          "updatedAt": "2020-07-01T19:43:45Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "It's kind of the inverse.  There are really two requirements:\r\n* If you use an ALPN from the list, you SHOULD accompany it with any other ALPN you would like to do on that transport, whether or not it's in the list.\r\n* You MUST only form one ClientHello per transport in total, so if you like two ALPNs from the list, they have to go in the same ClientHello (if that is possible).\r\n\r\nThe first requirement defends against attackers on the DNS path, and the second defends against attackers on the network path.\r\n\r\nThat said, these requirements are effectively kind of redundant, so we could possibly simplify this text.  Suggestions welcome.",
+              "createdAt": "2020-07-01T19:43:44Z",
+              "updatedAt": "2020-07-02T01:14:35Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMTU3ODE4",
+          "commit": {
+            "abbreviatedOid": "73cd4ee"
+          },
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-01T19:58:02Z",
+          "updatedAt": "2020-07-01T19:58:02Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "Ah. I guess my interpretation was that, if `ClientHelloFromSVCB(proto=h2)` and `ClientHelloFromSVCB(proto=http/1.1)` both result in the same ClientHello (based on the rule that you include all of them), that's fine whether I connect to them serially or in parallel or whatever.\r\n\r\nWhat does consolidating mean if, say, I see SVCB records for h2 and http/1.1 but other properties, like ECH keys or addresses, are different? I figured the model would be that you pick which one(s) you want, and send out ClientHellos for them. If you decided you wanted to race the http/1.1 and h2 records, they'll end up sending the same ALPN. If you decided you wanted to race an h3 one in there, it will be different. When picking them, you probably do need to be aware of the correspondence, but I think the impact is less security and more making your connection strategy coherent.",
+              "createdAt": "2020-07-01T19:58:02Z",
+              "updatedAt": "2020-07-02T01:14:35Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 202,
@@ -14281,7 +14356,7 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-07-01T14:28:36Z",
+      "updatedAt": "2020-07-01T17:50:15Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
@@ -14292,7 +14367,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "lcampbel",
+          "authorAssociation": "NONE",
+          "body": "I think these changes do make the text clearer. But there are two different ways to implement a parser for this. The suggested approach is essentially to have an alternate character-string parser that (1) splits on unescaped commas, and (2) returns an array of strings rather than a string. I think an equally appealing approach is to first use a character-string parser that always returns a string and ignores backslash escapes other than \\\". All other uses (such as TXT records) would unescape the returned string; the alpn parser would first split the returned string on unescaped commas, then unescape each component string. I believe these two approaches are functionally identical but I find the latter a bit cleaner.",
+          "createdAt": "2020-07-01T17:50:14Z",
+          "updatedAt": "2020-07-01T17:50:14Z"
+        }
+      ],
       "reviews": [
         {
           "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM4MDEyOTIz",
@@ -14682,7 +14765,7 @@
       "labels": [],
       "body": "Fixes #166",
       "createdAt": "2020-07-01T02:46:45Z",
-      "updatedAt": "2020-07-01T04:15:35Z",
+      "updatedAt": "2020-07-01T16:00:34Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
@@ -14849,9 +14932,9 @@
           "comments": [
             {
               "originalPosition": 94,
-              "body": "We'd previously discussed leaving 0 unassigned so that APIs could use it to mean something like \"null\".  If we don't think that's actually useful then I'm OK with making this 0.",
+              "body": "We'd previously discussed leaving 0 unassigned so that APIs could use it to mean something like \"null\".  If we don't think that's actually useful then I'm OK with making this 0.\r\n\r\nEDIT: I think the use case would be for a function that parses a key name and returns the uint16 code.  In some programming languages, it might be convenient to be able to return 0 if the name couldn't be parsed.  Naturally, there are also many other possible solutions.",
               "createdAt": "2020-07-01T04:11:03Z",
-              "updatedAt": "2020-07-01T04:11:03Z"
+              "updatedAt": "2020-07-01T16:00:34Z"
             }
           ]
         },
