@@ -2007,20 +2007,22 @@ from SVCB.<a href="#section-6.1-12.3" class="pilcrow">¶</a>
 to connect using TLS over TCP with a ProtocolNameList of ["http/1.1", "h2"],
 and could also attempt a connection using QUIC, with a ProtocolNameList of
 ["h3"].<a href="#section-6.1-13" class="pilcrow">¶</a></p>
-<p id="section-6.1-14">This procedure prevents downgrade attacks within a transport and ensures that
-each ProtocolNameList includes at least one ID that the server supports.
-Once the client has formulated the ClientHello, protocol negotiation
-on that connection proceeds as specified in <span>[<a href="#ALPN" class="xref">ALPN</a>]</span>, without regard to the
-SVCB ALPN set.<a href="#section-6.1-14" class="pilcrow">¶</a></p>
-<p id="section-6.1-15">Clients SHOULD NOT attempt connection to a service endpoint whose
+<p id="section-6.1-14">Once the client has constructed a ClientHello, protocol negotiation in that
+handshake proceeds as specified in <span>[<a href="#ALPN" class="xref">ALPN</a>]</span>, without regard to the SVCB ALPN
+set.<a href="#section-6.1-14" class="pilcrow">¶</a></p>
+<p id="section-6.1-15">With this procedure in place, an attacker who can modify DNS and network
+traffic can prevent a successful transport connection, but cannot otherwise
+interfere with ALPN ID selection.  This procedure also ensures that
+each ProtocolNameList includes at least one ID that the server supports.<a href="#section-6.1-15" class="pilcrow">¶</a></p>
+<p id="section-6.1-16">Clients SHOULD NOT attempt connection to a service endpoint whose
 ALPN set does not contain any supported IDs.  To ensure
 consistency of behavior, clients MAY reject the entire SVCB RRSet and fall
 back to basic connection establishment if all of the RRs indicate
 "no-default-alpn", even if connection could have succeeded using a
-non-default alpn.<a href="#section-6.1-15" class="pilcrow">¶</a></p>
-<p id="section-6.1-16">For compatibility with clients that require default transports,
+non-default alpn.<a href="#section-6.1-16" class="pilcrow">¶</a></p>
+<p id="section-6.1-17">For compatibility with clients that require default transports,
 zone operators SHOULD ensure that at least one RR in each RRSet supports the
-default transports.<a href="#section-6.1-16" class="pilcrow">¶</a></p>
+default transports.<a href="#section-6.1-17" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="port">
