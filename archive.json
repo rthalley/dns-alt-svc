@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-02T01:15:13.811087+00:00",
+  "timestamp": "2020-07-03T02:03:50.646061+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -14269,13 +14269,13 @@
       "labels": [],
       "body": "Addresses #194",
       "createdAt": "2020-06-26T01:37:36Z",
-      "updatedAt": "2020-07-02T01:14:35Z",
+      "updatedAt": "2020-07-02T15:55:41Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "3d1b580ed11645e889e55bc5e276dbab383414c8",
+      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-better",
-      "headRefOid": "925b4f6b24a7055bb039fff62780124907190a00",
+      "headRefOid": "6adefffb0f79c467df0c70620536f34288603824",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14298,7 +14298,7 @@
               "originalPosition": 14,
               "body": "I'm not quite following this sentence (old and new version). Is it saying the same thing as the SHOULD above or something else?",
               "createdAt": "2020-07-01T18:02:03Z",
-              "updatedAt": "2020-07-02T01:14:35Z"
+              "updatedAt": "2020-07-02T01:40:04Z"
             }
           ]
         },
@@ -14318,7 +14318,7 @@
               "originalPosition": 14,
               "body": "It's kind of the inverse.  There are really two requirements:\r\n* If you use an ALPN from the list, you SHOULD accompany it with any other ALPN you would like to do on that transport, whether or not it's in the list.\r\n* You MUST only form one ClientHello per transport in total, so if you like two ALPNs from the list, they have to go in the same ClientHello (if that is possible).\r\n\r\nThe first requirement defends against attackers on the DNS path, and the second defends against attackers on the network path.\r\n\r\nThat said, these requirements are effectively kind of redundant, so we could possibly simplify this text.  Suggestions welcome.",
               "createdAt": "2020-07-01T19:43:44Z",
-              "updatedAt": "2020-07-02T01:14:35Z"
+              "updatedAt": "2020-07-02T01:40:04Z"
             }
           ]
         },
@@ -14338,7 +14338,113 @@
               "originalPosition": 14,
               "body": "Ah. I guess my interpretation was that, if `ClientHelloFromSVCB(proto=h2)` and `ClientHelloFromSVCB(proto=http/1.1)` both result in the same ClientHello (based on the rule that you include all of them), that's fine whether I connect to them serially or in parallel or whatever.\r\n\r\nWhat does consolidating mean if, say, I see SVCB records for h2 and http/1.1 but other properties, like ECH keys or addresses, are different? I figured the model would be that you pick which one(s) you want, and send out ClientHellos for them. If you decided you wanted to race the http/1.1 and h2 records, they'll end up sending the same ALPN. If you decided you wanted to race an h3 one in there, it will be different. When picking them, you probably do need to be aware of the correspondence, but I think the impact is less security and more making your connection strategy coherent.",
               "createdAt": "2020-07-01T19:58:02Z",
-              "updatedAt": "2020-07-02T01:14:35Z"
+              "updatedAt": "2020-07-02T01:40:04Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMjg4NzMy",
+          "commit": {
+            "abbreviatedOid": "ffe88cd"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T01:18:08Z",
+          "updatedAt": "2020-07-02T01:18:09Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "OK, evidently the previous text was not clear enough.  I've reorganized it; hopefully its less ambiguous now.",
+              "createdAt": "2020-07-02T01:18:08Z",
+              "updatedAt": "2020-07-02T01:40:04Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMjkxNTEz",
+          "commit": {
+            "abbreviatedOid": "ffe88cd"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T01:27:49Z",
+          "updatedAt": "2020-07-02T01:27:49Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "FWIW, I find \"downgrade attacks within a transport\" somewhat confusing. Could we add an example?",
+              "createdAt": "2020-07-02T01:27:49Z",
+              "updatedAt": "2020-07-02T01:40:04Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMjk1MjM5",
+          "commit": {
+            "abbreviatedOid": "6adefff"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T01:40:31Z",
+          "updatedAt": "2020-07-02T01:40:32Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "OK, I replaced that language with a more explicit definition.",
+              "createdAt": "2020-07-02T01:40:31Z",
+              "updatedAt": "2020-07-02T01:40:32Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMjk1NzE2",
+          "commit": {
+            "abbreviatedOid": "6adefff"
+          },
+          "author": "chris-wood",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T01:42:11Z",
+          "updatedAt": "2020-07-02T01:42:11Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Much clearer -- thanks!",
+              "createdAt": "2020-07-02T01:42:11Z",
+              "updatedAt": "2020-07-02T01:42:11Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxODE4NDk4",
+          "commit": {
+            "abbreviatedOid": "6adefff"
+          },
+          "author": "davidben",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-02T15:48:34Z",
+          "updatedAt": "2020-07-02T15:55:41Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "Nitpick: Not sure I've seen these called \"IDs\" before. RFC7301 says \"protocol\" or \"protocol name\". RFC8446 says \"ALPN protocol\". RFC7838 says \"ALPN protocol name\" with a few instances of \"ALPN protocol\".",
+              "createdAt": "2020-07-02T15:48:34Z",
+              "updatedAt": "2020-07-02T15:55:41Z"
+            },
+            {
+              "originalPosition": 12,
+              "body": "Might want to mention in this example that this client supports [\"http/1.1\", \"h2\", \"h3\"]. If the client supports \"h4\" which also goes over QUIC, the example would be different.",
+              "createdAt": "2020-07-02T15:50:03Z",
+              "updatedAt": "2020-07-02T15:55:41Z"
             }
           ]
         }
@@ -14356,13 +14462,13 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-07-01T17:50:15Z",
+      "updatedAt": "2020-07-02T02:15:09Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-escape",
-      "headRefOid": "f1b7e421711ec387461614f8c5684b8a9ac257f2",
+      "headRefOid": "8a9dfd84c8aaaf2343404000441d624658005f64",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14374,6 +14480,13 @@
           "body": "I think these changes do make the text clearer. But there are two different ways to implement a parser for this. The suggested approach is essentially to have an alternate character-string parser that (1) splits on unescaped commas, and (2) returns an array of strings rather than a string. I think an equally appealing approach is to first use a character-string parser that always returns a string and ignores backslash escapes other than \\\". All other uses (such as TXT records) would unescape the returned string; the alpn parser would first split the returned string on unescaped commas, then unescape each component string. I believe these two approaches are functionally identical but I find the latter a bit cleaner.",
           "createdAt": "2020-07-01T17:50:14Z",
           "updatedAt": "2020-07-01T17:50:14Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@lcampbel Thanks for the review.  I think that would indeed be a fine way to implement, but describing that procedure in ABNF seems pretty complicated, especially due to the many ambiguities of RFC 1035.  (I think it would be great if someone would write a followup to 1035 that pins down the precise zone file format rules, but this draft is already further down that road than I would like.)",
+          "createdAt": "2020-07-02T02:15:09Z",
+          "updatedAt": "2020-07-02T02:15:09Z"
         }
       ],
       "reviews": [
@@ -14393,7 +14506,7 @@
               "originalPosition": 96,
               "body": "The double quotes are part of the second alpn-id. so this should read.\r\n\r\nThis would be decoded as three `alpn-id`s: 'example1', '\"weird, why?\"', and\r\n'example2'.\r\n ",
               "createdAt": "2020-06-26T04:56:13Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14413,7 +14526,7 @@
               "originalPosition": 83,
               "body": "Why doesn't this just say \"unescaped comma\"?  \\044 really does not buy anything over \"\\\\,\" when parsing.   So is '\\\\,' now also a separator or is it a syntax error?",
               "createdAt": "2020-06-26T05:13:26Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14433,7 +14546,7 @@
               "originalPosition": 96,
               "body": "In this PR, this example is first parsed to a sequence of three `char-string`s: `example1`, `\"weird\\044 why?\"`, and `example2`.  Then the character-string decoding algorithm is applied to each `char-string`, yielding `example1`, `weird, why?`, and `example2`.  This is because double-quotes are optional in `char-string`.\r\n\r\nMy goal here is to make the parsing algorithm easy to implement, so please suggest changes.  I proposed this formulation to minimize the amount of new parsing code required (reuse the same decoding algorithm), while making sure that all `alpn-id`s are representable, including those that contain commas and spaces. ",
               "createdAt": "2020-06-26T12:52:41Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14453,7 +14566,7 @@
               "originalPosition": 83,
               "body": "The proposed algorithm here is \"character-string decode, split on commas, character-string decode again\".  Therefore:\r\n* `alpn=ex1,ex2\\,ex3` is `ex1`, `ex2`, and  `ex3`, because the first-pass decoding unescapes the entire value\r\n* `alpn=ex1,ex2\\\\,ex3` is presumably a syntax error, because `ex2\\` is not a valid character-string, because `\\` is supposed to escape something but there is nothing to escape.\r\n* `alpn=ex1,ex2\\\\\\\\,ex3` is `ex1`, `ex2\\`, and `ex3`",
               "createdAt": "2020-06-26T16:10:13Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14473,7 +14586,7 @@
               "originalPosition": 83,
               "body": "If you do this then \"foo\\044bar\" becomes \"foo,bar\"  which becomes \"foo\" and \"bar\".   Following your method you would have to have \"foo\\\\\\\\044bar\" which becomes \"foo\\044bar\" which becomes \"foo,bar\".   And to get a alpn-id that is \"foo\\044bar\" I would need to enter \"foo\\\\\\\\\\\\\\\\044bar\"  (4 backslashes) instead of \"foo\\\\\\\\044bar\" (2 backslashes).\r\n\r\nAll this for not extending the existing character string parser to know if comma is a special or not.  'if (comma_processing && c == ',' && !escaped) end-of-alpn-id;\". ",
               "createdAt": "2020-06-26T21:35:08Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14493,7 +14606,7 @@
               "originalPosition": 96,
               "body": "Detecting escaped commas is dead easy.  GO LOOK AT HOW BIND DOES IT.  All this just makes it harder for the person entering the data.  ",
               "createdAt": "2020-06-26T21:39:58Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14513,7 +14626,7 @@
               "originalPosition": 96,
               "body": "Also the point of using quoted strings is to turn off special processing to get the full token at places that would otherwise terminate the token.   Once you have the full token you don't need to drop them a second time.",
               "createdAt": "2020-06-26T22:13:10Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14533,7 +14646,7 @@
               "originalPosition": 96,
               "body": "And so you don't have to search around in the repository to find it. \r\n\r\nAt this point the double quotes have been processed.  The token still contains all the escapes.\r\n\r\n```\r\n+static isc_result_t\r\n+alpn_fromtxt(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       isc_textregion_t source0 = *source;\r\n+       do {\r\n+               RETERR(commatxt_fromtext(&source0, true, target));\r\n+       } while (source0.length != 0);\r\n+       return (ISC_R_SUCCESS);\r\n+}\r\n```\r\n\r\n```\r\n@@ -1390,7 +1432,8 @@ name_length(const dns_name_t *name) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+commatxt_totext(isc_region_t *source, bool quote, bool comma,\r\n+               isc_buffer_t *target) {\r\n        unsigned int tl;\r\n        unsigned int n;\r\n        unsigned char *sp;\r\n@@ -1435,10 +1478,12 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n                /*\r\n                 * Escape double quote and backslash.  If we are not\r\n                 * enclosing the string in double quotes also escape\r\n-                * at sign and semicolon.\r\n+                * at sign and semicolon unless comma is set.  If\r\n+                * comma is set then escape commas.\r\n                 */\r\n-               if (*sp == 0x22 || *sp == 0x5c ||\r\n-                   (!quote && (*sp == 0x40 || *sp == 0x3b))) {\r\n+               if (*sp == 0x22 || *sp == 0x5c || (comma && *sp == 0x2c) ||\r\n+                   (!comma && !quote && (*sp == 0x40 || *sp == 0x3b)))\r\n+               {\r\n                        if (tl < 2) {\r\n                                return (ISC_R_NOSPACE);\r\n                        }\r\n@@ -1465,9 +1510,14 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+       return (commatxt_totext(source, quote, false, target));\r\n+}\r\n+\r\n+static isc_result_t\r\n+commatxt_fromtext(isc_textregion_t *source, bool comma, isc_buffer_t *target) {\r\n        isc_region_t tregion;\r\n-       bool escape;\r\n+       bool escape, seen_comma = false;\r\n        unsigned int n, nrem;\r\n        char *s;\r\n        unsigned char *t;\r\n@@ -1496,6 +1546,10 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        }\r\n        while (n-- != 0) {\r\n                c = (*s++) & 0xff;\r\n+               if (comma && !escape && c == ',') {\r\n+                       seen_comma = true;\r\n+                       break;\r\n+               }\r\n                if (escape && (d = decvalue((char)c)) != -1) {\r\n                        c = d;\r\n                        if (n == 0) {\r\n@@ -1534,11 +1588,32 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        if (escape) {\r\n                return (DNS_R_SYNTAX);\r\n        }\r\n+       if (comma) {\r\n+               /*\r\n+                * Disallow empty ALPN at start or in the middle.\r\n+                */\r\n+               if (s == source->base || (seen_comma && s == source->base + 1))\r\n+               {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+               isc_textregion_consume(source, s - source->base);\r\n+               /*\r\n+                * Disallow empty ALPN at end.\r\n+                */\r\n+               if (seen_comma && source->length == 0) {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+       }\r\n        *tregion.base = (unsigned char)(t - tregion.base - 1);\r\n        isc_buffer_add(target, *tregion.base + 1);\r\n        return (ISC_R_SUCCESS);\r\n }\r\n\r\n +static isc_result_t\r\n+txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       return (commatxt_fromtext(source, false, target));\r\n+}\r\n+\r\n static isc_result_t\r\n txt_fromwire(isc_buffer_t *source, isc_buffer_t *target) {\r\n        unsigned int n;\r\n```",
               "createdAt": "2020-06-27T00:05:34Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14553,7 +14666,7 @@
               "originalPosition": 96,
               "body": "OK, I've updated the PR to reflect this approach.  Please review.",
               "createdAt": "2020-06-27T22:31:06Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14573,7 +14686,7 @@
               "originalPosition": 96,
               "body": "I would say that they are key value pairs.  If the definition of a value consists of a list (i.e. ipv4hints, ipv6hints, alpn) the list elements are separated by a unescaped \",\".  To add a literal comma to an element in a list, the comma must be escaped.   At the moment you have everything defined to be a list including the generic form which clearly is not a list.",
               "createdAt": "2020-06-29T22:21:50Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14593,7 +14706,7 @@
               "originalPosition": 96,
               "body": "OK, I've changed the text to reflect this idea.",
               "createdAt": "2020-07-01T01:23:51Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14613,7 +14726,7 @@
               "originalPosition": 37,
               "body": "s/splitting on commas/splitting on unescaped commas/",
               "createdAt": "2020-07-01T01:39:35Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14633,7 +14746,7 @@
               "originalPosition": 114,
               "body": "It would be useful to never have to apply escape processing to port so append.  \"No escape processing should be applied to the port value.\"",
               "createdAt": "2020-07-01T01:43:07Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14653,7 +14766,7 @@
               "originalPosition": 123,
               "body": "Similarly disallow escape processing for ipv4hints and ipv6hints.",
               "createdAt": "2020-07-01T01:44:23Z",
-              "updatedAt": "2020-07-01T14:28:02Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14673,7 +14786,7 @@
               "originalPosition": 123,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:18Z",
-              "updatedAt": "2020-07-01T14:28:18Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14693,7 +14806,7 @@
               "originalPosition": 114,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:20Z",
-              "updatedAt": "2020-07-01T14:28:20Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         },
@@ -14713,7 +14826,7 @@
               "originalPosition": 37,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:35Z",
-              "updatedAt": "2020-07-01T14:28:36Z"
+              "updatedAt": "2020-07-02T02:04:55Z"
             }
           ]
         }
@@ -14765,13 +14878,13 @@
       "labels": [],
       "body": "Fixes #166",
       "createdAt": "2020-07-01T02:46:45Z",
-      "updatedAt": "2020-07-01T16:00:34Z",
+      "updatedAt": "2020-07-03T02:03:17Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-mandatory",
-      "headRefOid": "83f89c4d4854cf19bf419fbe79df506dc4ba3543",
+      "headRefOid": "8a237bc05213d139c538af4eb02952ad0d1fabf1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14794,7 +14907,7 @@
               "originalPosition": 19,
               "body": "Overriding or adding to the default set?  The later seems more usable?",
               "createdAt": "2020-07-01T02:53:56Z",
-              "updatedAt": "2020-07-01T02:53:56Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14814,7 +14927,7 @@
               "originalPosition": 18,
               "body": "Is there a reason to switch between the words \"essential\" and \"mandatory\"?  Using both is somewhat distracting.",
               "createdAt": "2020-07-01T02:56:02Z",
-              "updatedAt": "2020-07-01T02:56:02Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14834,7 +14947,7 @@
               "originalPosition": 71,
               "body": "Should explicitly state that if the set of compatible ServiceForm HTTPS RRs is empty (such as due to all requiring a mandatory key not supported) that clients MUST NOT apply the HSTS-like behavior?  (It's implicit here, but may be worth calling out outright.)",
               "createdAt": "2020-07-01T03:01:29Z",
-              "updatedAt": "2020-07-01T03:01:29Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14854,7 +14967,7 @@
               "originalPosition": 94,
               "body": "Did we want to give it ID 0 ?  (I liked the idea of having it first.)  I guess we can't make it 1 because we don't want to move alpn? ",
               "createdAt": "2020-07-01T03:02:46Z",
-              "updatedAt": "2020-07-01T03:02:46Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14874,7 +14987,7 @@
               "originalPosition": 23,
               "body": "I'd add a note here that if no ServiceForm RRs in the RRset are compatible then the client must treat the RRset as empty.",
               "createdAt": "2020-07-01T03:04:06Z",
-              "updatedAt": "2020-07-01T03:04:06Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14894,7 +15007,7 @@
               "originalPosition": 18,
               "body": "I\u2019d prefer to stick with \u201cmandatory\u201d and \u201cdefault mandatory set\u201d.  Agreed that the mix is a bit confusing. ",
               "createdAt": "2020-07-01T03:26:05Z",
-              "updatedAt": "2020-07-01T03:26:06Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14914,7 +15027,7 @@
               "originalPosition": 94,
               "body": "I\u2019d rather us not move alpn if that\u2019s okay :)\r\n\r\nAny reason not to give this 0? It is a meta-key, so making it 0 seems elegant. ",
               "createdAt": "2020-07-01T03:27:24Z",
-              "updatedAt": "2020-07-01T03:27:25Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14934,7 +15047,7 @@
               "originalPosition": 94,
               "body": "We'd previously discussed leaving 0 unassigned so that APIs could use it to mean something like \"null\".  If we don't think that's actually useful then I'm OK with making this 0.\r\n\r\nEDIT: I think the use case would be for a function that parses a key name and returns the uint16 code.  In some programming languages, it might be convenient to be able to return 0 if the name couldn't be parsed.  Naturally, there are also many other possible solutions.",
               "createdAt": "2020-07-01T04:11:03Z",
-              "updatedAt": "2020-07-01T16:00:34Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14954,7 +15067,7 @@
               "originalPosition": 18,
               "body": "I chose this wording because \"mandatory\", in my view, is extremely confusing: \"mandatory\" sounds like domain owners are required to publish or use the \"mandatory\" keys, and clients are expected to enforce that they are present (neither of which is true).  These keys aren't \"mandatory\"; they're \"mandatory-to-understand-if-present\".  \"Non-ignorable\".\r\n\r\nIf you can think of a clearer way to express this I would appreciate a suggestion!",
               "createdAt": "2020-07-01T04:14:03Z",
-              "updatedAt": "2020-07-01T04:14:03Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         },
@@ -14974,7 +15087,147 @@
               "originalPosition": 19,
               "body": "Overriding seems more powerful, since it allows making default-essential keys optional.  Given that this feature should be very rare, I figured usability was not too important.\r\n\r\nThen again, maybe clients have to have an understanding of all the default-essential keys for a scheme anyway, so I guess we can just make it additive.",
               "createdAt": "2020-07-01T04:15:35Z",
-              "updatedAt": "2020-07-01T04:15:35Z"
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzExOTk0",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:39:32Z",
+          "updatedAt": "2020-07-02T02:39:33Z",
+          "comments": [
+            {
+              "originalPosition": 19,
+              "body": "Changed: I made it additional instead.",
+              "createdAt": "2020-07-02T02:39:33Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzEyMTIy",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:39:58Z",
+          "updatedAt": "2020-07-02T02:39:59Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "I changed this to \"mandatory\"/\"automatically mandatory\".",
+              "createdAt": "2020-07-02T02:39:58Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzEyMTcy",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:40:08Z",
+          "updatedAt": "2020-07-02T02:40:08Z",
+          "comments": [
+            {
+              "originalPosition": 71,
+              "body": "Done",
+              "createdAt": "2020-07-02T02:40:08Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzEyNDQ4",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:41:04Z",
+          "updatedAt": "2020-07-02T02:41:04Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "I changed \"mandatory\" to ID 0 and made key65535 (a.k.a. -1) explicitly reserved as \"invalid key\".",
+              "createdAt": "2020-07-02T02:41:04Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzEyNjM3",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:41:45Z",
+          "updatedAt": "2020-07-02T02:41:45Z",
+          "comments": [
+            {
+              "originalPosition": 23,
+              "body": "I think that is already mandated by each section on client behavior, but I added a non-normative note to this effect.",
+              "createdAt": "2020-07-02T02:41:45Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzE1MTk4",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:50:21Z",
+          "updatedAt": "2020-07-02T02:50:21Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "Are \"automatically mandatory\" ones allowed to appear?  Is this \"MUST NOT appear more than once\" needed as a contraint for Presentation Format?\r\n(May \"automatically mandatory\" entries appear in the wire format list?)",
+              "createdAt": "2020-07-02T02:50:21Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQxMzE1NTcw",
+          "commit": {
+            "abbreviatedOid": "44fc195"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-02T02:51:35Z",
+          "updatedAt": "2020-07-02T02:51:36Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Perhaps reframe as:\r\n\r\n\"This SvcParamKey is always automatically mandatory.  Automatically mandatory entries MUST NOT appear in the value list.\"\r\n\r\n(Unless we want to allow them to appear as doing so is idempotent?)",
+              "createdAt": "2020-07-02T02:51:36Z",
+              "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
         }
