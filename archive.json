@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-03T02:03:50.646061+00:00",
+  "timestamp": "2020-07-06T15:58:54.503033+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -1213,13 +1213,15 @@
       "state": "OPEN",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [
         "editorial"
       ],
       "body": "Some of the CamelCase names could be improved.  For example, SvcFieldPriority is now used in AliasForm, so maybe it should just be SvcPriority or SvcIndex.",
       "createdAt": "2019-11-18T11:11:46Z",
-      "updatedAt": "2020-06-22T21:06:57Z",
+      "updatedAt": "2020-07-06T15:28:21Z",
       "closedAt": null,
       "comments": [
         {
@@ -2922,7 +2924,7 @@
       "id": "MDU6SXNzdWU2Mzc0NDc4NzA=",
       "title": "Consider a way to indicate some keys as \"mandatory\"",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/166",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [
@@ -2933,8 +2935,8 @@
       ],
       "body": "@enygren has proposed identifying a key range as \"mandatory\".  A client encountering an unrecognized \"mandatory\" key would discard the entire RR.\r\n\r\nThe current draft already relies on mandatory understanding for the \"port\" and \"alpn\" keys.  Without a mandatory range, keys of this kind could not be defined in a future draft.\r\n\r\nPR #164 is an example of something that might make sense as a followup RFC, but currently can't be because of the lack of such a range.\r\n\r\nPreviously, this seemed somewhat artificial to me, but with the new partitioned key ranges it doesn't seem so strange.  Perhaps we could assign this meaning to the new 1-255 \"Standards Action\" range.\r\n\r\nEDIT: Alternatively, this could be its own SvcParamKey, e.g. `mandatory=port,alpn`.\r\nEDIT2: Using 1-255 seems like a very small range, but if we ever get close to running out, we can simply define a `mandatory` SvcParamKey in that range, and use it to extend the behavior indefinitely.  So if we choose a range, it can be small.",
       "createdAt": "2020-06-12T02:56:58Z",
-      "updatedAt": "2020-07-01T02:49:26Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-03T02:54:46Z",
+      "closedAt": "2020-07-03T02:54:46Z",
       "comments": [
         {
           "author": "MikeBishop",
@@ -3537,7 +3539,7 @@
       "labels": [],
       "body": "This is of no lasting value and it only represents a marginal gain in space for a non-trivial gain in complexity.  Having an ALPN field in every HTTPS record just isn't that many bytes (2+2+3=7 for just \"h2\", 2+2+3+9=16 for \"h2,http/1.1\").\r\n\r\nI've raised this a couple of times in the past, but I never received a satisfactory response.",
       "createdAt": "2020-06-23T08:39:10Z",
-      "updatedAt": "2020-06-24T03:02:41Z",
+      "updatedAt": "2020-07-06T04:00:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -3560,6 +3562,13 @@
           "body": "The `no-default-alpn` business is the result of a Very Long Debate that I would prefer not to reopen, but it's not something anyone is particularly happy with.  Currently, getting rid of it would result in records being unusable in the default state.  To fix this, we would have to give `alpn` a default value of `http/1.1` (for the HTTPS RR) if the key is absent.\r\n\r\nIn the design you're proposing, `alpn=h2` means that you dropped support for HTTP/1.1-only clients.  (I believe even Chrome is sometimes HTTP/1.1-only, e.g. for WebSockets).  That strikes me as more likely to result in swearing sysadmins than the current design, and same for the `alpn=h3` case.\r\n\r\nTo put it another way, I think there are likely to be many orders of magnitude more zone owners configuring these RRs than software developers implementing them, so we should prioritize the ease of (working) configuration over the ease of implementation.",
           "createdAt": "2020-06-24T03:02:41Z",
           "updatedAt": "2020-06-24T03:02:41Z"
+        },
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Would it be helpful to adjust the name of this parameter to make the effect more clear? For example, rather than `no-default-alpn`, you could call it `strict-alpn`, `restricted-alpn`, or something similar.\n\nMaking claims about what the default ALPN is might be causing some of the annoyance here. Instead, if we think of the list of ALPN values in the record as purely additive from the client\u2019s perspective (always just a hint to add capability and never restrict), this key becomes a way to disable \u2018additive\u2019 mode and tell clients that the list is actually a hint of the only ALPNs that are supported. ",
+          "createdAt": "2020-07-06T04:00:43Z",
+          "updatedAt": "2020-07-06T04:00:43Z"
         }
       ]
     },
@@ -13299,13 +13308,13 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #81",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-06-22T20:37:16Z",
+      "updatedAt": "2020-07-06T15:58:33Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "dc68db9bef708d22bb1ebd3bc6df40ca44c30d6c",
+      "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-names",
-      "headRefOid": "d3f9387e47c4d255d985866a24b9bd0f2cabc5a7",
+      "headRefOid": "8b5fa9acee8a3de6ff20a32743164ca9aeee36f1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -13492,7 +13501,7 @@
       "labels": [],
       "body": "Fixes #100 \r\nWill want working group discussion before merging.\r\n(End resolution may be to reject this.)",
       "createdAt": "2020-06-11T03:28:59Z",
-      "updatedAt": "2020-06-18T02:56:29Z",
+      "updatedAt": "2020-07-06T15:09:48Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
@@ -13615,6 +13624,13 @@
           "body": "Ah okay, I think I misunderstood you. Yeah, if the expectation is that alias form precludes disabling the upgrade, #156 is consistent with all this.\r\n\r\nThough I still maintain that, as it's 2020, this is silly. :-)",
           "createdAt": "2020-06-18T02:56:29Z",
           "updatedAt": "2020-06-18T02:56:29Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Now that we have \"mandatory\" (#166), I think we should postpone this design to a separate document.",
+          "createdAt": "2020-07-06T15:09:48Z",
+          "updatedAt": "2020-07-06T15:09:48Z"
         }
       ],
       "reviews": [
@@ -14871,24 +14887,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDQyNDA2MzE5",
       "title": "Define a \"mandatory\" SvcParamKey",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/205",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes #166",
       "createdAt": "2020-07-01T02:46:45Z",
-      "updatedAt": "2020-07-03T02:03:17Z",
+      "updatedAt": "2020-07-03T02:54:46Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-mandatory",
       "headRefOid": "8a237bc05213d139c538af4eb02952ad0d1fabf1",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-03T02:54:46Z",
+      "mergedAt": "2020-07-03T02:54:46Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40"
+      },
       "comments": [],
       "reviews": [
         {
@@ -15230,6 +15248,59 @@
               "updatedAt": "2020-07-03T02:03:17Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQyMTA2MzYw",
+          "commit": {
+            "abbreviatedOid": "8a237bc"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-03T02:05:24Z",
+          "updatedAt": "2020-07-03T02:05:24Z",
+          "comments": [
+            {
+              "originalPosition": 31,
+              "body": "> Are \"automatically mandatory\" ones allowed to appear?\r\n\r\nI updated the text to make this a \"SHOULD NOT\".\r\n\r\n> Is this \"MUST NOT appear more than once\" needed as a contraint for Presentation Format?\r\n\r\nNo, but there's no use in having duplicates, and it's easy for the zone file parser to detect.",
+              "createdAt": "2020-07-03T02:05:24Z",
+              "updatedAt": "2020-07-03T02:05:24Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQyMTA2Njg4",
+          "commit": {
+            "abbreviatedOid": "8a237bc"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-03T02:06:51Z",
+          "updatedAt": "2020-07-03T02:06:51Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "I don't want to make this \"MUST NOT\", because zone file parsers can't detect it (they are not scheme-aware), and I would like to avoid introducing syntax errors that are caught by clients but not by the zone file parser.",
+              "createdAt": "2020-07-03T02:06:51Z",
+              "updatedAt": "2020-07-03T02:06:51Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQyMTE3OTEw",
+          "commit": {
+            "abbreviatedOid": "8a237bc"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-03T02:54:39Z",
+          "updatedAt": "2020-07-03T02:54:39Z",
+          "comments": []
         }
       ]
     }
