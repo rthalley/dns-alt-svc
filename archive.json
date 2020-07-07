@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-06T15:58:54.503033+00:00",
+  "timestamp": "2020-07-07T22:12:55.154607+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -1221,7 +1221,7 @@
       ],
       "body": "Some of the CamelCase names could be improved.  For example, SvcFieldPriority is now used in AliasForm, so maybe it should just be SvcPriority or SvcIndex.",
       "createdAt": "2019-11-18T11:11:46Z",
-      "updatedAt": "2020-07-06T15:28:21Z",
+      "updatedAt": "2020-07-07T01:35:13Z",
       "closedAt": null,
       "comments": [
         {
@@ -1307,6 +1307,20 @@
           "body": "Fair!",
           "createdAt": "2020-06-22T21:06:57Z",
           "updatedAt": "2020-06-22T21:06:57Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "OK, I updated PR #160 to match the names discussed here.  Please review.",
+          "createdAt": "2020-07-06T17:56:01Z",
+          "updatedAt": "2020-07-06T17:56:01Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Okay, I went back through this and everything looks good Ben. ",
+          "createdAt": "2020-07-07T01:35:13Z",
+          "updatedAt": "2020-07-07T01:35:13Z"
         }
       ]
     },
@@ -3315,7 +3329,7 @@
       "labels": [],
       "body": "The definition of values allows for quoting, but the ABNF doesn't capture that.\r\n\r\n```\r\n   escaped-char  = \"\\\" (VCHAR / WSP)\r\n```\r\n\r\nThis implies that \"\\3\" is valid, where it is not.  Capturing this is not so difficult.\r\n\r\n```\r\n   basic-visible = %x21 / %x23-27 / %x2A-3A / %x3C-5B / %x5D-7E\r\n   unescaped = %x21 / %x23-27 / %x2A-2F / %x3C-5B / %x5D-7E\r\n   escaped-number = (%x30-31 2DIGIT) / (%x32 (%x30-34 DIGIT) / (%x35 %x30-35))\r\n   escaped-char  = \"\\\" (unescaped / WSP / escaped-number)\r\n```",
       "createdAt": "2020-06-23T07:08:33Z",
-      "updatedAt": "2020-06-28T17:11:24Z",
+      "updatedAt": "2020-07-07T20:41:59Z",
       "closedAt": null,
       "comments": [
         {
@@ -3338,6 +3352,20 @@
           "body": "I put a copy of the (updated) extracted ABNF in https://gist.github.com/moonshiner/3aa994227226c9e5b33dc808a8937574\r\n\r\nThis does run through 'bap' w/out errors. \r\n",
           "createdAt": "2020-06-24T15:35:53Z",
           "updatedAt": "2020-06-24T15:35:53Z"
+        },
+        {
+          "author": "moonshiner",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "https://github.com/MikeBishop/dns-alt-svc/pull/160 updates the ABNF slightly.\r\n\r\nAlso, we have \"key\" and \"display-key\" but currently only use \"display-key\"",
+          "createdAt": "2020-07-07T01:26:10Z",
+          "updatedAt": "2020-07-07T01:26:10Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "For this issue, the relevant PR is #202.  PR #160 also makes some colliding changes, but it's not directly relevant to this issue.  If one of those PRs is approved, I'll merge it and resolve the collisions in the other PRs.",
+          "createdAt": "2020-07-07T20:41:58Z",
+          "updatedAt": "2020-07-07T20:41:58Z"
         }
       ]
     },
@@ -3703,6 +3731,22 @@
           "updatedAt": "2020-06-29T02:07:50Z"
         }
       ]
+    },
+    {
+      "number": 206,
+      "id": "MDU6SXNzdWU2NTE5NDI2MjI=",
+      "title": "The target of a HTTPS/SVCB record SHOULD NOT be below a DNAME",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/206",
+      "state": "OPEN",
+      "author": "marka63",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "While DNAMEs if present should be followed, the target of a HTTPS/SVCB records should not be below a DNAME.  All a DNAME does is introduce additional processing and records in the responses for no benefit.",
+      "createdAt": "2020-07-07T02:29:04Z",
+      "updatedAt": "2020-07-07T02:29:04Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -13299,22 +13343,22 @@
     {
       "number": 160,
       "id": "MDExOlB1bGxSZXF1ZXN0NDI1NzAxNDEy",
-      "title": "Proposal: Convert CamelCase terms to common terms",
+      "title": "Adjust CamelCase names",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/160",
       "state": "OPEN",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
-      "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #81",
+      "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #82",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-07-06T15:58:33Z",
+      "updatedAt": "2020-07-07T03:27:48Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-names",
-      "headRefOid": "8b5fa9acee8a3de6ff20a32743164ca9aeee36f1",
+      "headRefOid": "cc81da30dd5af4d264c9c847ecb31026cdfcda31",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -13340,6 +13384,13 @@
           "body": "I agree with @enygren that the more common names seem a bit too generic, and liable for confusion when referenced out of context. I'd prefer to keep with the existing style.",
           "createdAt": "2020-06-22T20:37:16Z",
           "updatedAt": "2020-06-22T20:37:16Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I've changed this PR to match the names discussed in #82, so the initial description comment is no longer accurate.",
+          "createdAt": "2020-07-07T03:27:48Z",
+          "updatedAt": "2020-07-07T03:27:48Z"
         }
       ],
       "reviews": []
@@ -15303,6 +15354,32 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 207,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ1NzE4MTQy",
+      "title": "Recommend against DNAME-after-SVCB",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/207",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #206",
+      "createdAt": "2020-07-07T22:12:36Z",
+      "updatedAt": "2020-07-07T22:12:36Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-dname",
+      "headRefOid": "2f9dd7d2084e60313e36dd3b068964832074af68",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
