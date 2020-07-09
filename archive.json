@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-07T22:12:55.154607+00:00",
+  "timestamp": "2020-07-09T20:18:25.982668+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -13972,13 +13972,13 @@
       "labels": [],
       "body": "Editorial attempt to address feedback from @moonshiner by clarifying the HTTPS record definition.",
       "createdAt": "2020-06-18T02:31:55Z",
-      "updatedAt": "2020-06-22T18:41:04Z",
+      "updatedAt": "2020-07-09T20:18:13Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c73b8e7c89ca2c9e5f7111e71bf1a06245af86d3",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-clarify-https-rr",
-      "headRefOid": "5a832150e859165c543064a5a6b3029f3729a135",
+      "headRefOid": "5d0beaac705a03c7117dc9afb797fea935f9d569",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14009,9 +14009,22 @@
               "originalPosition": 9,
               "body": "We defined the term \"SVCB-compatible\" for this purpose in the terminology section.  I'd prefer to maintain consistency across the document if possible, e.g.\r\n```suggestion\r\nOther SVCB-compatible resource record types\r\n```",
               "createdAt": "2020-06-22T18:40:58Z",
-              "updatedAt": "2020-06-22T18:41:04Z"
+              "updatedAt": "2020-07-09T20:17:52Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ1OTM4NTY3",
+          "commit": {
+            "abbreviatedOid": "5d0beaa"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-09T20:18:13Z",
+          "updatedAt": "2020-07-09T20:18:13Z",
+          "comments": []
         }
       ]
     },
@@ -15367,7 +15380,7 @@
       "labels": [],
       "body": "Fixes #206",
       "createdAt": "2020-07-07T22:12:36Z",
-      "updatedAt": "2020-07-07T22:12:36Z",
+      "updatedAt": "2020-07-07T22:52:42Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
@@ -15378,7 +15391,22 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@marka63, does this work?",
+          "createdAt": "2020-07-07T22:12:58Z",
+          "updatedAt": "2020-07-07T22:12:58Z"
+        },
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "yes, that should be fine",
+          "createdAt": "2020-07-07T22:52:42Z",
+          "updatedAt": "2020-07-07T22:52:42Z"
+        }
+      ],
       "reviews": []
     }
   ]
