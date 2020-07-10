@@ -243,8 +243,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    The goal of the SVCB RR is to allow clients to resolve a single
    additional DNS RR in a way that:
 
-   *  Provides endpoints that are authoritative for the service, along
-      with parameters associated with each of these endpoints.
+   *  Provides alternative endpoints that are authoritative for the
+      service, along with parameters associated with each of these
+      endpoints.
 
    *  Does not assume that all alternative endpoints have the same
       parameters or capabilities, or are even operated by the same
@@ -272,7 +273,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
       implementing support for SRV records, as well as due to a
       limitation that a DNS name can not have both CNAME and NS RRs (as
       is the case for zone apex names)
-
 
 
 
@@ -324,7 +324,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    When in the ServiceForm, the SvcFieldValue of the SVCB RR provides an
    extensible data model for describing alternative endpoints that are
    authoritative for the origin, including parameters associated with
-   each of these endpoints.
+   each of these alternative endpoints.
 
 
 
@@ -363,7 +363,8 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
       number implied by the scheme or specified in the URI.
 
    *  An "alternative endpoint" is a hostname, port number, and other
-      associated instructions to the client on how to reach the service.
+      associated instructions to the client on how to reach an instance
+      of service.
 
    Additional DNS terminology intends to be consistent with [DNSTerm].
 
@@ -385,7 +386,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    The algorithm for resolving SVCB records and associated address
    records is specified in Section 3.
-
 
 
 
@@ -697,19 +697,19 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 3.  Client behavior
 
-   An SVCB-aware client resolves a service with hostname $HOST by
-   attempting to determine the preferred SvcFieldValue and IP addresses
-   for its service, using the following procedure:
+   A SVCB-aware client resolves a service with hostname $HOST by
+   attempting to determine endpoint (the preferred SvcFieldValue and IP
+   addresses for its service), using the following procedure:
 
    1.  Let $SVCB_QNAME be $HOST, plus appropriate prefixes for the
-       scheme (see Section 2.3).
+       scheme (see Section 2.3).  Let $HOST_QNAME be $HOST.
 
-   2.  Issue parallel AAAA/A queries for $HOST and a SVCB query for
-       $SVCB_QNAME.  The answers for these may or may not include CNAME
-       pointers before reaching one or more of these records.
+   2.  Issue parallel AAAA/A queries for $HOST_QNAME and a SVCB query
+       for $SVCB_QNAME.  The answers for these may or may not include
+       CNAME pointers before reaching one or more of these records.
 
    3.  If a SVCB record of AliasForm SvcRecordType is returned for
-       $SVCB_QNAME, clients MUST set $HOST and $SVCB_QNAME to
+       $SVCB_QNAME, clients MUST set $HOST_QNAME and $SVCB_QNAME to
        SvcDomainName (without additional prefixes) and loop back to step
        2, subject to chain length limits and loop detection heuristics
        (see Section 3.1).
@@ -737,8 +737,8 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
        available.  These are the preferred SvcFieldValue and IP
        addresses.  If the connection fails, the client MAY try to
        connect using values from a lower-priority record.  If none of
-       the options succeed, the client SHOULD connect to the authority
-       address directly.
+       the options succeed, the client SHOULD connect to $HOST_QNAME
+       directly.  If that fails, the client SHOULD fall back to $HOST.
 
    5.  If a SVCB record for $SVCB_QNAME does not exist, the received
        AAAA and/or A records are the preferred IP addresses and there is
