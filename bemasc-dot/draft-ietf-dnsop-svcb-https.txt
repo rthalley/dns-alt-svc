@@ -688,6 +688,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 2.7.  Special handling of "."
 
+   If SvcDomainName has the value "." (represented in the wire format as
+   a zero-length label), special rules apply.
+
 2.7.1.  AliasForm
 
    For AliasForm SVCB RRs, a SvcDomainName of "." indicates that the
@@ -697,19 +700,18 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 2.7.2.  ServiceForm
 
-   For ServiceForm SVCB RRs, if SvcDomainName has the value "."
-   (represented in the wire format as a zero-length label), then the
-   owner name of this record MUST be used as the effective
+   For ServiceForm SVCB RRs, if SvcDomainName has the value ".", then
+   the owner name of this record MUST be used as the effective
    SvcDomainName.
 
    For example, in the following example "svc2.example.net" is the
    effective SvcDomainName:
 
-   www.example.com.  7200  IN HTTPS 0 svc.example.net.
-   svc.example.net.  7200  IN CNAME    svc2.example.net.
+   example.com.      7200  IN HTTPS 0 svc.example.net.
+   svc.example.net.  7200  IN CNAME svc2.example.net.
    svc2.example.net. 7200  IN HTTPS 1 . port=8002 echconfig="..."
-   svc2.example.net. 300   IN A        192.0.2.2
-   svc2.example.net. 300   IN AAAA     2001:db8::2
+   svc2.example.net. 300   IN A     192.0.2.2
+   svc2.example.net. 300   IN AAAA  2001:db8::2
 
 3.  Client behavior
 
@@ -720,8 +722,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    1.  Issue parallel AAAA/A and SVCB queries for the name HOST.  The
        answers for these may or may not include CNAME pointers before
        reaching one or more of these records.
-
-
 
 
 
