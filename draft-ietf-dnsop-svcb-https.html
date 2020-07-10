@@ -1129,18 +1129,24 @@ available there.  The authors (gratefully) accept pull requests.<a href="#sectio
             <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
 <ul class="compact toc ulEmpty">
 <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-new-registry-for-service-pa" class="xref">New registry for Service Parameters</a><a href="#section-toc.1-1.12.2.1.1" class="pilcrow">¶</a></p>
-<ul class="compact toc ulEmpty">
-<li class="compact toc ulEmpty" id="section-toc.1-1.12.2.1.2.1">
-                    <p id="section-toc.1-1.12.2.1.2.1.1"><a href="#section-12.1.1" class="xref">12.1.1</a>.  <a href="#name-procedure" class="xref">Procedure</a><a href="#section-toc.1-1.12.2.1.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-svcb-rrtype" class="xref">SVCB RRType</a><a href="#section-toc.1-1.12.2.1.1" class="pilcrow">¶</a></p>
 </li>
-                  <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.1.2.2">
-                    <p id="section-toc.1-1.12.2.1.2.2.1"><a href="#section-12.1.2" class="xref">12.1.2</a>.  <a href="#name-initial-contents" class="xref">Initial contents</a><a href="#section-toc.1-1.12.2.1.2.2.1" class="pilcrow">¶</a></p>
+              <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.2">
+                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-https-rrtype" class="xref">HTTPS RRType</a><a href="#section-toc.1-1.12.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.3">
+                <p id="section-toc.1-1.12.2.3.1"><a href="#section-12.3" class="xref">12.3</a>.  <a href="#name-new-registry-for-service-pa" class="xref">New registry for Service Parameters</a><a href="#section-toc.1-1.12.2.3.1" class="pilcrow">¶</a></p>
+<ul class="compact toc ulEmpty">
+<li class="compact toc ulEmpty" id="section-toc.1-1.12.2.3.2.1">
+                    <p id="section-toc.1-1.12.2.3.2.1.1"><a href="#section-12.3.1" class="xref">12.3.1</a>.  <a href="#name-procedure" class="xref">Procedure</a><a href="#section-toc.1-1.12.2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.3.2.2">
+                    <p id="section-toc.1-1.12.2.3.2.2.1"><a href="#section-12.3.2" class="xref">12.3.2</a>.  <a href="#name-initial-contents" class="xref">Initial contents</a><a href="#section-toc.1-1.12.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-registry-updates" class="xref">Registry updates</a><a href="#section-toc.1-1.12.2.2.1" class="pilcrow">¶</a></p>
+              <li class="compact toc ulEmpty" id="section-toc.1-1.12.2.4">
+                <p id="section-toc.1-1.12.2.4.1"><a href="#section-12.4" class="xref">12.4</a>.  <a href="#name-registry-updates" class="xref">Registry updates</a><a href="#section-toc.1-1.12.2.4.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1412,7 +1418,7 @@ The SvcFieldValue is empty for the AliasForm.<a href="#section-2.1-3" class="pil
           </h4>
 <p id="section-2.1.1-1">In ServiceForm, the SvcFieldValue consists of zero or more elements separated
 by whitespace.  Each element represents a key=value pair.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1-2">Keys are IANA-registered SvcParamKeys (<a href="#svcparamregistry" class="xref">Section 12.1</a>)
+<p id="section-2.1.1-2">Keys are IANA-registered SvcParamKeys (<a href="#svcparamregistry" class="xref">Section 12.3</a>)
 with both a case-insensitive string representation and
 a numeric representation in the range 0-65535.
 Registered key names should only contain characters from the ranges
@@ -1492,7 +1498,7 @@ and DNS message sizes).<a href="#section-2.2-2.3" class="pilcrow">¶</a>
 SvcParamKey=SvcParamValue pairs, represented as:<a href="#section-2.2-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-5.1">a 2 octet field containing the SvcParamKey as an
-integer in network byte order.  (See <a href="#iana-keys" class="xref">Section 12.1.2</a> for the defined values.)<a href="#section-2.2-5.1" class="pilcrow">¶</a>
+integer in network byte order.  (See <a href="#iana-keys" class="xref">Section 12.3.2</a> for the defined values.)<a href="#section-2.2-5.1" class="pilcrow">¶</a>
 </li>
           <li class="normal" id="section-2.2-5.2">a 2 octet field containing the length of the SvcParamValue
 as an integer between 0 and 65535 in network byte order
@@ -2548,35 +2554,63 @@ detected.<a href="#section-11-3" class="pilcrow">¶</a></p>
       <h2 id="name-iana-considerations">
 <a href="#section-12" class="section-number selfRef">12. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<div id="svcparamregistry">
+<div id="svcb-rrtype">
 <section id="section-12.1">
-        <h3 id="name-new-registry-for-service-pa">
-<a href="#section-12.1" class="section-number selfRef">12.1. </a><a href="#name-new-registry-for-service-pa" class="section-name selfRef">New registry for Service Parameters</a>
+        <h3 id="name-svcb-rrtype">
+<a href="#section-12.1" class="section-number selfRef">12.1. </a><a href="#name-svcb-rrtype" class="section-name selfRef">SVCB RRType</a>
         </h3>
-<p id="section-12.1-1">The "Service Binding (SVCB) Parameter Registry" defines the namespace
+<p id="section-12.1-1">This document defines a new DNS RR type, SVCB, whose value 64 has
+been allocated by IANA from the "Resource Record (RR) TYPEs"
+subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-12.1-1" class="pilcrow">¶</a></p>
+<p id="section-12.1-2">Type: SVCB<a href="#section-12.1-2" class="pilcrow">¶</a></p>
+<p id="section-12.1-3">Value: 64<a href="#section-12.1-3" class="pilcrow">¶</a></p>
+<p id="section-12.1-4">Meaning: General Purpose Service Endpoints<a href="#section-12.1-4" class="pilcrow">¶</a></p>
+<p id="section-12.1-5">Reference: This document<a href="#section-12.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="https-rrtype">
+<section id="section-12.2">
+        <h3 id="name-https-rrtype">
+<a href="#section-12.2" class="section-number selfRef">12.2. </a><a href="#name-https-rrtype" class="section-name selfRef">HTTPS RRType</a>
+        </h3>
+<p id="section-12.2-1">This document defines a new DNS RR type, HTTPS, whose value 65 has
+been allocated by IANA from the "Resource Record (RR) TYPEs"
+subregistry of the "Domain Name System (DNS) Parameters" registry:<a href="#section-12.2-1" class="pilcrow">¶</a></p>
+<p id="section-12.2-2">Type: HTTPS<a href="#section-12.2-2" class="pilcrow">¶</a></p>
+<p id="section-12.2-3">Value: 65<a href="#section-12.2-3" class="pilcrow">¶</a></p>
+<p id="section-12.2-4">Meaning: HTTPS Specific Service Endpoints<a href="#section-12.2-4" class="pilcrow">¶</a></p>
+<p id="section-12.2-5">Reference: This document<a href="#section-12.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="svcparamregistry">
+<section id="section-12.3">
+        <h3 id="name-new-registry-for-service-pa">
+<a href="#section-12.3" class="section-number selfRef">12.3. </a><a href="#name-new-registry-for-service-pa" class="section-name selfRef">New registry for Service Parameters</a>
+        </h3>
+<p id="section-12.3-1">The "Service Binding (SVCB) Parameter Registry" defines the namespace
 for parameters, including string representations and numeric
 SvcParamKey values.  This registry is shared with other SVCB-compatible
-RR types, such as the HTTPS RR.<a href="#section-12.1-1" class="pilcrow">¶</a></p>
-<p id="section-12.1-2">ACTION: create and include a reference to this registry.<a href="#section-12.1-2" class="pilcrow">¶</a></p>
+RR types, such as the HTTPS RR.<a href="#section-12.3-1" class="pilcrow">¶</a></p>
+<p id="section-12.3-2">ACTION: create and include a reference to this registry.<a href="#section-12.3-2" class="pilcrow">¶</a></p>
 <div id="procedure">
-<section id="section-12.1.1">
+<section id="section-12.3.1">
           <h4 id="name-procedure">
-<a href="#section-12.1.1" class="section-number selfRef">12.1.1. </a><a href="#name-procedure" class="section-name selfRef">Procedure</a>
+<a href="#section-12.3.1" class="section-number selfRef">12.3.1. </a><a href="#name-procedure" class="section-name selfRef">Procedure</a>
           </h4>
-<p id="section-12.1.1-1">A registration MUST include the following fields:<a href="#section-12.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-12.3.1-1">A registration MUST include the following fields:<a href="#section-12.3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-12.1.1-2.1">Name: Service parameter key name<a href="#section-12.1.1-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-12.3.1-2.1">Name: Service parameter key name<a href="#section-12.3.1-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-12.1.1-2.2">SvcParamKey: Service parameter key numeric identifier (range 0-65535)<a href="#section-12.1.1-2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-12.3.1-2.2">SvcParamKey: Service parameter key numeric identifier (range 0-65535)<a href="#section-12.3.1-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-12.1.1-2.3">Meaning: a short description<a href="#section-12.1.1-2.3" class="pilcrow">¶</a>
+            <li class="normal" id="section-12.3.1-2.3">Meaning: a short description<a href="#section-12.3.1-2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="section-12.1.1-2.4">Pointer to specification text<a href="#section-12.1.1-2.4" class="pilcrow">¶</a>
+            <li class="normal" id="section-12.3.1-2.4">Pointer to specification text<a href="#section-12.3.1-2.4" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-12.1.1-3">SvcParamKey values to be added to this namespace
+<p id="section-12.3.1-3">SvcParamKey values to be added to this namespace
 have different policies (<span>[<a href="#RFC5226" class="xref">RFC5226</a>]</span>, Section 4.1)
-based on their range:<a href="#section-12.1.1-3" class="pilcrow">¶</a></p>
+based on their range:<a href="#section-12.3.1-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
             <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -2608,17 +2642,17 @@ based on their range:<a href="#section-12.1.1-3" class="pilcrow">¶</a></p>
               </tr>
             </tbody>
           </table>
-<p id="section-12.1.1-5">Apart from the initial contents, the SvcParamKey
-name MUST NOT start with "key".<a href="#section-12.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-12.3.1-5">Apart from the initial contents, the SvcParamKey
+name MUST NOT start with "key".<a href="#section-12.3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-keys">
-<section id="section-12.1.2">
+<section id="section-12.3.2">
           <h4 id="name-initial-contents">
-<a href="#section-12.1.2" class="section-number selfRef">12.1.2. </a><a href="#name-initial-contents" class="section-name selfRef">Initial contents</a>
+<a href="#section-12.3.2" class="section-number selfRef">12.3.2. </a><a href="#name-initial-contents" class="section-name selfRef">Initial contents</a>
           </h4>
-<p id="section-12.1.2-1">The "Service Binding (SVCB) Parameter Registry" shall initially
-be populated with the registrations below:<a href="#section-12.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-12.3.2-1">The "Service Binding (SVCB) Parameter Registry" shall initially
+be populated with the registrations below:<a href="#section-12.3.2-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
             <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -2686,18 +2720,18 @@ be populated with the registrations below:<a href="#section-12.1.2-1" class="pil
               </tr>
             </tbody>
           </table>
-<p id="section-12.1.2-3">TODO: do we also want to reserve a range for greasing?<a href="#section-12.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-12.3.2-3">TODO: do we also want to reserve a range for greasing?<a href="#section-12.3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="registry-updates">
-<section id="section-12.2">
+<section id="section-12.4">
         <h3 id="name-registry-updates">
-<a href="#section-12.2" class="section-number selfRef">12.2. </a><a href="#name-registry-updates" class="section-name selfRef">Registry updates</a>
+<a href="#section-12.4" class="section-number selfRef">12.4. </a><a href="#name-registry-updates" class="section-name selfRef">Registry updates</a>
         </h3>
-<p id="section-12.2-1">Per <span>[<a href="#RFC6895" class="xref">RFC6895</a>]</span>, please add the following entries to the data type
-range of the Resource Record (RR) TYPEs registry:<a href="#section-12.2-1" class="pilcrow">¶</a></p>
+<p id="section-12.4-1">Per <span>[<a href="#RFC6895" class="xref">RFC6895</a>]</span>, please add the following entries to the data type
+range of the Resource Record (RR) TYPEs registry:<a href="#section-12.4-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-3">
           <caption><a href="#table-3" class="selfRef">Table 3</a></caption>
 <thead>
@@ -2720,8 +2754,8 @@ range of the Resource Record (RR) TYPEs registry:<a href="#section-12.2-1" class
             </tr>
           </tbody>
         </table>
-<p id="section-12.2-3">Per <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>, please add the following entry to the DNS Underscore
-Global Scoped Entry Registry:<a href="#section-12.2-3" class="pilcrow">¶</a></p>
+<p id="section-12.4-3">Per <span>[<a href="#Attrleaf" class="xref">Attrleaf</a>]</span>, please add the following entry to the DNS Underscore
+Global Scoped Entry Registry:<a href="#section-12.4-3" class="pilcrow">¶</a></p>
 <table class="center" id="table-4">
           <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>
