@@ -932,9 +932,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    For example, suppose the client receives this SVCB RRSet for a
    protocol that uses TLS over TCP:
 
-   _1234._bar.example.com. 300 IN SVCB 1 svc1.example.net (
+   _1234._bar.example.com. 300 IN SVCB 1 svc1.example.net. (
        echconfig="111..." ipv6hint=2001:db8::1 port=1234 ... )
-                                  SVCB 2 svc2.example.net (
+                                  SVCB 2 svc2.example.net. (
        echconfig="222..." ipv6hint=2001:db8::2 port=1234 ... )
 
    If the client has an in-progress TCP connection to
@@ -978,9 +978,15 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    To avoid a delay for clients using a nonconforming recursive
    resolver, domain owners SHOULD minimize the use of AliasForm records,
    and choose SvcDomainName to be a domain for which the client will
-   have already issued address queries (see Section 3).  The simplest
-   such configuration would be a single SVCB record whose SvcDomainName
-   is the origin hostname.
+   have already issued address queries (see Section 3).  For
+   foo://foo.example.com:8080, this might look like:
+
+   ; Origin zone
+   foo.example.com.            3600 IN CNAME foosvc.example.net.
+   _8080._foo.foo.example.com. 3600 IN CNAME foosvc.example.net.
+   ; Service provider zone
+   foosvc.example.net. 3600 IN SVCB 1 . key65333=...
+   foosvc.example.net. 300  IN AAAA 2001:db8::1
 
 6.  Initial SvcParamKeys
 
@@ -994,12 +1000,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    identifiers [ALPN] and associated transport protocols supported by
    this service endpoint.
 
-   As with [AltSvc], the ALPN protocol identifier is used to identify
-   the application protocol and associated suite of protocols supported
-   by the endpoint (the "protocol suite").  Clients filter the set of
-   ALPN identifiers to match the protocol suites they support, and this
-   informs the underlying transport protocol used (such as QUIC-over-UDP
-   or TLS-over-TCP).
 
 
 
@@ -1009,6 +1009,13 @@ Schwartz, et al.         Expires 12 January 2021               [Page 18]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   As with [AltSvc], the ALPN protocol identifier is used to identify
+   the application protocol and associated suite of protocols supported
+   by the endpoint (the "protocol suite").  Clients filter the set of
+   ALPN identifiers to match the protocol suites they support, and this
+   informs the underlying transport protocol used (such as QUIC-over-UDP
+   or TLS-over-TCP).
 
    ALPNs are identified by their registered "Identification Sequence"
    (alpn-id), which is a sequence of 1-255 octets.
@@ -1046,6 +1053,19 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    that can be used with both TLS and DTLS) are not compatible with this
    SvcParamKey and MUST NOT be included in the ALPN set.
 
+
+
+
+
+
+
+
+
+Schwartz, et al.         Expires 12 January 2021               [Page 19]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
    Clients SHOULD NOT attempt connection to a service endpoint whose
    ALPN set does not contain any compatible protocol suites.  To ensure
    consistency of behavior, clients MAY reject the entire SVCB RRSet and
@@ -1056,15 +1076,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    For compatibility with clients that require default transports, zone
    operators SHOULD ensure that at least one RR in each RRSet supports
    the default transports.
-
-
-
-
-
-Schwartz, et al.         Expires 12 January 2021               [Page 19]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
 
    Clients MUST include an "application_layer_protocol_negotiation"
    extension in their ClientHello with a ProtocolNameList that includes
@@ -1103,17 +1114,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    The SvcParamKey to enable Encrypted ClientHello (ECH) is "echconfig".
    Its value is defined in Section 8.  It is applicable to most TLS-
    based protocols.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
