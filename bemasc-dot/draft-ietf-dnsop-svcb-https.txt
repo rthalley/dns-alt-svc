@@ -101,7 +101,7 @@ Table of Contents
      2.5.  SVCB records: AliasForm . . . . . . . . . . . . . . . . .  11
      2.6.  SVCB records: ServiceForm . . . . . . . . . . . . . . . .  12
        2.6.1.  SvcFieldPriority  . . . . . . . . . . . . . . . . . .  13
-     2.7.  Special handling of "." {#dot} in SvcDomainName . . . . .  13
+     2.7.  Special handling of "." in SvcDomainName  . . . . . . . .  13
        2.7.1.  AliasForm . . . . . . . . . . . . . . . . . . . . . .  13
        2.7.2.  ServiceForm . . . . . . . . . . . . . . . . . . . . .  13
    3.  Client behavior . . . . . . . . . . . . . . . . . . . . . . .  13
@@ -154,7 +154,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
      12.2.  HTTPS RRType . . . . . . . . . . . . . . . . . . . . . .  30
      12.3.  New registry for Service Parameters  . . . . . . . . . .  31
        12.3.1.  Procedure  . . . . . . . . . . . . . . . . . . . . .  31
-       12.3.2.  Initial contents . . . . . . . . . . . . . . . . . .  31
+       12.3.2.  Initial contents . . . . . . . . . . . . . . . . . .  32
      12.4.  Registry updates . . . . . . . . . . . . . . . . . . . .  32
    13. Acknowledgments and Related Proposals . . . . . . . . . . . .  33
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  33
@@ -686,7 +686,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    within a priority level to the records before using them, to ensure
    uniform load-balancing.
 
-2.7.  Special handling of "." {#dot} in SvcDomainName
+2.7.  Special handling of "." in SvcDomainName
 
    If SvcDomainName has the value "." (represented in the wire format as
    a zero-length label), special rules apply.
@@ -1643,6 +1643,13 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    recommends that clients abandon the connection attempt when such an
    attack is detected.
 
+   A hostile DNS intermediary might forge AliasForm "." records
+   (Section 2.7.1) as a way to block clients from accessing particular
+   origins.  Such an adversary could already block entire domains by
+   forging erroneous responses, but this mechanism allows them to target
+   particular protocols or ports within a domain.  Clients that might be
+   subject to such attacks SHOULD ignore AliasForm "." records.
+
 12.  IANA Considerations
 
 12.1.  SVCB RRType
@@ -1667,13 +1674,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    Type: HTTPS
 
-   Value: 65
-
-   Meaning: HTTPS Specific Service Endpoints
-
-   Reference: This document
-
-
 
 
 
@@ -1681,6 +1681,12 @@ Schwartz, et al.         Expires 12 January 2021               [Page 30]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   Value: 65
+
+   Meaning: HTTPS Specific Service Endpoints
+
+   Reference: This document
 
 12.3.  New registry for Service Parameters
 
@@ -1723,13 +1729,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
                                   Table 1
 
-   Apart from the initial contents, the SvcParamKey name MUST NOT start
-   with "key".
 
-12.3.2.  Initial contents
-
-   The "Service Binding (SVCB) Parameter Registry" shall initially be
-   populated with the registrations below:
 
 
 
@@ -1737,6 +1737,14 @@ Schwartz, et al.         Expires 12 January 2021               [Page 31]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   Apart from the initial contents, the SvcParamKey name MUST NOT start
+   with "key".
+
+12.3.2.  Initial contents
+
+   The "Service Binding (SVCB) Parameter Registry" shall initially be
+   populated with the registrations below:
 
     +=============+=================+=====================+===========+
     | SvcParamKey | NAME            | Meaning             | Reference |
@@ -1777,14 +1785,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    Per [RFC6895], please add the following entries to the data type
    range of the Resource Record (RR) TYPEs registry:
-
-
-
-
-
-
-
-
 
 
 
