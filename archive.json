@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-10T16:15:51.869378+00:00",
+  "timestamp": "2020-07-11T16:28:21.451796+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3592,7 +3592,7 @@
       "labels": [],
       "body": "This is of no lasting value and it only represents a marginal gain in space for a non-trivial gain in complexity.  Having an ALPN field in every HTTPS record just isn't that many bytes (2+2+3=7 for just \"h2\", 2+2+3+9=16 for \"h2,http/1.1\").\r\n\r\nI've raised this a couple of times in the past, but I never received a satisfactory response.",
       "createdAt": "2020-06-23T08:39:10Z",
-      "updatedAt": "2020-07-10T02:31:30Z",
+      "updatedAt": "2020-07-11T16:24:16Z",
       "closedAt": null,
       "comments": [
         {
@@ -3626,9 +3626,9 @@
         {
           "author": "enygren",
           "authorAssociation": "COLLABORATOR",
-          "body": "Calling it strict-alpn or restricted-alpn would not be compatible with the changes in #202.  Are there other names that might be less confusing?",
+          "body": "Calling it strict-alpn or restricted-alpn would not be compatible with the changes in #201 .  Are there other names that might be less confusing?",
           "createdAt": "2020-07-09T20:53:24Z",
-          "updatedAt": "2020-07-09T20:53:24Z"
+          "updatedAt": "2020-07-11T16:24:16Z"
         },
         {
           "author": "tfpauly",
@@ -3807,6 +3807,61 @@
       "updatedAt": "2020-07-07T02:29:04Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 211,
+      "id": "MDU6SXNzdWU2NTQ5MDE5Njc=",
+      "title": "Consistency for service/endpoint/origin naming",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/211",
+      "state": "CLOSED",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In #204 there is a cleanup of \"origin\" for the non-HTTPS uses but it also highlights the need for consistent terminology and a terminology section (and terminology scrub).\r\nIt seems to land on:\r\n\r\n* Service = the thing a Service owner wished to delegate.  (\"Origin\" is an HTTPS-specific instance.)\r\n* (something? Endpoint Operator?  Service Operator Endpoint?) = the entity that operates a set of endpoints.\r\n* Endpoint = the thing that gets bound to by an individual SVCB RR   (ie, a set of IPs which share a set of common configuration)\r\n\r\nFrom this, AliasForm delegates a Service to an Endpoint Operator.\r\nIf we are consistent about this, ServiceForm would be better called EndpointForm.\r\n",
+      "createdAt": "2020-07-10T16:38:29Z",
+      "updatedAt": "2020-07-10T16:44:28Z",
+      "closedAt": "2020-07-10T16:44:27Z",
+      "comments": [
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I should have finished reading #204 deeply as some of this is already covered there.",
+          "createdAt": "2020-07-10T16:44:27Z",
+          "updatedAt": "2020-07-10T16:44:27Z"
+        }
+      ]
+    },
+    {
+      "number": 213,
+      "id": "MDU6SXNzdWU2NTUwODAzMzY=",
+      "title": "Limit key name length",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/213",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Presentation format key names are not currently explicitly limited (although the IANA experts would surely reject an absurdly long name).  @marka63 has requested a name length limit.\r\n\r\nPlausible values include 255, 64, and 63.",
+      "createdAt": "2020-07-10T23:12:14Z",
+      "updatedAt": "2020-07-11T16:26:57Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Why not 63 (consistent with DNS label length limit)?  Can we put the limit in the IANA section?",
+          "createdAt": "2020-07-11T15:57:45Z",
+          "updatedAt": "2020-07-11T15:57:45Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I would want to update the ABNF so parsers can rely on the length limit.\n\nOn Sat, Jul 11, 2020, 11:57 AM Erik Nygren <notifications@github.com> wrote:\n\n> Why not 63 (consistent with DNS label length limit)? Can we put the limit\n> in the IANA section?\n>\n> \u2014\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/MikeBishop/dns-alt-svc/issues/213#issuecomment-657085607>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AABO3SOGGXALWUNGKI53PLTR3CDYJANCNFSM4OXAA4WA>\n> .\n>\n",
+          "createdAt": "2020-07-11T16:26:56Z",
+          "updatedAt": "2020-07-11T16:26:56Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -13412,13 +13467,13 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #82",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-07-07T03:27:48Z",
+      "updatedAt": "2020-07-10T22:15:08Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
+      "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-names",
-      "headRefOid": "cc81da30dd5af4d264c9c847ecb31026cdfcda31",
+      "headRefOid": "cbb704c322ab9071e5b60d63b13846547fd93798",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -13614,21 +13669,23 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDMyODE2NTEy",
       "title": "disable-https-upgrade SvcParamKey",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/164",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "future draft"
+      ],
       "body": "Fixes #100 \r\nWill want working group discussion before merging.\r\n(End resolution may be to reject this.)",
       "createdAt": "2020-06-11T03:28:59Z",
-      "updatedAt": "2020-07-06T15:09:48Z",
+      "updatedAt": "2020-07-10T17:25:01Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "c1dcfcc0fe75febd76926ed410c164f2b5137954",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-disable-https-upgrade",
       "headRefOid": "084ab4f4a9782a3c2f51f2fcde30e1e6658f44e1",
-      "closedAt": null,
+      "closedAt": "2020-07-10T17:25:01Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -13751,6 +13808,13 @@
           "body": "Now that we have \"mandatory\" (#166), I think we should postpone this design to a separate document.",
           "createdAt": "2020-07-06T15:09:48Z",
           "updatedAt": "2020-07-06T15:09:48Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Deferring to a potential future draft based on need.",
+          "createdAt": "2020-07-10T17:25:01Z",
+          "updatedAt": "2020-07-10T17:25:01Z"
         }
       ],
       "reviews": [
@@ -14194,24 +14258,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM4NTM4NTgw",
       "title": "added RRType requests in IANA Considerations",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/197",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "moonshiner",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Make specific IANA requests in the IANA Considerations section",
       "createdAt": "2020-06-23T12:30:10Z",
-      "updatedAt": "2020-07-10T03:47:23Z",
+      "updatedAt": "2020-07-10T17:06:27Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "moonshiner/dns-alt-svc",
       "headRefName": "tjw-iana-section",
       "headRefOid": "e1ab2a4e17eff50bca13aa483fb675d5b7f1f17a",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-10T17:06:27Z",
+      "mergedAt": "2020-07-10T17:06:27Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "137242b8365fc2084a930ab6008240af8bddfe36"
+      },
       "comments": [
         {
           "author": "moonshiner",
@@ -14305,24 +14371,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDM4OTQ1NzI0",
       "title": "Incorporate comments from implementer review",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/199",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "We got some tweaks from a server implementer review\r\n* Everything additional should go in Additional\r\n* Authoritatives should include DNSSEC for the in-bailiwick followup records\r\n* Harmonize #recursive-behavior with #incomplete-responses",
       "createdAt": "2020-06-24T03:58:53Z",
-      "updatedAt": "2020-07-09T21:30:31Z",
+      "updatedAt": "2020-07-11T16:27:38Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "5d00e17e45df8d39fa6b733d037c9281aaa9a06c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-implementer-review",
       "headRefOid": "3629dac5cf768b6d7285e35c7958edb0207e5841",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-11T16:27:38Z",
+      "mergedAt": "2020-07-11T16:27:38Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "23fd6011d3f47c061055d3f805a908797b9661c2"
+      },
       "comments": [],
       "reviews": [
         {
@@ -14424,6 +14492,19 @@
               "updatedAt": "2020-07-09T21:30:31Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODEzMzc5",
+          "commit": {
+            "abbreviatedOid": "3629dac"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-11T16:27:32Z",
+          "updatedAt": "2020-07-11T16:27:32Z",
+          "comments": []
         }
       ]
     },
@@ -15177,13 +15258,13 @@
       "labels": [],
       "body": "The use of \"origin\" for non-HTTP schemes, and the use of \"origin server\"\r\nto mean only the normal server, were generating confusion.  This PR\r\naligns terminology with the URI specification and limits the use of\r\n\"origin\" to HTTP.\r\n\r\nFixes #183",
       "createdAt": "2020-06-28T18:51:58Z",
-      "updatedAt": "2020-06-28T22:11:23Z",
+      "updatedAt": "2020-07-11T16:21:05Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
+      "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-origin",
-      "headRefOid": "a3f8b14c49f7720e3165bc20971ee4a8dcbab0ee",
+      "headRefOid": "9232a4f5b8dbd18f920fcea7ac7658e7f0151182",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -15195,9 +15276,255 @@
           "body": "@martinthomson Does this address your concern related to \"origin server\"?",
           "createdAt": "2020-06-28T22:11:23Z",
           "updatedAt": "2020-06-28T22:11:23Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is looking good to me, but I'll try and re-read it again later today.\r\nI think it would be good for @MikeBishop to review this one as well.",
+          "createdAt": "2020-07-11T16:20:50Z",
+          "updatedAt": "2020-07-11T16:20:50Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NTM4MjQw",
+          "commit": {
+            "abbreviatedOid": "a3f8b14"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2020-07-10T16:30:49Z",
+          "updatedAt": "2020-07-10T17:22:42Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "```suggestion\r\nto network services, such as for HTTPS URLs.  SVCB records\r\nallow a service to be provided from multiple alternative endpoints, \r\neach with associated parameters (such as transport protocol\r\n```\r\n\r\nDo we want to define \"service\" and \"endpoint\" explicitly here? Being consistent seems good, but it may even be worth adding a terminology section?  We should also scrub through to see if there are other places we should use \"endpoint\". ",
+              "createdAt": "2020-07-10T16:30:49Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 29,
+              "body": "Is this really an \"endpoint\"?  Do we want to distinguish \"endpoints\"  (eg, ServiceMode RRs) from AliasMode which aren't really endpoints?  (For that matter, should \"ServiceMode\" be renamed as \"EndpointMode\"?  That might be its own issue.)",
+              "createdAt": "2020-07-10T16:33:12Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 100,
+              "body": "We should mention for HTTPS records that this is the same as the {{!RFC6454}} origin?",
+              "createdAt": "2020-07-10T16:49:04Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 101,
+              "body": "Is \"authority address\" defined in an RFC?  It's confusing as \"address\" is too close to A/AAAA record addresses.  Perhaps \"fully qualified authority\"?",
+              "createdAt": "2020-07-10T16:53:13Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 94,
+              "body": "Should we continue to have a term for the endpoint that would be used for an authority in the absence of a SVCB record (or HTTPS Alt-Svc)?   Perhaps specify that the \"fully qualified authority\" (or whetever we call it) gets used as an implicit endpoint or \"default endpoint\"?",
+              "createdAt": "2020-07-10T16:56:02Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 37,
+              "body": "```suggestion\r\n* Provides alternative endpoints that are authoritative for the service,\r\n```",
+              "createdAt": "2020-07-10T16:57:36Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 75,
+              "body": "```suggestion\r\nparameters associated with each of these alternative endpoints.\r\n```",
+              "createdAt": "2020-07-10T16:58:58Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 104,
+              "body": "```suggestion\r\n* An \"alternative endpoint\" is a hostname, port number, and other associated\r\n  instructions to the client on how to reach an instance of service.\r\n```",
+              "createdAt": "2020-07-10T17:00:01Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 97,
+              "body": "Do we want to keep this illustrative example but reword it?  I think having an example here would help.",
+              "createdAt": "2020-07-10T17:01:05Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "Add \"service name\"?  (The hostname within the authority.)",
+              "createdAt": "2020-07-10T17:02:41Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 154,
+              "body": "```suggestion\r\nA SVCB-aware client resolves a service with hostname $HOST by attempting\r\n```",
+              "createdAt": "2020-07-10T17:03:27Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 157,
+              "body": "```suggestion\r\nto determine endpoint (the preferred SvcFieldValue and IP addresses for its service),\r\nusing the following procedure:\r\n```",
+              "createdAt": "2020-07-10T17:05:43Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 186,
+              "body": "Should it connect to the authority address or $HOST_QNAME?  The latter implies that the AliasForm SVCB record should be ignored if ServiceForm SVCB records were present and didn't work.",
+              "createdAt": "2020-07-10T17:13:38Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 186,
+              "body": "(This is an interesting question which may want to be its own issue for discussion.)",
+              "createdAt": "2020-07-10T17:14:06Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 190,
+              "body": "```suggestion\r\n5. If a SVCB record for $SVCB_QNAME does not exist, the received AAAA and/or A\r\n   records from $HOST_QNAME are the preferred IP addresses \r\n   and there is no SvcFieldValue.\r\n```",
+              "createdAt": "2020-07-10T17:15:03Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 161,
+              "body": "```suggestion\r\n1. Let $SVCB_QNAME be $HOST, plus appropriate prefixes for the scheme\r\n   (see {{svcb-names}}).  Let $HOST_QNAME be $HOST.\r\n```\r\n\r\n\r\n\r\nSeparate out $SVCB_HOST so we don't mutate $HOST in step 3?\r\n",
+              "createdAt": "2020-07-10T17:16:04Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 163,
+              "body": "```suggestion\r\n2. Issue parallel AAAA/A queries for $HOST_QNAME and a SVCB query for $SVCB_QNAME.\r\n```",
+              "createdAt": "2020-07-10T17:16:45Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 170,
+              "body": "```suggestion\r\n   clients MUST set $HOST_QNAME and $SVCB_QNAME to SvcDomainName (without\r\n```",
+              "createdAt": "2020-07-10T17:17:06Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 186,
+              "body": "```suggestion\r\n   If none of the options succeed, the client SHOULD connect to $HOST_QNAME directly.\r\n   If that fails, the client SHOULD fall back to $HOST.\r\n```\r\n(SHOULD or MAY for the final fall back to $HOST?)",
+              "createdAt": "2020-07-10T17:19:28Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            },
+            {
+              "originalPosition": 101,
+              "body": "Given how we use this, either \"default endpoint\" or \"implicit endpoint\" might be better.",
+              "createdAt": "2020-07-10T17:22:32Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NjcyNjkz",
+          "commit": {
+            "abbreviatedOid": "13d2ad1"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-10T20:08:09Z",
+          "updatedAt": "2020-07-10T20:08:09Z",
+          "comments": [
+            {
+              "originalPosition": 101,
+              "body": "How about \"authority endpoint\"?",
+              "createdAt": "2020-07-10T20:08:09Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NzA0Njkw",
+          "commit": {
+            "abbreviatedOid": "db52d3a"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-10T21:14:48Z",
+          "updatedAt": "2020-07-10T21:14:49Z",
+          "comments": [
+            {
+              "originalPosition": 101,
+              "body": "That's better.",
+              "createdAt": "2020-07-10T21:14:48Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NzA0OTg4",
+          "commit": {
+            "abbreviatedOid": "db52d3a"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-10T21:15:26Z",
+          "updatedAt": "2020-07-10T21:15:27Z",
+          "comments": [
+            {
+              "originalPosition": 94,
+              "body": "It sounds like \"authority endpoint\"?",
+              "createdAt": "2020-07-10T21:15:27Z",
+              "updatedAt": "2020-07-10T21:50:33Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NjgwNjEz",
+          "commit": {
+            "abbreviatedOid": "ed6ce1b"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "> (SHOULD or MAY for the final fall back to $HOST?)\r\n\r\nI changed this to MAY, and incorporated it for both AliasForm and ServiceForm.  This seems to simplify the logic.\r\n\r\nI also made a number of changes throughout the document for consistency with these changes.",
+          "createdAt": "2020-07-10T20:24:38Z",
+          "updatedAt": "2020-07-10T21:54:45Z",
+          "comments": [
+            {
+              "originalPosition": 97,
+              "body": "I think this is covered by the sentence above equation \"service\" and \"origin\".",
+              "createdAt": "2020-07-10T20:24:38Z",
+              "updatedAt": "2020-07-10T21:54:45Z"
+            },
+            {
+              "originalPosition": 94,
+              "body": "I think this is covered by \"authority endpoint\".  EDIT: You got there first.",
+              "createdAt": "2020-07-10T20:24:51Z",
+              "updatedAt": "2020-07-10T23:02:25Z"
+            },
+            {
+              "originalPosition": 29,
+              "body": "This is just an example, so it seems at least possible that there is an endpoint somewhere at svc.example.net to which the owner wants to delegate.\r\n\r\nI think \"EndpointMode\" or \"BindingMode\" would be an improvement, but let's not change that here.",
+              "createdAt": "2020-07-10T20:25:57Z",
+              "updatedAt": "2020-07-10T21:54:45Z"
+            },
+            {
+              "originalPosition": 100,
+              "body": "OK, done.",
+              "createdAt": "2020-07-10T20:27:03Z",
+              "updatedAt": "2020-07-10T21:54:45Z"
+            },
+            {
+              "originalPosition": 81,
+              "body": "Done",
+              "createdAt": "2020-07-10T20:29:11Z",
+              "updatedAt": "2020-07-10T21:54:45Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 205,
@@ -15667,24 +15994,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDQ3MDgxMDg1",
       "title": "Note on why priority is 16 bits",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/208",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Resolves issue #184",
       "createdAt": "2020-07-09T20:37:02Z",
-      "updatedAt": "2020-07-10T01:52:15Z",
+      "updatedAt": "2020-07-10T17:23:28Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "08a5c8ac0e37848318fa9dc4929b4ee5d85d4e75",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-why-16-bits",
       "headRefOid": "68480d8be5803ac69dfc3ba439be05f144ae9edf",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-10T17:23:28Z",
+      "mergedAt": "2020-07-10T17:23:28Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "191b811735df6aef995593444bf7d07df8d73496"
+      },
       "comments": [
         {
           "author": "enygren",
@@ -15735,13 +16064,13 @@
       "labels": [],
       "body": "Fixes #187, #188",
       "createdAt": "2020-07-09T23:26:04Z",
-      "updatedAt": "2020-07-09T23:26:04Z",
+      "updatedAt": "2020-07-10T22:18:11Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "08a5c8ac0e37848318fa9dc4929b4ee5d85d4e75",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-alias",
-      "headRefOid": "e0fab0f8e4f8c61cf46159a3598c6c7cfbb602df",
+      "headRefOid": "b72d5816bce4039bd6712199762b842f08688eaa",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -15788,6 +16117,59 @@
           "createdAt": "2020-07-10T16:14:43Z",
           "updatedAt": "2020-07-10T16:14:43Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 212,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ3Njc2MTc1",
+      "title": "Alias to \".\" means repudiation",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/212",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This change also adjusts the advice about the use of \".\".\r\n\r\nFixes #203",
+      "createdAt": "2020-07-10T23:01:27Z",
+      "updatedAt": "2020-07-11T16:14:11Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-dot",
+      "headRefOid": "ffef6628deb2fdce4ca82d3cb708dbc4100d7c1b",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODExNjA4",
+          "commit": {
+            "abbreviatedOid": "ffef662"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "See comments above.  If we're going to recommend using origin hostname\r\n(which was added here and should probably be called out explicitly) we need\r\nthe safety warning.\r\n\r\nWe should also add a security consideration that untrusted recursive resolvers\r\nmight return AliasForm \".\" records as a way to block clients from accessing \r\nparticular protocols, but in a way that is more fine-grained than is possible\r\nwith NXDOMAINs injection today.",
+          "createdAt": "2020-07-11T15:59:07Z",
+          "updatedAt": "2020-07-11T16:14:11Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "```suggestion\r\n## Special handling of \".\" {#dot} in SvcDomainName\r\n```",
+              "createdAt": "2020-07-11T15:59:07Z",
+              "updatedAt": "2020-07-11T16:14:11Z"
+            },
+            {
+              "originalPosition": 70,
+              "body": "```suggestion\r\ndomain owners SHOULD minimize the use of AliasForm records, and choose\r\nSvcDomainName to be a domain for which the client will have already issued\r\naddress queries (see {{client-behavior}}), such as by using \".\" as the SvcDomainName for ServiceForm records.  The simplest SVCB configuration\r\nwould be a single ServiceForm SVCB record whose SvcDomainName is the origin hostname.  (Note that using the origin hostname as the SvcDomainName can be problematic when using {{!ECH}} \r\n({{svcparamkeys-echconfig}}) and switching between different\r\nendpoints as clients may get IP addresses for one endpoint\r\nand {{svcparamkeys-echconfig}} for a different endpoint.)\r\n```\r\n\r\nI'm not sure if the note should be moved elsewhere, but it's an important warning for explaining why using the simplest form may not be preferable.",
+              "createdAt": "2020-07-11T16:10:35Z",
+              "updatedAt": "2020-07-11T16:14:11Z"
+            }
+          ]
         }
       ]
     }
