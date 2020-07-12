@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-12T03:20:28.363605+00:00",
+  "timestamp": "2020-07-12T12:31:46.466008+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3773,7 +3773,7 @@
       "id": "MDU6SXNzdWU2NDY1NzQyMzc=",
       "title": "Period is owner name for additional section processing is different to every other type.",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/203",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "marka63",
       "authorAssociation": "NONE",
       "assignees": [
@@ -3782,8 +3782,8 @@
       "labels": [],
       "body": "For every other type the next name to be looked up is embedded in the rdata itself.  Additional \".\" often means \"no such service\".   For BIND adding \".\" is owner name meant touching 102 files as every other RR types method for processing additional data needed to changed as well as every place where additional data is added to the response.\r\n\r\nI'm wondering if making \".\" special like this is worth it? \r\n\r\nI'm also wondering if we should be giving up the ability to signal \"no such service\" as is done in SRV, MX is worth it?",
       "createdAt": "2020-06-27T00:40:30Z",
-      "updatedAt": "2020-07-11T18:08:20Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-12T03:38:27Z",
+      "closedAt": "2020-07-12T03:38:27Z",
       "comments": [
         {
           "author": "bemasc",
@@ -13515,7 +13515,7 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #82",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-07-11T18:00:22Z",
+      "updatedAt": "2020-07-12T03:51:30Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
@@ -13556,7 +13556,34 @@
           "updatedAt": "2020-07-07T03:27:48Z"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODQzNTA0",
+          "commit": {
+            "abbreviatedOid": "a98b5a7"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "This is generally looking good.  My primary concern is whether we should use\r\nSvcParamKey/SvcParamValue (including using those in the ABNF) rather than key/value as normal English words.  The former is less ambiguous especially as both key and value have potential for confusion depending on the context they're used in.",
+          "createdAt": "2020-07-12T03:43:26Z",
+          "updatedAt": "2020-07-12T03:51:30Z",
+          "comments": [
+            {
+              "originalPosition": 41,
+              "body": "```suggestion\r\n3. SvcParams (optional): A list of key=value pairs\r\n   describing the alternative endpoint at\r\n   TargetName (only used in ServiceMode and otherwise ignored). \r\n   Described in {{svcparams}}.\r\n```",
+              "createdAt": "2020-07-12T03:43:26Z",
+              "updatedAt": "2020-07-12T03:51:30Z"
+            },
+            {
+              "originalPosition": 640,
+              "body": "```suggestion\r\nFollowing of HTTPS AliasMode RRs and CNAME aliases is unchanged from SVCB.\r\n```",
+              "createdAt": "2020-07-12T03:49:39Z",
+              "updatedAt": "2020-07-12T03:51:30Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 161,
@@ -16128,7 +16155,7 @@
       "labels": [],
       "body": "Fixes #187, #188",
       "createdAt": "2020-07-09T23:26:04Z",
-      "updatedAt": "2020-07-11T16:36:56Z",
+      "updatedAt": "2020-07-12T03:40:02Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "08a5c8ac0e37848318fa9dc4929b4ee5d85d4e75",
@@ -16140,7 +16167,46 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2NTI4NTM4",
+          "commit": {
+            "abbreviatedOid": "e0fab0f"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "This one still has some pending comments...",
+          "createdAt": "2020-07-10T16:15:52Z",
+          "updatedAt": "2020-07-12T03:40:02Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "did we want to use a word other than \"origin\" here?",
+              "createdAt": "2020-07-10T16:15:52Z",
+              "updatedAt": "2020-07-12T03:40:02Z"
+            },
+            {
+              "originalPosition": 25,
+              "body": "The \"wanted to point requests to\" took me a few times to read. \r\n\r\n```suggestion\r\nFor example, the operator of foo://example.com:8080 could\r\npoint requests to a service operating at foosvc.example.net\r\nby publishing:\r\n```",
+              "createdAt": "2020-07-10T16:20:20Z",
+              "updatedAt": "2020-07-12T03:40:02Z"
+            },
+            {
+              "originalPosition": 32,
+              "body": "Inconsistent on use of \".\" in names and it makes this harder to read.\r\n```suggestion\r\nfoosvc.example.net promises to always publish a SVCB record, this AliasForm\r\n```",
+              "createdAt": "2020-07-10T16:21:41Z",
+              "updatedAt": "2020-07-12T03:40:02Z"
+            },
+            {
+              "originalPosition": 6,
+              "body": "Per #204 perhaps use \"service\" instead?\r\n\r\n```suggestion\r\nWhen SvcRecordType is AliasForm, the SVCB record aliases a service to a\r\n```",
+              "createdAt": "2020-07-10T16:24:27Z",
+              "updatedAt": "2020-07-12T03:40:02Z"
+            }
+          ]
+        }
+      ]
     },
     {
       "number": 210,
@@ -16189,24 +16255,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDQ3Njc2MTc1",
       "title": "Alias to \".\" means repudiation",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/212",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This change also adjusts the advice about the use of \".\".\r\n\r\nFixes #203",
       "createdAt": "2020-07-10T23:01:27Z",
-      "updatedAt": "2020-07-11T17:28:54Z",
+      "updatedAt": "2020-07-12T03:38:28Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-dot",
       "headRefOid": "da7826c737673b1bf882242e12be054dcdb71060",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-12T03:38:28Z",
+      "mergedAt": "2020-07-12T03:38:27Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "63bf92d957cb28de9918d077253f822f84393acd"
+      },
       "comments": [],
       "reviews": [
         {
@@ -16254,6 +16322,32 @@
               "updatedAt": "2020-07-11T17:28:54Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODQzMzAz",
+          "commit": {
+            "abbreviatedOid": "da7826c"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-12T03:37:25Z",
+          "updatedAt": "2020-07-12T03:37:25Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODQzMzQ1",
+          "commit": {
+            "abbreviatedOid": "da7826c"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-12T03:38:21Z",
+          "updatedAt": "2020-07-12T03:38:21Z",
+          "comments": []
         }
       ]
     },
@@ -16337,13 +16431,13 @@
       "labels": [],
       "body": "This also removes duplicate statements about CNAME at apex.\r\n\r\nFixes #180",
       "createdAt": "2020-07-11T19:36:08Z",
-      "updatedAt": "2020-07-12T03:16:40Z",
+      "updatedAt": "2020-07-12T12:31:17Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-srv",
-      "headRefOid": "e920d6f6cf3c8889fd91b158d8fdbef1d2a18d0a",
+      "headRefOid": "8efc3d4514a8c381bb138d9c5567f1958c0e9ccd",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -16366,7 +16460,27 @@
               "originalPosition": 9,
               "body": "I actually think this context (can't have a CNAME and NS RR at the zone apex) is helpful as this is one of the driving factors.  SRV is just one of the mechanisms that could do this.   Perhaps still include \"..., such as allowing service delegation for a zone apex name where CNAMEs aren't allowed, ...\" ?",
               "createdAt": "2020-07-12T03:16:34Z",
-              "updatedAt": "2020-07-12T03:16:40Z"
+              "updatedAt": "2020-07-12T12:30:08Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODc0NDA4",
+          "commit": {
+            "abbreviatedOid": "8efc3d4"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-12T12:31:17Z",
+          "updatedAt": "2020-07-12T12:31:17Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "OK.  Rather than duplicate the statement about CNAME-at-apex, I added a pointer back to the CNAME-at-apex bullet point.",
+              "createdAt": "2020-07-12T12:31:17Z",
+              "updatedAt": "2020-07-12T12:31:18Z"
             }
           ]
         }
