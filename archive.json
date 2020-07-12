@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-11T16:28:21.451796+00:00",
+  "timestamp": "2020-07-12T03:20:28.363605+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -2577,7 +2577,7 @@
       "id": "MDU6SXNzdWU1OTk2MTQ5NDE=",
       "title": "Clarify Client DNS failure behaviour",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/133",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "fl1ger",
       "authorAssociation": "NONE",
       "assignees": [],
@@ -2586,8 +2586,8 @@
       ],
       "body": "Moin!\r\n\r\nReading the draft again in preparation for the dnsop interim I was confused by the Client behavior/Handling resolution failures section.\r\n\r\nThe client behaviour says that A/AAAA and SVCB/HTTPSVC should be run in parallel and the failure case says that if SVCB fails the client should not use A/AAAA. It think what we want here is that if the initial parallel query fails use A/AAAA as a lot of DNS devices fail in various forms when queried something not A/AAAA and the ENT or NXDomain handling also is questionable for a lot of DNS servers. \r\n\r\nIf the initial SVCB lookup give you something to follow you should fail on the final resolution, but not on the initial lookup as it will cause to much collateral damage.\r\n\r\nSo long\r\n-Ralf\r\n",
       "createdAt": "2020-04-14T14:26:19Z",
-      "updatedAt": "2020-05-29T20:43:10Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-11T21:38:54Z",
+      "closedAt": "2020-07-11T21:38:54Z",
       "comments": [
         {
           "author": "bemasc",
@@ -2721,6 +2721,13 @@
           "body": "Clients are very risk averse when it comes to making changes that could break accessing internet sites that worked fine (from the user perspective) before the change.  Ignoring what would have been perfectly good A/AAAA results because an SVCB returned NXDOMAIN or NOTIMP would be a tough sell.  The case would have to be made either that it is vital for safe functioning of SVCB queries (as is the case with timeout and maybe SERVFAIL) or that it would not currently be a significant issue and nothing would break.\r\n\r\nEven with timeout/SERVFAIL, while we're optimistic it'll be acceptable to treat those as fatal, there's enough skepticism to have started the experiments dmcardle mentioned above.",
           "createdAt": "2020-04-20T16:24:46Z",
           "updatedAt": "2020-04-20T16:24:46Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We've adjusted the failure behavior requirements to give clients more leeway, and be more explicit about the rationale, in #210.",
+          "createdAt": "2020-07-11T21:38:54Z",
+          "updatedAt": "2020-07-11T21:38:54Z"
         }
       ]
     },
@@ -3181,11 +3188,13 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "> Address a set of long-standing issues due to HTTP(S) clients not implementing support for SRV records, as well as due to a limitation that a DNS name can not have both CNAME and NS RRs (as is the case for zone apex names)\r\n\r\nThis implies fault in clients for a refusal to implement, as opposed to SRV not providing sufficient advantages for HTTP(S) clients.\r\n\r\nRather than get into the why, it might be best to say which of the features of SRV are provided and why.  \r\n\r\nI might also separate out the point about NS and CNAME not playing well together.\r\n\r\n",
       "createdAt": "2020-06-23T06:46:21Z",
-      "updatedAt": "2020-06-23T06:46:21Z",
+      "updatedAt": "2020-07-11T19:35:57Z",
       "closedAt": null,
       "comments": []
     },
@@ -3197,11 +3206,13 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "HSTS is mentioned in Section 1.1, but it is not expanded or a citation provided.",
       "createdAt": "2020-06-23T06:47:34Z",
-      "updatedAt": "2020-06-23T06:47:34Z",
+      "updatedAt": "2020-07-11T19:26:04Z",
       "closedAt": null,
       "comments": []
     },
@@ -3229,11 +3240,13 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "> The \"origin server\" is the server that the client would reach when accessing the origin in the absence of the SVCB record or an HTTPS Alt-Svc.\r\n\r\nHTTP has a definition of origin server that this is not compatible with.  In HTTP an \"origin server\" is a server that is authoritative.  As the goal of this document is to define alternative ways to reach a server that is authoritative, the definition this document uses is very confusing.\r\n\r\nI don't have a solid alternative at this point, but I might suggest that the notion of \"whatever you get when this record isn't used\" isn't a very useful distinction.  As a hypothetical, consider a protocol that only uses SVCB derivatives for discovery, which would obviously have no such concept.  It might be better to dispense with the notion of \"original server\" entirely.",
       "createdAt": "2020-06-23T06:57:28Z",
-      "updatedAt": "2020-06-23T16:41:47Z",
+      "updatedAt": "2020-07-11T19:21:49Z",
       "closedAt": null,
       "comments": [
         {
@@ -3457,28 +3470,40 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "> If one or more SVCB records of ServiceForm SvcRecordType are returned for HOST, clients should select the highest-priority option with acceptable parameters, \r\n\r\nIs this SHOULD select ?",
       "createdAt": "2020-06-23T07:25:02Z",
-      "updatedAt": "2020-06-23T07:25:02Z",
+      "updatedAt": "2020-07-11T21:36:19Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Sure, why not.  Added to #204.",
+          "createdAt": "2020-07-11T21:36:18Z",
+          "updatedAt": "2020-07-11T21:36:18Z"
+        }
+      ]
     },
     {
       "number": 190,
       "id": "MDU6SXNzdWU2NDM2MDM0Nzc=",
       "title": "Privacy intent?",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/190",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "What does this mean (from S3.2)?\r\n\r\n> Clients using a domain-oriented transport proxy like HTTP CONNECT ([RFC7231] Section 4.3.6) or SOCKS5 ([RFC1928]) SHOULD disable SVCB support if performing SVCB queries would violate the client's privacy intent.\r\n\r\nIt's not clear what information is leaking and to whom here.  This likely needs more text that addresses assumptions about where the client is sending these SVCB queries.\r\n\r\nOf course, letting the proxy perform name resolution can improve privacy with respect to the resolver that a client chooses.  However, there are ways in which SVCB can enhance privacy in these configurations, especially if the proxy is not trusted with information about destinations.  It requires that you use DoT or DoH to a resolver that the client trusts to learn domain names.",
       "createdAt": "2020-06-23T07:32:32Z",
-      "updatedAt": "2020-06-23T07:32:32Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-12T03:19:47Z",
+      "closedAt": "2020-07-12T03:19:47Z",
       "comments": []
     },
     {
@@ -3701,11 +3726,13 @@
       "state": "OPEN",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "As an editorial convention, this is hard to follow because the words used to identify a reference also form part of the sentence.\r\n\r\ne.g., \"CNAME or [DNAME]\", \"By removing the [Attrleaf] labels used in SVCB\".",
       "createdAt": "2020-06-23T08:49:15Z",
-      "updatedAt": "2020-06-24T15:56:09Z",
+      "updatedAt": "2020-07-11T21:32:32Z",
       "closedAt": null,
       "comments": [
         {
@@ -3729,9 +3756,17 @@
       "labels": [],
       "body": "At one level, the precedence rules for this specification could be simple: take the RRs with the lowest priority and select at random between them.  This is clearly the case for the 0/other split.\r\n\r\nBut it isn't that simple, because RRs with lower priority might not have options that the client supports.  So some configurations are eliminated.\r\n\r\nMoreover, there are cases where server/operator preference and client preference might be in tension.  Let's say that the client greatly prefers HTTP/3 over HTTP/1.1.  Is it required to use an HTTPS RR with HTTP/1.1 and a lower priority if a higher priority supports HTTP/3?\r\n\r\nMore difficult, what if the higher priority has echconfig and the lower priority one does not?  Section 8.1 might be read to imply that echconfig overrides other considerations, but it isn't very clear on that point.  Also, we have to consider an echconfig that the client does not support specially, as that does not imply that the RR lacks echconfig.",
       "createdAt": "2020-06-23T09:01:22Z",
-      "updatedAt": "2020-06-23T09:01:22Z",
+      "updatedAt": "2020-07-11T19:45:18Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Change #204 includes some changes that might make this clearer.  However, I think precedence rules are pretty clear: clients shuffle, sort, and walk down the list.  If they run out, they fall back to normal connection.  (Special case: if all attempts had ECH, and all failed, don't fall back to non-ECH.)\r\n\r\nThe order of attempts is SHOULD and MAY, so sufficiently smart/opinionated clients can mess with it if they want.\r\n\r\n",
+          "createdAt": "2020-07-11T19:45:18Z",
+          "updatedAt": "2020-07-11T19:45:18Z"
+        }
+      ]
     },
     {
       "number": 203,
@@ -3741,11 +3776,13 @@
       "state": "OPEN",
       "author": "marka63",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "For every other type the next name to be looked up is embedded in the rdata itself.  Additional \".\" often means \"no such service\".   For BIND adding \".\" is owner name meant touching 102 files as every other RR types method for processing additional data needed to changed as well as every place where additional data is added to the response.\r\n\r\nI'm wondering if making \".\" special like this is worth it? \r\n\r\nI'm also wondering if we should be giving up the ability to signal \"no such service\" as is done in SRV, MX is worth it?",
       "createdAt": "2020-06-27T00:40:30Z",
-      "updatedAt": "2020-06-29T02:07:50Z",
+      "updatedAt": "2020-07-11T18:08:20Z",
       "closedAt": null,
       "comments": [
         {
@@ -3800,11 +3837,13 @@
       "state": "OPEN",
       "author": "marka63",
       "authorAssociation": "NONE",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "While DNAMEs if present should be followed, the target of a HTTPS/SVCB records should not be below a DNAME.  All a DNAME does is introduce additional processing and records in the responses for no benefit.",
       "createdAt": "2020-07-07T02:29:04Z",
-      "updatedAt": "2020-07-07T02:29:04Z",
+      "updatedAt": "2020-07-11T18:08:09Z",
       "closedAt": null,
       "comments": []
     },
@@ -3840,11 +3879,13 @@
       "state": "OPEN",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
-      "assignees": [],
+      "assignees": [
+        "bemasc"
+      ],
       "labels": [],
       "body": "Presentation format key names are not currently explicitly limited (although the IANA experts would surely reject an absurdly long name).  @marka63 has requested a name length limit.\r\n\r\nPlausible values include 255, 64, and 63.",
       "createdAt": "2020-07-10T23:12:14Z",
-      "updatedAt": "2020-07-11T16:26:57Z",
+      "updatedAt": "2020-07-11T18:07:40Z",
       "closedAt": null,
       "comments": [
         {
@@ -3860,6 +3901,13 @@
           "body": "I would want to update the ABNF so parsers can rely on the length limit.\n\nOn Sat, Jul 11, 2020, 11:57 AM Erik Nygren <notifications@github.com> wrote:\n\n> Why not 63 (consistent with DNS label length limit)? Can we put the limit\n> in the IANA section?\n>\n> \u2014\n> You are receiving this because you authored the thread.\n> Reply to this email directly, view it on GitHub\n> <https://github.com/MikeBishop/dns-alt-svc/issues/213#issuecomment-657085607>,\n> or unsubscribe\n> <https://github.com/notifications/unsubscribe-auth/AABO3SOGGXALWUNGKI53PLTR3CDYJANCNFSM4OXAA4WA>\n> .\n>\n",
           "createdAt": "2020-07-11T16:26:56Z",
           "updatedAt": "2020-07-11T16:26:56Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I added a limit of 63 to #202.",
+          "createdAt": "2020-07-11T18:07:40Z",
+          "updatedAt": "2020-07-11T18:07:40Z"
         }
       ]
     }
@@ -13467,13 +13515,13 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #82",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-07-10T22:15:08Z",
+      "updatedAt": "2020-07-11T18:00:22Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-names",
-      "headRefOid": "cbb704c322ab9071e5b60d63b13846547fd93798",
+      "headRefOid": "a98b5a7c6c517d7086ce208a5c7346295a163488",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14555,24 +14603,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDQwMzM2MTI1",
       "title": "Adjust advice on populating the client's ALPN set",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/201",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Addresses #194",
       "createdAt": "2020-06-26T01:37:36Z",
-      "updatedAt": "2020-07-10T04:31:32Z",
+      "updatedAt": "2020-07-11T17:46:59Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-better",
       "headRefOid": "6cfd415a0e9a31b89206b62050b9fbdd77a935da",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-11T17:46:59Z",
+      "mergedAt": "2020-07-11T17:46:59Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec"
+      },
       "comments": [
         {
           "author": "davidben",
@@ -14580,6 +14630,20 @@
           "body": "I think we should say *something*. Otherwise the analogy to Alt-Svc, which prescribed the wrong thing, may cause implementers to do the wrong thing. (The wrong thing being considered compliant by confused clients results in deployment implications for a server trying to use SVCB.) But, given the point is to disavow that and get these Alt-Svc-like mechanisms out of the business of messing with ALPN as much as possible, I'm good with something shorter and lighter on details.\r\n\r\nThough that suggestion might be a little *too* light? It's arguably not *quite* a hint because an `h3` SVCB record will (at least for now) result in different ALPN advertisement than an `h2` record due to different sets of ALPNs being \"compatible\". If we don't want to go down the rabbithole of defining that just yet, maybe something like:\r\n\r\n> Note a client may not be willing to negotiate all protocols over all connections, and would advertise ALPN protocols accordingly. For example, an HTTP client using an `h3` record for a QUIC connection would not advertise `http/1.1` or `h2`. However, when using an `h2` record for a TCP connection, it may advertise both `http/1.1` and `h2`, and accept either protocol from the server.\r\n\r\nWDYT?",
           "createdAt": "2020-07-10T04:30:28Z",
           "updatedAt": "2020-07-10T04:31:32Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Are we comfortable with what is here and ready to merge it, or are changes still desired?\r\n(It is looking fairly reasonable to me.)",
+          "createdAt": "2020-07-11T16:34:55Z",
+          "updatedAt": "2020-07-11T16:34:55Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm going to merge this as-is.  It may be overly verbose, but we seem to have rough consensus that it is correct, and perhaps we can shorten it later.\r\n\r\nI want to be cautious about removing text here because I think there is a real risk of implementors getting it wrong in various ways, and previous drafts have resulted in differing interpretations.",
+          "createdAt": "2020-07-11T17:46:50Z",
+          "updatedAt": "2020-07-11T17:46:50Z"
         }
       ],
       "reviews": [
@@ -14876,13 +14940,13 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-07-02T02:15:09Z",
+      "updatedAt": "2020-07-11T18:07:03Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "9a3311b91969b2aabb83f444a6fa74e9d640fcd0",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-escape",
-      "headRefOid": "8a9dfd84c8aaaf2343404000441d624658005f64",
+      "headRefOid": "893eb8e65a5cc6d96e81f2e3c541b239cf5130c7",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -14920,7 +14984,7 @@
               "originalPosition": 96,
               "body": "The double quotes are part of the second alpn-id. so this should read.\r\n\r\nThis would be decoded as three `alpn-id`s: 'example1', '\"weird, why?\"', and\r\n'example2'.\r\n ",
               "createdAt": "2020-06-26T04:56:13Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -14940,7 +15004,7 @@
               "originalPosition": 83,
               "body": "Why doesn't this just say \"unescaped comma\"?  \\044 really does not buy anything over \"\\\\,\" when parsing.   So is '\\\\,' now also a separator or is it a syntax error?",
               "createdAt": "2020-06-26T05:13:26Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -14960,7 +15024,7 @@
               "originalPosition": 96,
               "body": "In this PR, this example is first parsed to a sequence of three `char-string`s: `example1`, `\"weird\\044 why?\"`, and `example2`.  Then the character-string decoding algorithm is applied to each `char-string`, yielding `example1`, `weird, why?`, and `example2`.  This is because double-quotes are optional in `char-string`.\r\n\r\nMy goal here is to make the parsing algorithm easy to implement, so please suggest changes.  I proposed this formulation to minimize the amount of new parsing code required (reuse the same decoding algorithm), while making sure that all `alpn-id`s are representable, including those that contain commas and spaces. ",
               "createdAt": "2020-06-26T12:52:41Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -14980,7 +15044,7 @@
               "originalPosition": 83,
               "body": "The proposed algorithm here is \"character-string decode, split on commas, character-string decode again\".  Therefore:\r\n* `alpn=ex1,ex2\\,ex3` is `ex1`, `ex2`, and  `ex3`, because the first-pass decoding unescapes the entire value\r\n* `alpn=ex1,ex2\\\\,ex3` is presumably a syntax error, because `ex2\\` is not a valid character-string, because `\\` is supposed to escape something but there is nothing to escape.\r\n* `alpn=ex1,ex2\\\\\\\\,ex3` is `ex1`, `ex2\\`, and `ex3`",
               "createdAt": "2020-06-26T16:10:13Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15000,7 +15064,7 @@
               "originalPosition": 83,
               "body": "If you do this then \"foo\\044bar\" becomes \"foo,bar\"  which becomes \"foo\" and \"bar\".   Following your method you would have to have \"foo\\\\\\\\044bar\" which becomes \"foo\\044bar\" which becomes \"foo,bar\".   And to get a alpn-id that is \"foo\\044bar\" I would need to enter \"foo\\\\\\\\\\\\\\\\044bar\"  (4 backslashes) instead of \"foo\\\\\\\\044bar\" (2 backslashes).\r\n\r\nAll this for not extending the existing character string parser to know if comma is a special or not.  'if (comma_processing && c == ',' && !escaped) end-of-alpn-id;\". ",
               "createdAt": "2020-06-26T21:35:08Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15020,7 +15084,7 @@
               "originalPosition": 96,
               "body": "Detecting escaped commas is dead easy.  GO LOOK AT HOW BIND DOES IT.  All this just makes it harder for the person entering the data.  ",
               "createdAt": "2020-06-26T21:39:58Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15040,7 +15104,7 @@
               "originalPosition": 96,
               "body": "Also the point of using quoted strings is to turn off special processing to get the full token at places that would otherwise terminate the token.   Once you have the full token you don't need to drop them a second time.",
               "createdAt": "2020-06-26T22:13:10Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15060,7 +15124,7 @@
               "originalPosition": 96,
               "body": "And so you don't have to search around in the repository to find it. \r\n\r\nAt this point the double quotes have been processed.  The token still contains all the escapes.\r\n\r\n```\r\n+static isc_result_t\r\n+alpn_fromtxt(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       isc_textregion_t source0 = *source;\r\n+       do {\r\n+               RETERR(commatxt_fromtext(&source0, true, target));\r\n+       } while (source0.length != 0);\r\n+       return (ISC_R_SUCCESS);\r\n+}\r\n```\r\n\r\n```\r\n@@ -1390,7 +1432,8 @@ name_length(const dns_name_t *name) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+commatxt_totext(isc_region_t *source, bool quote, bool comma,\r\n+               isc_buffer_t *target) {\r\n        unsigned int tl;\r\n        unsigned int n;\r\n        unsigned char *sp;\r\n@@ -1435,10 +1478,12 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n                /*\r\n                 * Escape double quote and backslash.  If we are not\r\n                 * enclosing the string in double quotes also escape\r\n-                * at sign and semicolon.\r\n+                * at sign and semicolon unless comma is set.  If\r\n+                * comma is set then escape commas.\r\n                 */\r\n-               if (*sp == 0x22 || *sp == 0x5c ||\r\n-                   (!quote && (*sp == 0x40 || *sp == 0x3b))) {\r\n+               if (*sp == 0x22 || *sp == 0x5c || (comma && *sp == 0x2c) ||\r\n+                   (!comma && !quote && (*sp == 0x40 || *sp == 0x3b)))\r\n+               {\r\n                        if (tl < 2) {\r\n                                return (ISC_R_NOSPACE);\r\n                        }\r\n@@ -1465,9 +1510,14 @@ txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n }\r\n \r\n static isc_result_t\r\n-txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+txt_totext(isc_region_t *source, bool quote, isc_buffer_t *target) {\r\n+       return (commatxt_totext(source, quote, false, target));\r\n+}\r\n+\r\n+static isc_result_t\r\n+commatxt_fromtext(isc_textregion_t *source, bool comma, isc_buffer_t *target) {\r\n        isc_region_t tregion;\r\n-       bool escape;\r\n+       bool escape, seen_comma = false;\r\n        unsigned int n, nrem;\r\n        char *s;\r\n        unsigned char *t;\r\n@@ -1496,6 +1546,10 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        }\r\n        while (n-- != 0) {\r\n                c = (*s++) & 0xff;\r\n+               if (comma && !escape && c == ',') {\r\n+                       seen_comma = true;\r\n+                       break;\r\n+               }\r\n                if (escape && (d = decvalue((char)c)) != -1) {\r\n                        c = d;\r\n                        if (n == 0) {\r\n@@ -1534,11 +1588,32 @@ txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n        if (escape) {\r\n                return (DNS_R_SYNTAX);\r\n        }\r\n+       if (comma) {\r\n+               /*\r\n+                * Disallow empty ALPN at start or in the middle.\r\n+                */\r\n+               if (s == source->base || (seen_comma && s == source->base + 1))\r\n+               {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+               isc_textregion_consume(source, s - source->base);\r\n+               /*\r\n+                * Disallow empty ALPN at end.\r\n+                */\r\n+               if (seen_comma && source->length == 0) {\r\n+                       return (DNS_R_SYNTAX);\r\n+               }\r\n+       }\r\n        *tregion.base = (unsigned char)(t - tregion.base - 1);\r\n        isc_buffer_add(target, *tregion.base + 1);\r\n        return (ISC_R_SUCCESS);\r\n }\r\n\r\n +static isc_result_t\r\n+txt_fromtext(isc_textregion_t *source, isc_buffer_t *target) {\r\n+       return (commatxt_fromtext(source, false, target));\r\n+}\r\n+\r\n static isc_result_t\r\n txt_fromwire(isc_buffer_t *source, isc_buffer_t *target) {\r\n        unsigned int n;\r\n```",
               "createdAt": "2020-06-27T00:05:34Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15080,7 +15144,7 @@
               "originalPosition": 96,
               "body": "OK, I've updated the PR to reflect this approach.  Please review.",
               "createdAt": "2020-06-27T22:31:06Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15100,7 +15164,7 @@
               "originalPosition": 96,
               "body": "I would say that they are key value pairs.  If the definition of a value consists of a list (i.e. ipv4hints, ipv6hints, alpn) the list elements are separated by a unescaped \",\".  To add a literal comma to an element in a list, the comma must be escaped.   At the moment you have everything defined to be a list including the generic form which clearly is not a list.",
               "createdAt": "2020-06-29T22:21:50Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15120,7 +15184,7 @@
               "originalPosition": 96,
               "body": "OK, I've changed the text to reflect this idea.",
               "createdAt": "2020-07-01T01:23:51Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15140,7 +15204,7 @@
               "originalPosition": 37,
               "body": "s/splitting on commas/splitting on unescaped commas/",
               "createdAt": "2020-07-01T01:39:35Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15160,7 +15224,7 @@
               "originalPosition": 114,
               "body": "It would be useful to never have to apply escape processing to port so append.  \"No escape processing should be applied to the port value.\"",
               "createdAt": "2020-07-01T01:43:07Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15180,7 +15244,7 @@
               "originalPosition": 123,
               "body": "Similarly disallow escape processing for ipv4hints and ipv6hints.",
               "createdAt": "2020-07-01T01:44:23Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15200,7 +15264,7 @@
               "originalPosition": 123,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:18Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15220,7 +15284,7 @@
               "originalPosition": 114,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:20Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         },
@@ -15240,7 +15304,7 @@
               "originalPosition": 37,
               "body": "Done",
               "createdAt": "2020-07-01T14:28:35Z",
-              "updatedAt": "2020-07-02T02:04:55Z"
+              "updatedAt": "2020-07-11T18:07:03Z"
             }
           ]
         }
@@ -15258,13 +15322,13 @@
       "labels": [],
       "body": "The use of \"origin\" for non-HTTP schemes, and the use of \"origin server\"\r\nto mean only the normal server, were generating confusion.  This PR\r\naligns terminology with the URI specification and limits the use of\r\n\"origin\" to HTTP.\r\n\r\nFixes #183",
       "createdAt": "2020-06-28T18:51:58Z",
-      "updatedAt": "2020-07-11T16:21:05Z",
+      "updatedAt": "2020-07-11T21:35:33Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-origin",
-      "headRefOid": "9232a4f5b8dbd18f920fcea7ac7658e7f0151182",
+      "headRefOid": "02fba7ab88f17b6a77bf63e1ecc6483b25e2cfd4",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -15302,121 +15366,121 @@
               "originalPosition": 8,
               "body": "```suggestion\r\nto network services, such as for HTTPS URLs.  SVCB records\r\nallow a service to be provided from multiple alternative endpoints, \r\neach with associated parameters (such as transport protocol\r\n```\r\n\r\nDo we want to define \"service\" and \"endpoint\" explicitly here? Being consistent seems good, but it may even be worth adding a terminology section?  We should also scrub through to see if there are other places we should use \"endpoint\". ",
               "createdAt": "2020-07-10T16:30:49Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 29,
               "body": "Is this really an \"endpoint\"?  Do we want to distinguish \"endpoints\"  (eg, ServiceMode RRs) from AliasMode which aren't really endpoints?  (For that matter, should \"ServiceMode\" be renamed as \"EndpointMode\"?  That might be its own issue.)",
               "createdAt": "2020-07-10T16:33:12Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 100,
               "body": "We should mention for HTTPS records that this is the same as the {{!RFC6454}} origin?",
               "createdAt": "2020-07-10T16:49:04Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 101,
               "body": "Is \"authority address\" defined in an RFC?  It's confusing as \"address\" is too close to A/AAAA record addresses.  Perhaps \"fully qualified authority\"?",
               "createdAt": "2020-07-10T16:53:13Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 94,
               "body": "Should we continue to have a term for the endpoint that would be used for an authority in the absence of a SVCB record (or HTTPS Alt-Svc)?   Perhaps specify that the \"fully qualified authority\" (or whetever we call it) gets used as an implicit endpoint or \"default endpoint\"?",
               "createdAt": "2020-07-10T16:56:02Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 37,
               "body": "```suggestion\r\n* Provides alternative endpoints that are authoritative for the service,\r\n```",
               "createdAt": "2020-07-10T16:57:36Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 75,
               "body": "```suggestion\r\nparameters associated with each of these alternative endpoints.\r\n```",
               "createdAt": "2020-07-10T16:58:58Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 104,
               "body": "```suggestion\r\n* An \"alternative endpoint\" is a hostname, port number, and other associated\r\n  instructions to the client on how to reach an instance of service.\r\n```",
               "createdAt": "2020-07-10T17:00:01Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 97,
               "body": "Do we want to keep this illustrative example but reword it?  I think having an example here would help.",
               "createdAt": "2020-07-10T17:01:05Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 81,
               "body": "Add \"service name\"?  (The hostname within the authority.)",
               "createdAt": "2020-07-10T17:02:41Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 154,
               "body": "```suggestion\r\nA SVCB-aware client resolves a service with hostname $HOST by attempting\r\n```",
               "createdAt": "2020-07-10T17:03:27Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 157,
               "body": "```suggestion\r\nto determine endpoint (the preferred SvcFieldValue and IP addresses for its service),\r\nusing the following procedure:\r\n```",
               "createdAt": "2020-07-10T17:05:43Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 186,
               "body": "Should it connect to the authority address or $HOST_QNAME?  The latter implies that the AliasForm SVCB record should be ignored if ServiceForm SVCB records were present and didn't work.",
               "createdAt": "2020-07-10T17:13:38Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 186,
               "body": "(This is an interesting question which may want to be its own issue for discussion.)",
               "createdAt": "2020-07-10T17:14:06Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 190,
               "body": "```suggestion\r\n5. If a SVCB record for $SVCB_QNAME does not exist, the received AAAA and/or A\r\n   records from $HOST_QNAME are the preferred IP addresses \r\n   and there is no SvcFieldValue.\r\n```",
               "createdAt": "2020-07-10T17:15:03Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 161,
               "body": "```suggestion\r\n1. Let $SVCB_QNAME be $HOST, plus appropriate prefixes for the scheme\r\n   (see {{svcb-names}}).  Let $HOST_QNAME be $HOST.\r\n```\r\n\r\n\r\n\r\nSeparate out $SVCB_HOST so we don't mutate $HOST in step 3?\r\n",
               "createdAt": "2020-07-10T17:16:04Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 163,
               "body": "```suggestion\r\n2. Issue parallel AAAA/A queries for $HOST_QNAME and a SVCB query for $SVCB_QNAME.\r\n```",
               "createdAt": "2020-07-10T17:16:45Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 170,
               "body": "```suggestion\r\n   clients MUST set $HOST_QNAME and $SVCB_QNAME to SvcDomainName (without\r\n```",
               "createdAt": "2020-07-10T17:17:06Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 186,
               "body": "```suggestion\r\n   If none of the options succeed, the client SHOULD connect to $HOST_QNAME directly.\r\n   If that fails, the client SHOULD fall back to $HOST.\r\n```\r\n(SHOULD or MAY for the final fall back to $HOST?)",
               "createdAt": "2020-07-10T17:19:28Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 101,
               "body": "Given how we use this, either \"default endpoint\" or \"implicit endpoint\" might be better.",
               "createdAt": "2020-07-10T17:22:32Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             }
           ]
         },
@@ -15436,7 +15500,7 @@
               "originalPosition": 101,
               "body": "How about \"authority endpoint\"?",
               "createdAt": "2020-07-10T20:08:09Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             }
           ]
         },
@@ -15456,7 +15520,7 @@
               "originalPosition": 101,
               "body": "That's better.",
               "createdAt": "2020-07-10T21:14:48Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             }
           ]
         },
@@ -15476,7 +15540,7 @@
               "originalPosition": 94,
               "body": "It sounds like \"authority endpoint\"?",
               "createdAt": "2020-07-10T21:15:27Z",
-              "updatedAt": "2020-07-10T21:50:33Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             }
           ]
         },
@@ -15496,31 +15560,31 @@
               "originalPosition": 97,
               "body": "I think this is covered by the sentence above equation \"service\" and \"origin\".",
               "createdAt": "2020-07-10T20:24:38Z",
-              "updatedAt": "2020-07-10T21:54:45Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 94,
               "body": "I think this is covered by \"authority endpoint\".  EDIT: You got there first.",
               "createdAt": "2020-07-10T20:24:51Z",
-              "updatedAt": "2020-07-10T23:02:25Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 29,
               "body": "This is just an example, so it seems at least possible that there is an endpoint somewhere at svc.example.net to which the owner wants to delegate.\r\n\r\nI think \"EndpointMode\" or \"BindingMode\" would be an improvement, but let's not change that here.",
               "createdAt": "2020-07-10T20:25:57Z",
-              "updatedAt": "2020-07-10T21:54:45Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 100,
               "body": "OK, done.",
               "createdAt": "2020-07-10T20:27:03Z",
-              "updatedAt": "2020-07-10T21:54:45Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             },
             {
               "originalPosition": 81,
               "body": "Done",
               "createdAt": "2020-07-10T20:29:11Z",
-              "updatedAt": "2020-07-10T21:54:45Z"
+              "updatedAt": "2020-07-11T21:35:33Z"
             }
           ]
         }
@@ -16064,7 +16128,7 @@
       "labels": [],
       "body": "Fixes #187, #188",
       "createdAt": "2020-07-09T23:26:04Z",
-      "updatedAt": "2020-07-10T22:18:11Z",
+      "updatedAt": "2020-07-11T16:36:56Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "08a5c8ac0e37848318fa9dc4929b4ee5d85d4e75",
@@ -16132,13 +16196,13 @@
       "labels": [],
       "body": "This change also adjusts the advice about the use of \".\".\r\n\r\nFixes #203",
       "createdAt": "2020-07-10T23:01:27Z",
-      "updatedAt": "2020-07-11T16:14:11Z",
+      "updatedAt": "2020-07-11T17:28:54Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "191b811735df6aef995593444bf7d07df8d73496",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-dot",
-      "headRefOid": "ffef6628deb2fdce4ca82d3cb708dbc4100d7c1b",
+      "headRefOid": "da7826c737673b1bf882242e12be054dcdb71060",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -16161,17 +16225,178 @@
               "originalPosition": 28,
               "body": "```suggestion\r\n## Special handling of \".\" {#dot} in SvcDomainName\r\n```",
               "createdAt": "2020-07-11T15:59:07Z",
-              "updatedAt": "2020-07-11T16:14:11Z"
+              "updatedAt": "2020-07-11T17:26:56Z"
             },
             {
               "originalPosition": 70,
               "body": "```suggestion\r\ndomain owners SHOULD minimize the use of AliasForm records, and choose\r\nSvcDomainName to be a domain for which the client will have already issued\r\naddress queries (see {{client-behavior}}), such as by using \".\" as the SvcDomainName for ServiceForm records.  The simplest SVCB configuration\r\nwould be a single ServiceForm SVCB record whose SvcDomainName is the origin hostname.  (Note that using the origin hostname as the SvcDomainName can be problematic when using {{!ECH}} \r\n({{svcparamkeys-echconfig}}) and switching between different\r\nendpoints as clients may get IP addresses for one endpoint\r\nand {{svcparamkeys-echconfig}} for a different endpoint.)\r\n```\r\n\r\nI'm not sure if the note should be moved elsewhere, but it's an important warning for explaining why using the simplest form may not be preferable.",
               "createdAt": "2020-07-11T16:10:35Z",
-              "updatedAt": "2020-07-11T16:14:11Z"
+              "updatedAt": "2020-07-11T17:26:56Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODE1OTI3",
+          "commit": {
+            "abbreviatedOid": "fd967ee"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "> We should also add a security consideration that untrusted recursive resolvers\r\n> might return AliasForm \".\" records as a way to block clients from accessing\r\n> particular protocols, but in a way that is more fine-grained than is possible\r\n> with NXDOMAINs injection today.\r\n\r\nDone",
+          "createdAt": "2020-07-11T17:09:11Z",
+          "updatedAt": "2020-07-11T17:28:54Z",
+          "comments": [
+            {
+              "originalPosition": 70,
+              "body": "Rather than describe a simple configuration and then advise against it, I changed this section to have an explicit example that we would actually recommend, using a layer of indirection as intended.",
+              "createdAt": "2020-07-11T17:09:11Z",
+              "updatedAt": "2020-07-11T17:28:54Z"
             }
           ]
         }
       ]
+    },
+    {
+      "number": 214,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ3ODA2NzMw",
+      "title": "Expand description of proxy configuration",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/214",
+      "state": "MERGED",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #190",
+      "createdAt": "2020-07-11T19:21:31Z",
+      "updatedAt": "2020-07-12T03:19:47Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-intent",
+      "headRefOid": "09128a0e120c5fa58a9c605d0a948d87135b4eaa",
+      "closedAt": "2020-07-12T03:19:47Z",
+      "mergedAt": "2020-07-12T03:19:47Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "15331da92a3d94d16a414091e9c883d801ea3b04"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODQyNzEw",
+          "commit": {
+            "abbreviatedOid": "09128a0"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-12T03:19:30Z",
+          "updatedAt": "2020-07-12T03:19:30Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 215,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ3ODA3MTc1",
+      "title": "Add reference to HSTS on first use",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/215",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #181",
+      "createdAt": "2020-07-11T19:25:49Z",
+      "updatedAt": "2020-07-12T03:18:18Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-hstsref",
+      "headRefOid": "58f1d81fe0c32d603a5bf16691a8f4ea29f44f19",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 216,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ3ODA4MTcx",
+      "title": "Simplify description of SRV/HTTP status",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/216",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This also removes duplicate statements about CNAME at apex.\r\n\r\nFixes #180",
+      "createdAt": "2020-07-11T19:36:08Z",
+      "updatedAt": "2020-07-12T03:16:40Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-srv",
+      "headRefOid": "e920d6f6cf3c8889fd91b158d8fdbef1d2a18d0a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODQyNjI5",
+          "commit": {
+            "abbreviatedOid": "e920d6f"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "",
+          "createdAt": "2020-07-12T03:16:34Z",
+          "updatedAt": "2020-07-12T03:16:40Z",
+          "comments": [
+            {
+              "originalPosition": 9,
+              "body": "I actually think this context (can't have a CNAME and NS RR at the zone apex) is helpful as this is one of the driving factors.  SRV is just one of the mechanisms that could do this.   Perhaps still include \"..., such as allowing service delegation for a zone apex name where CNAMEs aren't allowed, ...\" ?",
+              "createdAt": "2020-07-12T03:16:34Z",
+              "updatedAt": "2020-07-12T03:16:40Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 217,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDQ3ODE5NTkw",
+      "title": "Don't use references as names",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/217",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "With this change, references are either parentheticals or nouns that\r\nname the referenced document.\r\n\r\nFixes #195",
+      "createdAt": "2020-07-11T21:33:01Z",
+      "updatedAt": "2020-07-11T21:33:01Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-ref",
+      "headRefOid": "ba4502fe320022f6b53a32cc0cd689a1d63e088a",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
