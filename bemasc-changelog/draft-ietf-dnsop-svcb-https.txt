@@ -2271,7 +2271,7 @@ Appendix C.  Change history
 
       -  Revised ABNF
 
-      -  Include allocate RR type numbers
+      -  Include allocated RR type numbers
 
       -  Various corrections, explanations, and recommendations
 
