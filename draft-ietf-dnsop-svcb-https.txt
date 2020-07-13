@@ -158,10 +158,10 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  34
      14.1.  Normative References . . . . . . . . . . . . . . . . . .  34
      14.2.  Informative References . . . . . . . . . . . . . . . . .  37
-   Appendix A.  Comparison with alternatives . . . . . . . . . . . .  38
-     A.1.  Differences from the SRV RR type  . . . . . . . . . . . .  38
-     A.2.  Differences from the proposed HTTP record . . . . . . . .  39
-     A.3.  Differences from the proposed ANAME record  . . . . . . .  39
+   Appendix A.  Decoding text in zone files  . . . . . . . . . . . .  38
+     A.1.  Decoding a value list . . . . . . . . . . . . . . . . . .  39
+   Appendix B.  Comparison with alternatives . . . . . . . . . . . .  39
+     B.1.  Differences from the SRV RR type  . . . . . . . . . . . .  40
 
 
 
@@ -170,10 +170,12 @@ Schwartz, et al.         Expires 14 January 2021                [Page 3]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
-     A.4.  Comparison with separate RR types for AliasMode and
-           ServiceMode . . . . . . . . . . . . . . . . . . . . . . .  39
-   Appendix B.  Change history . . . . . . . . . . . . . . . . . . .  40
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  42
+     B.2.  Differences from the proposed HTTP record . . . . . . . .  40
+     B.3.  Differences from the proposed ANAME record  . . . . . . .  40
+     B.4.  Comparison with separate RR types for AliasMode and
+           ServiceMode . . . . . . . . . . . . . . . . . . . . . . .  41
+   Appendix C.  Change history . . . . . . . . . . . . . . . . . . .  41
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  43
 
 1.  Introduction
 
@@ -211,12 +213,10 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    follow the pattern of HTTPS and assign their own SVCB-compatible RR
    types.
 
-   All behaviors described as applying to the SVCB RR also apply to the
-   HTTPS RR unless explicitly stated otherwise.  Section 7 describes
-   additional behaviors specific to the HTTPS RR.  Apart from Section 7
-   and introductory examples, much of this document refers only to the
-   SVCB RR, but those references should be taken to apply to SVCB,
-   HTTPS, and any future SVCB-compatible RR types.
+
+
+
+
 
 
 
@@ -225,6 +225,13 @@ Schwartz, et al.         Expires 14 January 2021                [Page 4]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   All behaviors described as applying to the SVCB RR also apply to the
+   HTTPS RR unless explicitly stated otherwise.  Section 7 describes
+   additional behaviors specific to the HTTPS RR.  Apart from Section 7
+   and introductory examples, much of this document refers only to the
+   SVCB RR, but those references should be taken to apply to SVCB,
+   HTTPS, and any future SVCB-compatible RR types.
 
    The SVCB RR has two modes: 1) "AliasMode" simply delegates
    operational control for a resource; 2) "ServiceMode" binds together
@@ -268,19 +275,17 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    *  Obtain the Encrypted ClientHello [ECH] keys associated with an
       alternative endpoint
 
-   *  Support non-default TCP and UDP ports
-
-   *  Enable SRV-like benefits (e.g. apex delegation, as mentioned
-      above) for HTTP(S), where SRV [SRV] has not been widely adopted
-
-
-
 
 
 Schwartz, et al.         Expires 14 January 2021                [Page 5]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   *  Support non-default TCP and UDP ports
+
+   *  Enable SRV-like benefits (e.g. apex delegation, as mentioned
+      above) for HTTP(S), where SRV [SRV] has not been widely adopted
 
    *  Provide an HSTS-like indication [HSTS] signaling that the HTTPS
       scheme should be used instead of HTTP for this request (see
@@ -325,11 +330,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    authoritative for the origin, along with parameters associated with
    each of these alternative endpoints.
 
-   For the HTTPS use-case, the HTTPS RR enables many of the benefits of
-   Alt-Svc [AltSvc] without waiting for a full HTTP connection
-   initiation (multiple roundtrips) before learning of the preferred
-   alternative, and without necessarily revealing the user's intended
-   destination to all entities along the network path.
 
 
 
@@ -337,6 +337,12 @@ Schwartz, et al.         Expires 14 January 2021                [Page 6]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   For the HTTPS use-case, the HTTPS RR enables many of the benefits of
+   Alt-Svc [AltSvc] without waiting for a full HTTP connection
+   initiation (multiple roundtrips) before learning of the preferred
+   alternative, and without necessarily revealing the user's intended
+   destination to all entities along the network path.
 
 1.3.  Parameter for Encrypted ClientHello
 
@@ -380,12 +386,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    The SVCB DNS resource record (RR) type (RR type 64) is used to locate
    alternative endpoints for a service.
 
-   The algorithm for resolving SVCB records and associated address
-   records is specified in Section 3.
-
-   Other SVCB-compatible resource record types can also be defined as-
-   needed.  In particular, the HTTPS RR (RR type 65) provides special
-   handling for the case of "https" origins as described in Section 7.
 
 
 
@@ -393,6 +393,21 @@ Schwartz, et al.         Expires 14 January 2021                [Page 7]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   The algorithm for resolving SVCB records and associated address
+   records is specified in Section 3.
+
+   Other SVCB-compatible resource record types can also be defined as-
+   needed.  In particular, the HTTPS RR (RR type 65) provides special
+   handling for the case of "https" origins as described in Section 7.
+
+   SVCB RRs are extensible by a list of SvcParams, which are pairs
+   consisting of a SvcParamKey and a SvcParamValue.  Each SvcParamKey
+   has a presentation name and a registered number.  Values are in a
+   format specific to the SvcParamKey.  Their definition should specify
+   both their presentation format and wire encoding (e.g., domain names,
+   binary data, or numeric values).  The initial SvcParamKeys and
+   formats are defined in Section 6.
 
 2.1.  Zone file presentation format
 
@@ -410,35 +425,20 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    (Section 12.3).
 
    Each SvcParamKey SHALL appear at most once in the SvcParams.  In
-   presentation format, SvcParamKeys are case-insensitive alphanumeric
-   strings.  Key names should only contain characters from the ranges
+   presentation format, SvcParamKeys are lower-case alphanumeric
+   strings.  Key names should contain 1-63 characters from the ranges
    "a"-"z", "0"-"9", and "-".  In ABNF [RFC5234],
 
-   ALPHA-LC    = %x61-7A   ;  a-z
-   SvcParamKey = 1*(ALPHA-LC / DIGIT / "-")
-   display-key = 1*(ALPHA / DIGIT / "-")
+   alpha-lc      = %x61-7A   ;  a-z
+   SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
+   SvcParam      = SvcParamKey ["=" SvcParamValue]
+   SvcParamValue = char-string
+   value         = *OCTET
 
-   Values are in a format specific to the SvcParamKey.  Their definition
-   should specify both their presentation format and wire encoding
-   (e.g., domain names, binary data, or numeric values).  The initial
-   keys and formats are defined in Section 6.  When the value is
-   omitted, or both the value and the "=" are omitted, the presentation
-   value is the empty string.
 
-   ; basic-visible is VCHAR minus DQUOTE, ";", "(", ")", and "\".
-   basic-visible = %x21 / %x23-27 / %x2A-3A / %x3C-5B / %x5D-7E
-   escaped-char  = "\" (VCHAR / WSP)
-   contiguous    = 1*(basic-visible / escaped-char)
-   quoted-string = DQUOTE *(contiguous / WSP) DQUOTE
-   SvcParamValue = quoted-string / contiguous
-   pair          = display-key "=" SvcParamValue
-   SvcParam      = display-key / pair
-   SvcParams     = [SvcParam *(WSP SvcParam)]
 
-   The SvcParamValue format is intended to match the definition of
-   <character-string> in [RFC1035] Section 5.1.  (Unlike <character-
-   string>, the length of a SvcParamValue is not limited to 255
-   characters.)
+
+
 
 
 
@@ -450,22 +450,24 @@ Schwartz, et al.         Expires 14 January 2021                [Page 8]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
+   The definition of each SvcParamKey indicates that its SvcParamValue
+   is empty, single-valued, or multi-valued.  To parse a single-valued
+   SvcParam, the parser applies the character-string decoding algorithm
+   (Appendix A), producing a "value", and then performs key-specific
+   processing to validate the input and produce the wire-format
+   encoding.  To parse a multi-valued SvcParam, the parser applies the
+   value-list decoding algorithm to the "char-string" (Appendix A.1),
+   splitting on unescaped commas to produce a list of zero or more
+   values.
+
+   When the "=" is omitted, the "value" or value list is interpreted as
+   empty.
+
    Unrecognized keys are represented in presentation format as
    "keyNNNNN" where NNNNN is the numeric value of the key type without
-   leading zeros.  In presentation format, values corresponding to
-   unrecognized keys SHALL be represented in wire format, using decimal
-   escape codes (e.g. \255) when necessary.
-
-   When decoding values of unrecognized keys in the presentation format:
-
-   *  a character other than "\" represents its ASCII value in wire
-      format.
-
-   *  the character "\" followed by three decimal digits, up to 255,
-      represents an octet in the wire format.
-
-   *  the character "\" followed by any allowed character, except a
-      decimal digit, represents the subsequent character's ASCII value.
+   leading zeros.  SvcParams in this form are always treated as single-
+   valued, and the decoded "value" SHALL be used as its wire format
+   encoding.
 
    SvcParams in presentation format MAY appear in any order, but keys
    MUST NOT be repeated.
@@ -497,14 +499,14 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    *  an octet string of this length whose contents are in a format
       determined by the SvcParamKey.
 
-   SvcParamKeys SHALL appear in increasing numeric order.
-
 
 
 Schwartz, et al.         Expires 14 January 2021                [Page 9]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   SvcParamKeys SHALL appear in increasing numeric order.
 
    Clients MUST consider an RR malformed if:
 
@@ -552,8 +554,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    to indicate that "foo://api.example.com:8443" is aliased to
    "svc4.example.net".  The owner of example.net, in turn, could publish
    this record:
-
-
 
 
 
@@ -1020,15 +1020,11 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    ALPNs are identified by their registered "Identification Sequence"
    ("alpn-id"), which is a sequence of 1-255 octets.
 
-   alpn-id = 1*255(OCTET)
+   alpn-id = 1*255OCTET
 
-   The presentation value of "alpn" is a comma-separated list of one or
-   more "alpn-id"s.  Any commas present in the Identification Sequence
-   are escaped by a backslash:
-
-   escaped-octet = %x00-2b / "\," / %x2d-5b / "\\" / %x5D-FF
-   escaped-id = 1*(escaped-octet)
-   alpn-value = escaped-id *("," escaped-id)
+   "alpn" is a multi-valued SvcParamKey.  Each decoded value in the
+   "alpn" value list SHALL be an "alpn-id".  The value list MUST NOT be
+   empty.
 
    The wire format value for "alpn" consists of at least one "alpn-id"
    prefixed by its length as a single octet, and these length-value
@@ -1042,12 +1038,11 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    Each scheme that uses this SvcParamKey defines a "default set" of
    supported ALPNs, which SHOULD NOT be empty.  To determine the set of
    protocol suites supported by an endpoint (the "SVCB ALPN set"), the
-   client parses the "alpn-value" to produce a set of "alpn-id"s, and
-   then adds the default set unless the "no-default-alpn" SvcParamKey is
-   present.  The presence of an ALPN protocol in the SVCB ALPN set
-   indicates that this service endpoint, described by TargetName and the
-   other parameters (e.g. "port") offers service with the protocol suite
-   associated with this ALPN protocol.
+   client adds the default set to the list of "alpn-id"s unless the "no-
+   default-alpn" SvcParamKey is present.  The presence of an ALPN
+   protocol in the SVCB ALPN set indicates that this service endpoint,
+   described by TargetName and the other parameters (e.g. "port") offers
+   service with the protocol suite associated with this ALPN protocol.
 
    ALPN protocol names that do not uniquely identify a protocol suite
    (e.g. an Identification Sequence that can be used with both TLS and
@@ -1059,15 +1054,17 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    1.  Let SVCB-ALPN-Intersection be the set of protocols in the SVCB
        ALPN set that the client supports.
 
+   2.  Let Intersection-Transports be the set of transports (e.g.  TLS,
+       DTLS, QUIC) implied by the protocols in SVCB-ALPN-Intersection.
+
+
+
 
 
 Schwartz, et al.         Expires 14 January 2021               [Page 19]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
-
-   2.  Let Intersection-Transports be the set of transports (e.g.  TLS,
-       DTLS, QUIC) implied by the protocols in SVCB-ALPN-Intersection.
 
    3.  For each transport in Intersection-Transports, construct a
        ProtocolNameList containing the Identification Sequences of all
@@ -1107,12 +1104,15 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    used to reach this alternative endpoint.  If this key is not present,
    clients SHALL use the authority endpoint's port number.
 
-   The presentation format of the SvcParamValue is an integer between 0
-   and 65535 inclusive.  Any other values (e.g. the empty value) are
-   syntax errors.
+   The presentation "value" of the SvcParamValue is a single decimal
+   integer between 0 and 65535 in ASCII.  Any other "value" (e.g. an
+   empty value) is a syntax error.  To enable simpler parsing, this
+   SvcParam MUST NOT contain escape sequences.
 
    The wire format of the SvcParamValue is the corresponding 2 octet
    numeric value in network byte order.
+
+
 
 
 
@@ -1159,14 +1159,14 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    and/or AAAA response addresses could negatively impact load balancing
    or other geo-aware features and thereby degrade client performance.
 
+   Each decoded value in the value list SHALL be an IP address of the
+   appropriate family in standard textual format [RFC5952].  To enable
+   simpler parsing, this SvcParam MUST NOT contain escape sequences.
+
    The wire format for each parameter is a sequence of IP addresses in
    network byte order.  Like an A or AAAA RRSet, the list of addresses
    represents an unordered collection, and clients SHOULD pick addresses
    to use in a random order.  An empty list of addresses is invalid.
-
-
-
-
 
 
 
@@ -1186,9 +1186,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    perform DNS64 ([RFC6147]) on parameters within a SVCB record.  For
    best performance, server operators SHOULD include an "ipv6hint"
    parameter whenever they include an "ipv4hint" parameter.
-
-   The presentation format for each parameter is a comma-separated list
-   of IP addresses in standard textual format [RFC5952].
 
    These parameters are intended to minimize additional connection
    latency when a recursive resolver is not compliant with the
@@ -1225,7 +1222,10 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    In wire format, the keys are represented by their numeric values in
    network byte order, concatenated in ascending order.
 
-
+   This SvcParamKey is always automatically mandatory, and MUST NOT
+   appear in its own value list.  Other automatically mandatory keys
+   SHOULD NOT appear in the list either.  (Including them wastes space
+   and otherwise has no effect.)
 
 
 
@@ -1233,11 +1233,6 @@ Schwartz, et al.         Expires 14 January 2021               [Page 22]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
-
-   This SvcParamKey is always automatically mandatory, and MUST NOT
-   appear in its own value list.  Other automatically mandatory keys
-   SHOULD NOT appear in the list either.  (Including them wastes space
-   and otherwise has no effect.)
 
 7.  Using SVCB with HTTPS and HTTP
 
@@ -1281,6 +1276,11 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    modification: if the scheme is "https" and the port is 443, then the
    client's original QNAME is equal to the service name (i.e. the
    origin's hostname), without any prefix labels.
+
+
+
+
+
 
 
 
@@ -1466,8 +1466,10 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    The SVCB "echconfig" parameter is defined for conveying the ECH
    configuration of an alternative endpoint.  In wire format, the value
    of the parameter is an ECHConfigs vector [ECH], including the
-   redundant length prefix.  In presentation format, the value is
-   encoded in Base64 [BASE64].
+   redundant length prefix.  In presentation format, the value is a
+   single ECHConfigs encoded in Base64 [base64].  Base64 is used here to
+   simplify integration with TLS server software.  To enable simpler
+   parsing, this SvcParam MUST NOT contain escape sequences.
 
    When ECH is in use, the TLS ClientHello is divided into an
    unencrypted "outer" and an encrypted "inner" ClientHello.  The outer
@@ -1504,8 +1506,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    As a latency optimization, clients MAY prefetch DNS records for later
    steps before they are needed.
-
-
 
 
 
@@ -1906,7 +1906,7 @@ Schwartz, et al.         Expires 14 January 2021               [Page 34]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
-   [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
+   [base64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
@@ -2098,7 +2098,74 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
               RFC 3986, DOI 10.17487/RFC3986, January 2005,
               <https://www.rfc-editor.org/info/rfc3986>.
 
-Appendix A.  Comparison with alternatives
+Appendix A.  Decoding text in zone files
+
+   DNS zone files are capable of representing arbitrary octet sequences
+   in basic ASCII text, using various delimiters and encodings.  The
+   algorithm for decoding these character-strings is defined in
+   Section 5.1 of [RFC1035].  Here we summarize the allowed input to
+   that algorithm, using ABNF:
+
+   ; non-special is VCHAR minus DQUOTE, ";", "(", ")", and "\".
+   non-special = %x21 / %x23-27 / %x2A-3A / %x3C-5B / %x5D-7E
+   ; non-digit is VCHAR minus DIGIT
+   non-digit   = %x21-2F / %x3A-7E
+   ; dec-octet is a number 0-255 as a three-digit decimal number.
+   dec-octet   = ( "0" / "1" ) 2DIGIT /
+                 "2" ( ( %x30-34 DIGIT ) / ( "5" %x30-35 ) )
+   escaped     = "\" ( non-digit / dec-octet )
+   contiguous  = 1*( non-special / escaped )
+   quoted      = DQUOTE *( contiguous / ( ["\"] WSP ) ) DQUOTE
+   char-string = contiguous / quoted
+
+
+
+
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 38]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
+   The decoding algorithm allows "char-string" to represent any
+   "*OCTET".  In this document, this algorithm is referred to as
+   "character-string decoding".  The algorithm is the same as used by
+   "<character-string>" in RFC 1035, although the output length in this
+   document is not limited to 255 octets.
+
+A.1.  Decoding a value list
+
+   In order to represent lists of values in zone files, this
+   specification uses an extended version of character-string decoding
+   that adds the use of "," as a delimiter after double-quote
+   processing.  When "," is not escaped (by a preceding "\" or as the
+   escape sequence "\044"), it separates values in the output, which is
+   a list of 1*OCTET.  (For simplicity, empty values are not allowed.)
+   We refer to this modified procedure as "value-list decoding".
+
+   value-list = char-string
+   list-value = 1*OCTET
+
+   For example, consider these "char-string" SvcParamValues:
+
+   "part1,part2\,part3"
+   part1,part2\044part3
+
+   Character-string decoding either of these inputs would produce a
+   single "*OCTET" output:
+
+   part1,part2,part3
+
+   Value-list decoding either of these inputs would instead convert it
+   to a list of two "list-value"s:
+
+   part1
+   part2,part3
+
+Appendix B.  Comparison with alternatives
 
    The SVCB and HTTPS RR types closely resemble, and are inspired by,
    some existing record types and proposals.  A complaint with all of
@@ -2107,7 +2174,19 @@ Appendix A.  Comparison with alternatives
    solution that solves multiple problems we will overcome the inertia
    and have a path to achieve client implementation.
 
-A.1.  Differences from the SRV RR type
+
+
+
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 39]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
+B.1.  Differences from the SRV RR type
 
    An SRV record [SRV] can perform a similar function to the SVCB
    record, informing a client to look in a different location for a
@@ -2123,17 +2202,10 @@ A.1.  Differences from the SRV RR type
    *  SRV records are not extensible, whereas SVCB and HTTPS RRs can be
       extended with new parameters.
 
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 38]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
    *  SVCB records use 16 bit for SvcPriority for consistency with SRV
       and other RR types that also use 16 bit priorities.
 
-A.2.  Differences from the proposed HTTP record
+B.2.  Differences from the proposed HTTP record
 
    Unlike [I-D.bellis-dnsop-http-record], this approach is extensible to
    cover Alt-Svc and Encrypted ClientHello use-cases.  Like that
@@ -2142,7 +2214,7 @@ A.2.  Differences from the proposed HTTP record
    Like that proposal, it remains necessary to continue to include
    address records at the zone apex for legacy clients.
 
-A.3.  Differences from the proposed ANAME record
+B.3.  Differences from the proposed ANAME record
 
    Unlike [I-D.ietf-dnsop-aname], this approach is extensible to cover
    Alt-Svc and ECH use-cases.  This approach also does not require any
@@ -2162,7 +2234,15 @@ A.3.  Differences from the proposed ANAME record
    endpoint, and may remove the apex's address records if the observed
    legacy traffic has fallen to negligible levels.
 
-A.4.  Comparison with separate RR types for AliasMode and ServiceMode
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 40]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
+B.4.  Comparison with separate RR types for AliasMode and ServiceMode
 
    Abstractly, functions of AliasMode and ServiceMode are independent,
    so it might be tempting to specify them as separate RR types.
@@ -2177,16 +2257,7 @@ A.4.  Comparison with separate RR types for AliasMode and ServiceMode
    on clients and servers, and would not reduce implementation
    complexity.
 
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 39]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
-Appendix B.  Change history
+Appendix C.  Change history
 
    *  draft-ietf-dnsop-svcb-https-00
 
@@ -2219,6 +2290,14 @@ Appendix B.  Change history
 
       -  Expanded and reorganized examples
 
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 41]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
       -  Priority zero is now the definition of AliasForm
 
       -  Repeated SvcParamKeys are no longer allowed
@@ -2233,14 +2312,6 @@ Appendix B.  Change history
       -  Expanded description of recursive resolver behavior
 
       -  Much more precise description of the intended ALPN behavior
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 40]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
 
       -  Match the HSTS specification's language on HTTPS enforcement
 
@@ -2276,6 +2347,13 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
       -  Remove one optimization.
 
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 42]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
    *  draft-nygren-httpbis-httpssvc-03
 
       -  Change redirect type for HSTS-style behavior from 302 to 307 to
@@ -2289,14 +2367,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
          HTTPSSVC RRNAME.
 
       -  Replace "hq" with "h3".
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 41]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
 
    *  draft-nygren-httpbis-httpssvc-01
 
@@ -2335,18 +2405,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 42]
+Schwartz, et al.         Expires 14 January 2021               [Page 43]
