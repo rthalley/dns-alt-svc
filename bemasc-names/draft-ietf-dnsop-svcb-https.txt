@@ -1688,7 +1688,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    *  Pointer to specification text
 
-   SvcParamKey values to be added to this namespace have different
+   SvcParamKey entries to be added to this namespace have different
    policies ([RFC5226], Section 4.1) based on their range:
 
                  +=============+=========================+
