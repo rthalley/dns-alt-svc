@@ -2259,6 +2259,22 @@ B.4.  Comparison with separate RR types for AliasMode and ServiceMode
 
 Appendix C.  Change history
 
+   *  draft-ietf-dnsop-svcb-https-01
+
+      -  Added a "mandatory" SvcParamKey
+
+      -  Added the ability to indicate that a service does not exist
+
+      -  Adjusted resolution and ALPN algorithms
+
+      -  Major terminology revisions for "origin" and CamelCase names
+
+      -  Revised ABNF
+
+      -  Include allocated RR type numbers
+
+      -  Various corrections, explanations, and recommendations
+
    *  draft-ietf-dnsop-svcb-https-00
 
       -  Rename HTTPSSVC RR to HTTPS RR
@@ -2273,6 +2289,14 @@ Appendix C.  Change history
       -  Revised chain length limit requirements
 
       -  Revised IANA registry rules for SvcParamKeys
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 41]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
 
       -  Require HTTPS clients to implement SNI
 
@@ -2289,14 +2313,6 @@ Appendix C.  Change history
       -  All changes to Alt-Svc have been removed
 
       -  Expanded and reorganized examples
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 41]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
 
       -  Priority zero is now the definition of AliasForm
 
@@ -2329,6 +2345,15 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    *  draft-ietf-dnsop-svcb-httpssvc-00
 
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 42]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
       -  Document an optimization for optimistic pre-connection.  (Chris
          Wood)
 
@@ -2346,13 +2371,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
          feedback recommending against subtyping RR type.
 
       -  Remove one optimization.
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 42]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
 
    *  draft-nygren-httpbis-httpssvc-03
 
@@ -2385,6 +2403,13 @@ Authors' Addresses
    Email: bemasc@google.com
 
 
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 43]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
    Mike Bishop
    Akamai Technologies
 
@@ -2405,4 +2430,35 @@ Authors' Addresses
 
 
 
-Schwartz, et al.         Expires 14 January 2021               [Page 43]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 44]
