@@ -226,6 +226,11 @@ Schwartz, et al.         Expires 14 January 2021                [Page 4]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
+   The SVCB RR has two modes: 1) "AliasMode" simply delegates
+   operational control for a resource; 2) "ServiceMode" binds together
+   configuration information for a service endpoint.  ServiceMode
+   provides additional key=value parameters within each RDATA set.
+
    TO BE REMOVED: If we use this for providing configuration for DNS
    authorities, it is likely we'd specify a distinct "NS2" RR type that
    is an instantiation of SVCB for authoritative nameserver delegation
@@ -269,11 +274,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
       limitation that a DNS name can not have both CNAME and NS RRs (as
       is the case for zone apex names)
 
-   *  Provide an HSTS-like indication signaling for the duration of the
-      DNS RR TTL that the HTTPS scheme should be used instead of HTTP
-      (see Section 7.5).
-
-
 
 
 
@@ -281,6 +281,10 @@ Schwartz, et al.         Expires 14 January 2021                [Page 5]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   *  Provide an HSTS-like indication signaling for the duration of the
+      DNS RR TTL that the HTTPS scheme should be used instead of HTTP
+      (see Section 7.5).
 
 1.2.  Overview of the SVCB RR
 
@@ -326,10 +330,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    (multiple roundtrips) before learning of the preferred alternative,
    and without necessarily revealing the user's intended destination to
    all entities along the network path.
-
-
-
-
 
 
 
@@ -404,8 +404,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    Class ([RFC1035]).
 
    SvcPriority is a number in the range 0-65535, TargetName is a domain
-   name, and the SvcParams are SvcParamKey=SvcParamValue pairs separated
-   by whitespace.  SvcParamKeys are subject to IANA control
+   name, and the SvcParams are a whitespace-separated list, with each
+   SvcParam consisting of a SvcParamKey=SvcParamValue pair or a
+   standalone SvcParamKey.  SvcParamKeys are subject to IANA control
    (Section 12.3).
 
    Each SvcParamKey SHALL appear at most once in the SvcParams.  In
@@ -438,7 +439,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    <character-string> in [RFC1035] Section 5.1.  (Unlike <character-
    string>, the length of a SvcParamValue is not limited to 255
    characters.)
-
 
 
 
@@ -627,9 +627,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    might offer better performance, and therefore would be preferable for
    clients implementing this specification to use.
 
-   SVCB and SVCB-compatible record types use AliasMode only within the
-   type.  For example, a SVCB record cannot alias to an HTTPS record,
-   nor vice-versa.
+   AliasMode records only apply to queries for the specific RR type.
+   For example, a SVCB record cannot alias to an HTTPS record, nor vice-
+   versa.
 
 2.4.2.  ServiceMode
 
@@ -1682,7 +1682,7 @@ Schwartz, et al.         Expires 14 January 2021               [Page 30]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
-   *  Name: Service parameter key name
+   *  Name: SvcParamKey presentation name
 
    *  Meaning: a short description
 
