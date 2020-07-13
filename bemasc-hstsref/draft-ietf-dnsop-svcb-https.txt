@@ -288,7 +288,8 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
       above) for HTTP(S), where SRV [SRV] has not been widely adopted
 
    *  Provide an HSTS-like indication [HSTS] signaling that the HTTPS
-      scheme should be used instead of HTTP (see Section 7.5).
+      scheme should be used instead of HTTP for this request (see
+      Section 7.5).
 
 1.2.  Overview of the SVCB RR
 
@@ -329,7 +330,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    extensible data model for describing network endpoints that are
    authoritative for the origin, along with parameters associated with
    each of these endpoints.
-
 
 
 
