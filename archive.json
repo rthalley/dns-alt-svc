@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-12T12:31:46.466008+00:00",
+  "timestamp": "2020-07-13T03:19:35.255473+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -3185,7 +3185,7 @@
       "id": "MDU6SXNzdWU2NDM1Nzc3MjM=",
       "title": "SRV language is unnecesarily perjorative",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/180",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "martinthomson",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [
@@ -3194,8 +3194,8 @@
       "labels": [],
       "body": "> Address a set of long-standing issues due to HTTP(S) clients not implementing support for SRV records, as well as due to a limitation that a DNS name can not have both CNAME and NS RRs (as is the case for zone apex names)\r\n\r\nThis implies fault in clients for a refusal to implement, as opposed to SRV not providing sufficient advantages for HTTP(S) clients.\r\n\r\nRather than get into the why, it might be best to say which of the features of SRV are provided and why.  \r\n\r\nI might also separate out the point about NS and CNAME not playing well together.\r\n\r\n",
       "createdAt": "2020-06-23T06:46:21Z",
-      "updatedAt": "2020-07-11T19:35:57Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-13T03:18:37Z",
+      "closedAt": "2020-07-13T03:18:37Z",
       "comments": []
     },
     {
@@ -13515,13 +13515,13 @@
       "labels": [],
       "body": "This (purely editorial) change replaces the unambiguous but\r\nidiosyncratic CamelCase terms with capitalized standard terms.\r\nIt also removes some duplicated language and changes \"form\" to \"mode\",\r\nsince there is really only one SVCB wire format.\r\n\r\nRelevant issues: #99, #82",
       "createdAt": "2020-06-01T01:06:18Z",
-      "updatedAt": "2020-07-12T03:51:30Z",
+      "updatedAt": "2020-07-12T13:09:28Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
-      "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
+      "baseRefOid": "63bf92d957cb28de9918d077253f822f84393acd",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-names",
-      "headRefOid": "a98b5a7c6c517d7086ce208a5c7346295a163488",
+      "headRefOid": "5dab608522bc0aaba91dd844dd066a0e582e68c1",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -13573,13 +13573,13 @@
               "originalPosition": 41,
               "body": "```suggestion\r\n3. SvcParams (optional): A list of key=value pairs\r\n   describing the alternative endpoint at\r\n   TargetName (only used in ServiceMode and otherwise ignored). \r\n   Described in {{svcparams}}.\r\n```",
               "createdAt": "2020-07-12T03:43:26Z",
-              "updatedAt": "2020-07-12T03:51:30Z"
+              "updatedAt": "2020-07-12T13:09:18Z"
             },
             {
               "originalPosition": 640,
               "body": "```suggestion\r\nFollowing of HTTPS AliasMode RRs and CNAME aliases is unchanged from SVCB.\r\n```",
               "createdAt": "2020-07-12T03:49:39Z",
-              "updatedAt": "2020-07-12T03:51:30Z"
+              "updatedAt": "2020-07-12T13:09:18Z"
             }
           ]
         }
@@ -14967,7 +14967,7 @@
       "labels": [],
       "body": "Fixes #185, #192",
       "createdAt": "2020-06-26T04:05:32Z",
-      "updatedAt": "2020-07-11T18:07:03Z",
+      "updatedAt": "2020-07-12T13:10:09Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
@@ -16051,7 +16051,7 @@
       "labels": [],
       "body": "Fixes #206",
       "createdAt": "2020-07-07T22:12:36Z",
-      "updatedAt": "2020-07-07T22:52:42Z",
+      "updatedAt": "2020-07-12T13:10:42Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "7ae1ce79b8501f6d35e3dafbcc70c10b7fccbe40",
@@ -16155,13 +16155,13 @@
       "labels": [],
       "body": "Fixes #187, #188",
       "createdAt": "2020-07-09T23:26:04Z",
-      "updatedAt": "2020-07-12T03:40:02Z",
+      "updatedAt": "2020-07-12T13:10:54Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "08a5c8ac0e37848318fa9dc4929b4ee5d85d4e75",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-alias",
-      "headRefOid": "b72d5816bce4039bd6712199762b842f08688eaa",
+      "headRefOid": "b8b95c57412360fd443354048252f68df09d5588",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -16184,25 +16184,45 @@
               "originalPosition": 6,
               "body": "did we want to use a word other than \"origin\" here?",
               "createdAt": "2020-07-10T16:15:52Z",
-              "updatedAt": "2020-07-12T03:40:02Z"
+              "updatedAt": "2020-07-12T12:35:20Z"
             },
             {
               "originalPosition": 25,
               "body": "The \"wanted to point requests to\" took me a few times to read. \r\n\r\n```suggestion\r\nFor example, the operator of foo://example.com:8080 could\r\npoint requests to a service operating at foosvc.example.net\r\nby publishing:\r\n```",
               "createdAt": "2020-07-10T16:20:20Z",
-              "updatedAt": "2020-07-12T03:40:02Z"
+              "updatedAt": "2020-07-12T12:35:20Z"
             },
             {
               "originalPosition": 32,
               "body": "Inconsistent on use of \".\" in names and it makes this harder to read.\r\n```suggestion\r\nfoosvc.example.net promises to always publish a SVCB record, this AliasForm\r\n```",
               "createdAt": "2020-07-10T16:21:41Z",
-              "updatedAt": "2020-07-12T03:40:02Z"
+              "updatedAt": "2020-07-12T12:35:20Z"
             },
             {
               "originalPosition": 6,
               "body": "Per #204 perhaps use \"service\" instead?\r\n\r\n```suggestion\r\nWhen SvcRecordType is AliasForm, the SVCB record aliases a service to a\r\n```",
               "createdAt": "2020-07-10T16:24:27Z",
-              "updatedAt": "2020-07-12T03:40:02Z"
+              "updatedAt": "2020-07-12T12:35:20Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2ODc0NjY2",
+          "commit": {
+            "abbreviatedOid": "b72d581"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-12T12:34:46Z",
+          "updatedAt": "2020-07-12T12:34:46Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "Done",
+              "createdAt": "2020-07-12T12:34:46Z",
+              "updatedAt": "2020-07-12T12:35:20Z"
             }
           ]
         }
@@ -16405,7 +16425,7 @@
       "labels": [],
       "body": "Fixes #181",
       "createdAt": "2020-07-11T19:25:49Z",
-      "updatedAt": "2020-07-12T03:18:18Z",
+      "updatedAt": "2020-07-12T13:11:00Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
@@ -16424,24 +16444,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDQ3ODA4MTcx",
       "title": "Simplify description of SRV/HTTP status",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/216",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "This also removes duplicate statements about CNAME at apex.\r\n\r\nFixes #180",
       "createdAt": "2020-07-11T19:36:08Z",
-      "updatedAt": "2020-07-12T12:31:17Z",
+      "updatedAt": "2020-07-13T03:18:37Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "bemasc-srv",
       "headRefOid": "8efc3d4514a8c381bb138d9c5567f1958c0e9ccd",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2020-07-13T03:18:37Z",
+      "mergedAt": "2020-07-13T03:18:37Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "603fd7339e39e7b8911db17b8a1f8cb9b117d715"
+      },
       "comments": [],
       "reviews": [
         {
@@ -16483,6 +16505,19 @@
               "updatedAt": "2020-07-12T12:31:18Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2OTU3OTAz",
+          "commit": {
+            "abbreviatedOid": "8efc3d4"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-13T03:18:29Z",
+          "updatedAt": "2020-07-13T03:18:29Z",
+          "comments": []
         }
       ]
     },
@@ -16498,7 +16533,7 @@
       "labels": [],
       "body": "With this change, references are either parentheticals or nouns that\r\nname the referenced document.\r\n\r\nFixes #195",
       "createdAt": "2020-07-11T21:33:01Z",
-      "updatedAt": "2020-07-11T21:33:01Z",
+      "updatedAt": "2020-07-13T03:17:24Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0ea348a7fcc88ccd183c601a50a22eecf160d9ec",
@@ -16510,7 +16545,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDQ2OTU3NjY5",
+          "commit": {
+            "abbreviatedOid": "ba4502f"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "This looks fine but I won't have a chance to do a code-review level review of this (ie, to validate all the output as sane).  But probably fine to just merge and review later?",
+          "createdAt": "2020-07-13T03:17:24Z",
+          "updatedAt": "2020-07-13T03:17:24Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
