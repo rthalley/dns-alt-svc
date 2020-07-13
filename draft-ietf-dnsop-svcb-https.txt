@@ -208,16 +208,16 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    resource record that can be applied directly and efficiently to a
    wide range of services (Section 2).  The HTTPS RR is then defined as
    a special case of SVCB that improves efficiency and convenience for
-   use with HTTPS (Section 7) by avoiding the need for an [Attrleaf]
-   label (Section 7.1).  Other protocols with similar needs may follow
-   the pattern of HTTPS and assign their own SVCB-compatible RR types.
+   use with HTTPS (Section 7) by avoiding the need for an Attrleaf label
+   [Attrleaf] (Section 7.1).  Other protocols with similar needs may
+   follow the pattern of HTTPS and assign their own SVCB-compatible RR
+   types.
 
-   All behaviors described as applying to the SVCB RR also apply to the
-   HTTPS RR unless explicitly stated otherwise.  Section 7 describes
-   additional behaviors specific to the HTTPS RR.  Apart from Section 7
-   and introductory examples, much of this document refers only to the
-   SVCB RR, but those references should be taken to apply to SVCB,
-   HTTPS, and any future SVCB-compatible RR types.
+
+
+
+
+
 
 
 
@@ -225,6 +225,13 @@ Schwartz, et al.         Expires 14 January 2021                [Page 4]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   All behaviors described as applying to the SVCB RR also apply to the
+   HTTPS RR unless explicitly stated otherwise.  Section 7 describes
+   additional behaviors specific to the HTTPS RR.  Apart from Section 7
+   and introductory examples, much of this document refers only to the
+   SVCB RR, but those references should be taken to apply to SVCB,
+   HTTPS, and any future SVCB-compatible RR types.
 
    The SVCB RR has two forms: 1) the "Alias Form" simply delegates
    operational control for a resource; 2) the "Service Form" binds
@@ -262,18 +269,11 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    Additional goals specific to HTTPS RRs and the HTTPS use-case
    include:
 
-   *  Connect directly to [HTTP3] (QUIC transport) alternative service
-      endpoints
+   *  Connect directly to HTTP3 (QUIC transport) alternative service
+      endpoints [HTTP3]
 
-   *  Obtain the [ECH] keys associated with an alternative service
-      endpoint
-
-   *  Support non-default TCP and UDP ports
-
-   *  Enable SRV-like benefits (e.g. apex delegation, as mentioned
-      above) for HTTP(S), where SRV [SRV] has not been widely adopted
-
-
+   *  Obtain the Encrypted ClientHello [ECH] keys associated with an
+      alternative service endpoint
 
 
 
@@ -281,6 +281,11 @@ Schwartz, et al.         Expires 14 January 2021                [Page 5]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   *  Support non-default TCP and UDP ports
+
+   *  Enable SRV-like benefits (e.g. apex delegation, as mentioned
+      above) for HTTP(S), where SRV [SRV] has not been widely adopted
 
    *  Provide an HSTS-like indication signaling for the duration of the
       DNS RR TTL that the HTTPS scheme should be used instead of HTTP
@@ -328,21 +333,16 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
 
-
-
-
-
-
 Schwartz, et al.         Expires 14 January 2021                [Page 6]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
    For the HTTPS use-case, the HTTPS RR enables many of the benefits of
-   [AltSvc] without waiting for a full HTTP connection initiation
-   (multiple roundtrips) before learning of the preferred alternative,
-   and without necessarily revealing the user's intended destination to
-   all entities along the network path.
+   Alt-Svc [AltSvc] without waiting for a full HTTP connection
+   initiation (multiple roundtrips) before learning of the preferred
+   alternative, and without necessarily revealing the user's intended
+   destination to all entities along the network path.
 
 1.3.  Parameter for Encrypted ClientHello
 
@@ -772,7 +772,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    to comply with this specification or have any awareness of SVCB.
 
    When selecting between AAAA and A records to use, clients may use an
-   approach such as [HappyEyeballsV2].
+   approach such as Happy Eyeballs [HappyEyeballsV2].
 
    Some important optimizations are discussed in Section 5 to avoid
    additional latency in comparison to ordinary AAAA/A lookups.
@@ -790,11 +790,10 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    If a SVCB query results in a SERVFAIL error, transport error, or
    timeout, and DNS exchanges between the client and the recursive
-   resolver are cryptographically protected (e.g. using TLS [RFC7858] or
-   HTTPS [RFC8484]), the client SHOULD NOT fall back to non-SVCB
-   connection establishment.  Otherwise, an active attacker could mount
-   a downgrade attack by denying the user access to the SVCB
-   information.
+   resolver are cryptographically protected (e.g. using TLS [DoT] or
+   HTTPS [DoH]), the client SHOULD NOT fall back to non-SVCB connection
+   establishment.  Otherwise, an active attacker could mount a downgrade
+   attack by denying the user access to the SVCB information.
 
    A SERVFAIL error can occur if the domain is DNSSEC-signed, the
    recursive resolver is DNSSEC-validating, and the attacker is between
@@ -832,6 +831,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    Providing the proxy with the final SvcDomainName has several
    benefits:
+
 
 
 
@@ -909,7 +909,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    In this procedure, "resolve" means the resolver's ordinary recursive
    resolution procedure, as if processing a query for that RRSet.  This
    includes following any aliases that the resolver would ordinarily
-   follow (e.g.  CNAME, [DNAME]).
+   follow (e.g.  CNAME, DNAME [DNAME]).
 
    See Section 5.2 for possible optimizations of this procedure.
 
@@ -1033,12 +1033,12 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    identifiers [ALPN] and associated transport protocols supported by
    this service endpoint.
 
-   As with [AltSvc], the ALPN protocol identifier is used to identify
-   the application protocol and associated suite of protocols supported
-   by the endpoint (the "protocol suite").  Clients filter the set of
-   ALPN identifiers to match the protocol suites they support, and this
-   informs the underlying transport protocol used (such as QUIC-over-UDP
-   or TLS-over-TCP).
+   As with Alt-Svc [AltSvc], the ALPN protocol identifier is used to
+   identify the application protocol and associated suite of protocols
+   supported by the endpoint (the "protocol suite").  Clients filter the
+   set of ALPN identifiers to match the protocol suites they support,
+   and this informs the underlying transport protocol used (such as
+   QUIC-over-UDP or TLS-over-TCP).
 
    ALPNs are identified by their registered "Identification Sequence"
    ("alpn-id"), which is a sequence of 1-255 octets.
@@ -1198,13 +1198,13 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    to use in a random order.  An empty list of addresses is invalid.
 
    When selecting between IPv4 and IPv6 addresses to use, clients may
-   use an approach such as [HappyEyeballsV2].  When only "ipv4hint" is
-   present, IPv6-only clients may synthesize IPv6 addresses as specified
-   in [RFC7050] or ignore the "ipv4hint" key and wait for AAAA
-   resolution (Section 3).  Recursive resolvers MUST NOT perform DNS64
-   ([RFC6147]) on parameters within a SVCB record.  For best
-   performance, server operators SHOULD include an "ipv6hint" parameter
-   whenever they include an "ipv4hint" parameter.
+   use an approach such as Happy Eyeballs [HappyEyeballsV2].  When only
+   "ipv4hint" is present, IPv6-only clients may synthesize IPv6
+   addresses as specified in [RFC7050] or ignore the "ipv4hint" key and
+   wait for AAAA resolution (Section 3).  Recursive resolvers MUST NOT
+   perform DNS64 ([RFC6147]) on parameters within a SVCB record.  For
+   best performance, server operators SHOULD include an "ipv6hint"
+   parameter whenever they include an "ipv4hint" parameter.
 
    The presentation format for each parameter is a comma-separated list
    of IP addresses in standard textual format [RFC5952].
@@ -1275,7 +1275,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    Name TTL IN HTTPS SvcFieldPriority SvcDomainName SvcFieldValue
 
    As with SVCB, the record is defined specifically within the Internet
-   ("IN") Class ([RFC1035]).
+   ("IN") Class [RFC1035].
 
    All the SvcParamKeys defined in Section 6 are permitted for use in
    HTTPS RRs.  The default set of ALPN IDs is the single value
@@ -1307,12 +1307,12 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    client's original QNAME is equal to the origin hostname, without any
    prefix labels.
 
-   By removing the [Attrleaf] labels used in SVCB, this construction
-   enables offline DNSSEC signing of wildcard domains, which are
-   commonly used with HTTPS.  Reusing the origin hostname also allows
-   the targets of existing CNAME chains (e.g.  CDN hosts) to start
-   returning HTTPS RR responses without requiring origin domains to
-   configure and maintain an additional delegation.
+   By removing the Attrleaf labels [Attrleaf] used in SVCB, this
+   construction enables offline DNSSEC signing of wildcard domains,
+   which are commonly used with HTTPS.  Reusing the origin hostname also
+   allows the targets of existing CNAME chains (e.g.  CDN hosts) to
+   start returning HTTPS RR responses without requiring origin domains
+   to configure and maintain an additional delegation.
 
    Following of HTTPS RR AliasForm and CNAME aliases is unchanged from
    SVCB.
@@ -1464,8 +1464,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    an "http:" or "https:" URL.  When implementing an HTTP-based
    protocol, clients that use HTTPS RRs for HTTP SHOULD also use it for
    this URL.  For example, clients that support HTTPS RRs and implement
-   the altered [WebSocket] opening handshake from [FETCH] SHOULD use
-   HTTPS RRs for the "requestURL".
+   the altered WebSocket [WebSocket] opening handshake from the W3C
+   Fetch specification [FETCH] SHOULD use HTTPS RRs for the
+   "requestURL".
 
    An HTTP-based protocol MAY define its own SVCB mapping.  Such
    mappings MAY be defined to take precedence over HTTPS RRs.
@@ -1476,7 +1477,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    configuration of an alternative service.  In wire format, the value
    of the parameter is an ECHConfigs vector [ECH], including the
    redundant length prefix.  In presentation format, the value is
-   encoded in [base64].
+   encoded in Base64 [BASE64].
 
    When ECH is in use, the TLS ClientHello is divided into an
    unencrypted "outer" and an encrypted "inner" ClientHello.  The outer
@@ -1504,8 +1505,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
        key, and attempts to connect to them all fail, terminate
        connection establishment.
 
-   2.  If the client implements Alt-Svc, try to connect using any
-       entries from the Alt-Svc cache.
+
 
 
 
@@ -1513,6 +1513,9 @@ Schwartz, et al.         Expires 14 January 2021               [Page 27]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   2.  If the client implements Alt-Svc, try to connect using any
+       entries from the Alt-Svc cache.
 
    3.  Fall back to the origin's A/AAAA records if necessary.
 
@@ -1558,10 +1561,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    @                300 IN A     192.0.2.1
                         IN AAAA  2001:db8::1
 
-   With HTTPS RRs, the owner of aliased.example could alias the apex by
-   adding one additional record:
 
-   @               7200 IN HTTPS 0 pool.svc.example.
 
 
 
@@ -1569,6 +1569,11 @@ Schwartz, et al.         Expires 14 January 2021               [Page 28]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   With HTTPS RRs, the owner of aliased.example could alias the apex by
+   adding one additional record:
+
+   @               7200 IN HTTPS 0 pool.svc.example.
 
    With this record in place, HTTPS-RR-aware clients will use the same
    server pool for aliased.example and www.aliased.example.  (They will
@@ -1603,21 +1608,16 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 9.4.  Non-HTTPS uses
 
-   For services other than HTTPS, the SVCB RR and an [Attrleaf] label
-   will be used.  For example, to reach an example resource of
-   "baz://api.example.com:8765", the following Alias Form SVCB record
+   For services other than HTTPS, the SVCB RR and an Attrleaf label
+   [Attrleaf] will be used.  For example, to reach an example resource
+   of "baz://api.example.com:8765", the following Alias Form SVCB record
    would be used to delegate to "svc4-baz.example.net." which in-turn
    could return AAAA/A records and/or SVCB records in ServiceForm:
 
    _8765._baz.api.example.com. 7200 IN SVCB 0 svc4-baz.example.net.
 
-   HTTPS RRs use similar [Attrleaf] labels if the origin contains a non-
+   HTTPS RRs use similar Attrleaf labels if the origin contains a non-
    default port.
-
-
-
-
-
 
 
 
@@ -1636,9 +1636,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    To realize the greatest privacy benefits, this proposal is intended
    for use over a privacy-preserving DNS transport (like DNS over TLS
-   [RFC7858] or DNS over HTTPS [RFC8484]).  However, performance
-   improvements, and some modest privacy improvements, are possible
-   without the use of those standards.
+   [DoT] or DNS over HTTPS [DoH]).  However, performance improvements,
+   and some modest privacy improvements, are possible without the use of
+   those standards.
 
    Any specification for use of SVCB with a protocol MUST have an entry
    for its scheme under the SVCB RR type in the IANA DNS Underscore
@@ -1906,13 +1906,22 @@ Schwartz, et al.         Expires 14 January 2021               [Page 34]
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
 
-   [base64]   Josefsson, S., "The Base16, Base32, and Base64 Data
+   [BASE64]   Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <https://www.rfc-editor.org/info/rfc4648>.
 
    [DNAME]    Rose, S. and W. Wijngaards, "DNAME Redirection in the
               DNS", RFC 6672, DOI 10.17487/RFC6672, June 2012,
               <https://www.rfc-editor.org/info/rfc6672>.
+
+   [DoH]      Hoffman, P. and P. McManus, "DNS Queries over HTTPS
+              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
+              <https://www.rfc-editor.org/info/rfc8484>.
+
+   [DoT]      Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
+              and P. Hoffman, "Specification for DNS over Transport
+              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
+              2016, <https://www.rfc-editor.org/info/rfc7858>.
 
    [ECH]      Rescorla, E., Oku, K., Sullivan, N., and C. Wood, "TLS
               Encrypted Client Hello", Work in Progress, Internet-Draft,
@@ -1944,15 +1953,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
               DOI 10.17487/RFC1928, March 1996,
               <https://www.rfc-editor.org/info/rfc1928>.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC3225]  Conrad, D., "Indicating Resolver Support of DNSSEC",
-              RFC 3225, DOI 10.17487/RFC3225, December 2001,
-              <https://www.rfc-editor.org/info/rfc3225>.
-
 
 
 
@@ -1961,6 +1961,15 @@ Schwartz, et al.         Expires 14 January 2021               [Page 35]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC3225]  Conrad, D., "Indicating Resolver Support of DNSSEC",
+              RFC 3225, DOI 10.17487/RFC3225, December 2001,
+              <https://www.rfc-editor.org/info/rfc3225>.
 
    [RFC3597]  Gustafsson, A., "Handling of Unknown DNS Resource Record
               (RR) Types", RFC 3597, DOI 10.17487/RFC3597, September
@@ -2001,6 +2010,14 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
               RFC 7050, DOI 10.17487/RFC7050, November 2013,
               <https://www.rfc-editor.org/info/rfc7050>.
 
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 36]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
@@ -2011,18 +2028,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
               RFC 7595, DOI 10.17487/RFC7595, June 2015,
               <https://www.rfc-editor.org/info/rfc7595>.
 
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 36]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
-   [RFC7858]  Hu, Z., Zhu, L., Heidemann, J., Mankin, A., Wessels, D.,
-              and P. Hoffman, "Specification for DNS over Transport
-              Layer Security (TLS)", RFC 7858, DOI 10.17487/RFC7858, May
-              2016, <https://www.rfc-editor.org/info/rfc7858>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -2030,10 +2035,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
-
-   [RFC8484]  Hoffman, P. and P. McManus, "DNS Queries over HTTPS
-              (DoH)", RFC 8484, DOI 10.17487/RFC8484, October 2018,
-              <https://www.rfc-editor.org/info/rfc8484>.
 
    [WebSocket]
               Fette, I. and A. Melnikov, "The WebSocket Protocol",
@@ -2065,7 +2066,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
               Internet-Draft, draft-ietf-dnsop-aname-04, 8 July 2019,
               <http://www.ietf.org/internet-drafts/draft-ietf-dnsop-
               aname-04.txt>.
-
 
 
 
