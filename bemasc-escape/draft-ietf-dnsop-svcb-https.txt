@@ -173,7 +173,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
      B.2.  Differences from the proposed HTTP record . . . . . . . .  39
      B.3.  Differences from the proposed ANAME record  . . . . . . .  39
      B.4.  Comparison with separate RR types for AliasMode and
-           ServiceMode . . . . . . . . . . . . . . . . . . . . . . .  40
+           ServiceMode . . . . . . . . . . . . . . . . . . . . . . .  39
    Appendix C.  Change history . . . . . . . . . . . . . . . . . . .  40
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  42
 
@@ -418,14 +418,14 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    strings.  Key names should contain 1-63 characters from the ranges
    "a"-"z", "0"-"9", and "-".  In ABNF [RFC5234],
 
-   alpha-lc    = %x61-7A   ;  a-z
-   SvcParamKey = 1*63(alpha-lc / DIGIT / "-")
-   SvcParam    = SvcParamKey ["=" SvcParamValue]
+   alpha-lc      = %x61-7A   ;  a-z
+   SvcParamKey   = 1*63(alpha-lc / DIGIT / "-")
+   SvcParam      = SvcParamKey ["=" SvcParamValue]
    SvcParamValue = char-string
-   value       = *OCTET
+   value         = *OCTET
 
-   The definition of each key indicates that SvcParamValue is either
-   empty, single-valued, or multi-valued.  To parse a single-valued
+   The definition of each SvcParamKey indicates that its SvcParamValue
+   is empty, single-valued, or multi-valued.  To parse a single-valued
    SvcParam, the parser applies the character-string decoding algorithm
    (Appendix A), producing a "value", and then performs key-specific
    processing to validate the input and produce the wire-format
@@ -439,7 +439,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    Unrecognized keys are represented in presentation format as
    "keyNNNNN" where NNNNN is the numeric value of the key type without
-   leading zeros.  Keys in this form are always treated as single-
+   leading zeros.  SvcParams in this form are always treated as single-
    valued, and the decoded "value" SHALL be used as its wire format
    encoding.
 
@@ -1421,7 +1421,9 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    configuration of an alternative service.  In wire format, the value
    of the parameter is an ECHConfigs vector [ECH], including the
    redundant length prefix.  In presentation format, the value is a
-   single ECHConfigs encoded in Base64 [base64].
+   single ECHConfigs encoded in Base64 [base64].  Base64 is used here to
+   simplify integration with TLS server software.  To enable simpler
+   parsing, this SvcParam MUST NOT contain escape sequences.
 
    When ECH is in use, the TLS ClientHello is divided into an
    unencrypted "outer" and an encrypted "inner" ClientHello.  The outer
@@ -1448,8 +1450,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
        If there are compatible HTTPS RRs, they all have an "echconfig"
        key, and attempts to connect to them all fail, terminate
        connection establishment.
-
-
 
 
 
@@ -2078,10 +2078,11 @@ A.1.  Decoding a value list
 
    In order to represent lists of values in zone files, this
    specification uses an extended version of character-string decoding
-   that adds the use of "," as a delimiter.  When "," is not escaped by
-   a preceding "\", it separates values in the output, which is a list
-   of 1*OCTET.  (For simplicity, empty values are not allowed.)  We
-   refer to this modified procedure as "value-list decoding".
+   that adds the use of "," as a delimiter after double-quote
+   processing.  When "," is not escaped (by a preceding "\" or as the
+   escape sequence "\044"), it separates values in the output, which is
+   a list of 1*OCTET.  (For simplicity, empty values are not allowed.)
+   We refer to this modified procedure as "value-list decoding".
 
    value-list = char-string
    list-value = 1*OCTET
@@ -2089,13 +2090,15 @@ A.1.  Decoding a value list
    For example, consider this "char-string":
 
    "part1,part2\,part3"
+   part1,part2\044part3
 
-   Character-string decoding would produce a single "*OCTET" output:
+   Character-string decoding either of these inputs would produce a
+   single "*OCTET" output:
 
    part1,part2,part3
 
-   Value-list decoding would instead convert it to a list of two "list-
-   value"s:
+   Value-list decoding either of these inputs would instead convert it
+   to a list of two "list-value"s:
 
    part1
    part2,part3
@@ -2118,9 +2121,6 @@ B.1.  Differences from the SRV RR type
    *  SRV records are typically mandatory, whereas clients will always
       continue to function correctly without making use of SVCB.
 
-   *  SRV records cannot instruct the client to switch or upgrade
-      protocols, whereas SVCB can signal such an upgrade (e.g. to
-      HTTP/2).
 
 
 
@@ -2129,6 +2129,10 @@ Schwartz, et al.         Expires 14 January 2021               [Page 38]
 
 Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
+
+   *  SRV records cannot instruct the client to switch or upgrade
+      protocols, whereas SVCB can signal such an upgrade (e.g. to
+      HTTP/2).
 
    *  SRV records are not extensible, whereas SVCB and HTTPS RRs can be
       extended with new parameters.
@@ -2165,27 +2169,6 @@ B.3.  Differences from the proposed ANAME record
    endpoint, and may remove the apex's address records if the observed
    legacy traffic has fallen to negligible levels.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 39]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
 B.4.  Comparison with separate RR types for AliasMode and ServiceMode
 
    Abstractly, functions of AliasMode and ServiceMode are independent,
@@ -2195,6 +2178,14 @@ B.4.  Comparison with separate RR types for AliasMode and ServiceMode
    SVCB aliases (unlike CNAME).  Thus, clients would have to issue
    queries for both RR types in parallel, potentially at each step of
    the alias chain.  Recursive resolvers that implement the
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 39]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
+
    specification would, upon receipt of a ServiceMode query, emit both a
    ServiceMode and an AliasMode query to the authoritative.  Thus,
    splitting the RR type would double, or in some cases triple, the load
@@ -2234,14 +2225,6 @@ Appendix C.  Change history
 
       -  Expanded and reorganized examples
 
-
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 40]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
       -  Priority zero is now the definition of AliasForm
 
       -  Repeated SvcParamKeys are no longer allowed
@@ -2250,6 +2233,14 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
          also empty
 
       -  In the wire format, SvcParamKeys must be in sorted order
+
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 40]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
 
       -  New text regarding how to handle resolution timeouts
 
@@ -2291,13 +2282,6 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
       -  Remove one optimization.
 
-
-
-Schwartz, et al.         Expires 14 January 2021               [Page 41]
-
-Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
-
-
    *  draft-nygren-httpbis-httpssvc-03
 
       -  Change redirect type for HSTS-style behavior from 302 to 307 to
@@ -2306,6 +2290,13 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    *  draft-nygren-httpbis-httpssvc-02
 
       -  Remove the redundant length fields from the wire format.
+
+
+
+Schwartz, et al.         Expires 14 January 2021               [Page 41]
+
+Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
+
 
       -  Define a SvcDomainName of "." for SvcRecordType=1 as being the
          HTTPSSVC RRNAME.
@@ -2339,6 +2330,15 @@ Authors' Addresses
    Akamai Technologies
 
    Email: erik+ietf@nygren.org
+
+
+
+
+
+
+
+
+
 
 
 
