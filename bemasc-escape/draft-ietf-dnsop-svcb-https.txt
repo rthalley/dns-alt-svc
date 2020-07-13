@@ -1086,7 +1086,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    The presentation "value" of the SvcParamValue is a single decimal
    integer between 0 and 65535 in ASCII.  Any other "value" (e.g. an
    empty value) is a syntax error.  To enable simpler parsing, this
-   "pair" MUST NOT contain escape sequences.
+   SvcParam MUST NOT contain escape sequences.
 
    The wire format of the SvcParamValue is the corresponding 2 octet
    numeric value in network byte order.
@@ -1137,7 +1137,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
 
    Each decoded value in the value list SHALL be an IP address of the
    appropriate family in standard textual format [RFC5952].  To enable
-   simpler parsing, this "pair" MUST NOT contain escape sequences.
+   simpler parsing, this SvcParam MUST NOT contain escape sequences.
 
    The wire format for each parameter is a sequence of IP addresses in
    network byte order.  Like an A or AAAA RRSet, the list of addresses
