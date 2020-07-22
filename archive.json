@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-17T03:00:14.040161+00:00",
+  "timestamp": "2020-07-22T19:26:00.195346+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -4010,7 +4010,7 @@
       "labels": [],
       "body": "From @marka63:\r\n\r\nSection 2.4.1.  AliasMode paragraph 2.  Why have \"MUST NOT\" here?                         \r\n\r\n   The primary purpose of AliasMode is to allow aliasing at the zone\r\n   apex, where CNAME is not allowed.  In AliasMode, TargetName MUST be\r\n   the name of a domain that has SVCB, AAAA, or A records.  It MUST NOT\r\n   be equal to the owner name, as this would cause a loop.\r\n\r\nNameservers and clients need to detect loops regardless of the number of\r\nrecords that form the loop.  All this does is force vendors to write additional\r\ncode to detect this one sub-case of a loop.  These are also the only RR types\r\nthat need to have their owner names available to parse them.\r\n",
       "createdAt": "2020-07-14T14:11:09Z",
-      "updatedAt": "2020-07-14T14:11:31Z",
+      "updatedAt": "2020-07-17T03:06:49Z",
       "closedAt": null,
       "comments": [
         {
@@ -4019,6 +4019,13 @@
           "body": "What about using SHOULD NOT instead?",
           "createdAt": "2020-07-14T14:11:31Z",
           "updatedAt": "2020-07-14T14:11:31Z"
+        },
+        {
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "body": "How's the change in #224?",
+          "createdAt": "2020-07-17T03:06:48Z",
+          "updatedAt": "2020-07-17T03:06:48Z"
         }
       ]
     },
@@ -4037,6 +4044,37 @@
       "updatedAt": "2020-07-17T01:12:36Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 225,
+      "id": "MDU6SXNzdWU2NTg3OTkyNTA=",
+      "title": "Do we allow \"mandatory\" to appear in the \"mandatory list\"?",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/225",
+      "state": "CLOSED",
+      "author": "marka63",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "My feeling is no as it simplifies processing of the record as you don't have to check for it just to skip it.   Also it is implicitly there just by the presence of the field.",
+      "createdAt": "2020-07-17T03:18:06Z",
+      "updatedAt": "2020-07-17T04:49:16Z",
+      "closedAt": "2020-07-17T04:49:16Z",
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Agreed.  I believe this is already covered in the text:\r\n> This SvcParamKey is always automatically mandatory, and MUST NOT appear in its own value list.",
+          "createdAt": "2020-07-17T03:27:49Z",
+          "updatedAt": "2020-07-17T03:27:49Z"
+        },
+        {
+          "author": "marka63",
+          "authorAssociation": "NONE",
+          "body": "It's there with the \"also\" in \"MUST also appear\" but that is very subtle.  I suggest adding \"(This implies \"mandatory\" MUST NOT be a element of the list)\" or similar.",
+          "createdAt": "2020-07-17T04:41:28Z",
+          "updatedAt": "2020-07-17T04:41:28Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -17240,26 +17278,89 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NDUwNzA5NDg2",
       "title": " mandatory also needs MUST NOT for escape processing.",
       "url": "https://github.com/MikeBishop/dns-alt-svc/pull/223",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "enygren",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Fixes issue #222",
       "createdAt": "2020-07-17T02:59:29Z",
-      "updatedAt": "2020-07-17T02:59:29Z",
+      "updatedAt": "2020-07-17T03:11:15Z",
       "baseRepository": "MikeBishop/dns-alt-svc",
       "baseRefName": "master",
       "baseRefOid": "0eeb68300611d512f97527724dbc5a79a393da5c",
       "headRepository": "MikeBishop/dns-alt-svc",
       "headRefName": "enygren-mandatory-no-escape",
       "headRefOid": "f52e2a70b101d3da0a9dad1655249b7752bb5cbf",
+      "closedAt": "2020-07-17T03:11:15Z",
+      "mergedAt": "2020-07-17T03:11:14Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "ff8c572d75f7fb70ba7d0428e1459f3994b74c86"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDUwMzQ1NjY4",
+          "commit": {
+            "abbreviatedOid": "f52e2a7"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-17T03:11:08Z",
+          "updatedAt": "2020-07-17T03:11:08Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 224,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDUwNzEzNDM3",
+      "title": "Recursives and handling loops",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/224",
+      "state": "OPEN",
+      "author": "enygren",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #221 \r\n\r\nChange the \"TargetName of AliasMode SHOULD NOT equal owner name\" (vs MUST NOT).\r\n\r\nClarify that recursives MUST have reasonable loop prevention.",
+      "createdAt": "2020-07-17T03:06:37Z",
+      "updatedAt": "2020-07-17T03:15:30Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "0eeb68300611d512f97527724dbc5a79a393da5c",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "enygren-loop-safety",
+      "headRefOid": "3f507eddca1f893c20b974ca8487b6a59fe10cde",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDUwMzQ2NzIw",
+          "commit": {
+            "abbreviatedOid": "3f507ed"
+          },
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-07-17T03:15:30Z",
+          "updatedAt": "2020-07-17T03:15:30Z",
+          "comments": [
+            {
+              "originalPosition": 13,
+              "body": "The AliasForm section already says \"To avoid unbounded alias chains, clients and recursive resolvers MUST impose a limit on the total number of SVCB aliases they will follow\".  I don't understand whether this requirement is equivalent or not.",
+              "createdAt": "2020-07-17T03:15:30Z",
+              "updatedAt": "2020-07-17T03:15:30Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
