@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-22T19:26:00.195346+00:00",
+  "timestamp": "2020-07-23T14:16:22.358812+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -4034,15 +4034,15 @@
       "id": "MDU6SXNzdWU2NTg3MjE2NzU=",
       "title": "mandatory also needs MUST NOT for escape processing.",
       "url": "https://github.com/MikeBishop/dns-alt-svc/issues/222",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "marka63",
       "authorAssociation": "NONE",
       "assignees": [],
       "labels": [],
       "body": "key names in the list are all LDH so there is never a need to perform escape processing.",
       "createdAt": "2020-07-17T01:12:36Z",
-      "updatedAt": "2020-07-17T01:12:36Z",
-      "closedAt": null,
+      "updatedAt": "2020-07-23T01:36:58Z",
+      "closedAt": "2020-07-23T01:36:58Z",
       "comments": []
     },
     {
@@ -17361,6 +17361,76 @@
           ]
         }
       ]
+    },
+    {
+      "number": 226,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDU1MzIwMTAy",
+      "title": "Update svcb-implementations.md",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/226",
+      "state": "MERGED",
+      "author": "tfpauly",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Describe iOS/macOS client support.",
+      "createdAt": "2020-07-22T19:48:15Z",
+      "updatedAt": "2020-07-22T20:08:12Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "45773e33342d45aa862ae4a9832eb44ceb0508a9",
+      "headRepository": "tfpauly/dns-alt-svc",
+      "headRefName": "patch-1",
+      "headRefOid": "a1d909375f1c461c7a83ec33658bafb468ff7cf4",
+      "closedAt": "2020-07-22T20:08:12Z",
+      "mergedAt": "2020-07-22T20:08:12Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "78ae89c07071efca05046f2d3ab0b76f77fc3db3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDUzNjQ2MzAy",
+          "commit": {
+            "abbreviatedOid": "a1d9093"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-22T20:08:06Z",
+          "updatedAt": "2020-07-22T20:08:06Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 227,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDU1NjUzMTA4",
+      "title": "Add more implementations",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/227",
+      "state": "MERGED",
+      "author": "ghedo",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-07-23T11:45:53Z",
+      "updatedAt": "2020-07-23T14:15:18Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "78ae89c07071efca05046f2d3ab0b76f77fc3db3",
+      "headRepository": "ghedo/dns-alt-svc",
+      "headRefName": "cloudflare",
+      "headRefOid": "cbda85fda20bd83178bdc8ed851fdb133e4fc024",
+      "closedAt": "2020-07-23T14:15:18Z",
+      "mergedAt": "2020-07-23T14:15:18Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "859c68f04d78c1da0763d631f8630a200aacdca1"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
