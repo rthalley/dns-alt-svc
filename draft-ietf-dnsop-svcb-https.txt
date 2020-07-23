@@ -987,9 +987,8 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    foosvc.example.net. 3600 IN SVCB 1 . key65333=...
    foosvc.example.net.  300 IN AAAA 2001:db8::1
 
-   Domain owners SHOULD avoid using a SvcDomainName that is below a
-   DNAME, as this is likely unnecessary and makes responses slower and
-   larger.
+   Domain owners SHOULD avoid using a TargetName that is below a DNAME,
+   as this is likely unnecessary and makes responses slower and larger.
 
 6.  Initial SvcParamKeys
 
@@ -1002,6 +1001,7 @@ Internet-Draft         SVCB and HTTPS RRs for DNS              July 2020
    set of Application Layer Protocol Negotation (ALPN) protocol
    identifiers [ALPN] and associated transport protocols supported by
    this service endpoint.
+
 
 
 
