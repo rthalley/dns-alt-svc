@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-23T14:16:22.358812+00:00",
+  "timestamp": "2020-07-28T15:41:17.155885+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -4073,6 +4073,37 @@
           "body": "It's there with the \"also\" in \"MUST also appear\" but that is very subtle.  I suggest adding \"(This implies \"mandatory\" MUST NOT be a element of the list)\" or similar.",
           "createdAt": "2020-07-17T04:41:28Z",
           "updatedAt": "2020-07-17T04:41:28Z"
+        }
+      ]
+    },
+    {
+      "number": 229,
+      "id": "MDU6SXNzdWU2NjQ4MTI4OTk=",
+      "title": "Add the expanded form of \"SVCB\" when it's first used",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/229",
+      "state": "OPEN",
+      "author": "cbartle891",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Typically, when introducing an acronym, it's useful to include its expanded form with it. That doesn't seem to happen in this document for \"SVCB,\" nor does SVCB appear to be a common DNS term like RR. In fact, SVCB doesn't appear to be an acronym at all, but rather a shortened version of \"Service binding.\" Is this true? If so, indicating that would be helpful.",
+      "createdAt": "2020-07-23T22:54:38Z",
+      "updatedAt": "2020-07-24T19:53:23Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Isn't this covered in Section 1.4?\r\n\r\n```\r\nSVCB is a contraction of \"service binding\".  The SVCB RR, HTTPS RR,\r\n   and future RR types that share SVCB's format and registry are\r\n   collectively known as SVCB-compatible RR types.\r\n```",
+          "createdAt": "2020-07-24T00:34:57Z",
+          "updatedAt": "2020-07-24T00:34:57Z"
+        },
+        {
+          "author": "cbartle891",
+          "authorAssociation": "NONE",
+          "body": "Ah, that's good, but that's why I specified \"when introducing an acronym.\" It's very delayed to explain an acronym (or abbreviation) 6 pages after it's first used. I've changed the title of this issue accordingly.",
+          "createdAt": "2020-07-24T03:48:18Z",
+          "updatedAt": "2020-07-24T03:48:18Z"
         }
       ]
     }
@@ -17431,6 +17462,48 @@
       },
       "comments": [],
       "reviews": []
+    },
+    {
+      "number": 228,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDU1NzU0MTky",
+      "title": "Missed one SvcDomainName -> TargetName",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/228",
+      "state": "MERGED",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-07-23T14:35:09Z",
+      "updatedAt": "2020-07-23T20:26:59Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "859c68f04d78c1da0763d631f8630a200aacdca1",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-targetname",
+      "headRefOid": "de2ab8f1314ea5932f28f33ea674b3514126137c",
+      "closedAt": "2020-07-23T20:26:59Z",
+      "mergedAt": "2020-07-23T20:26:59Z",
+      "mergedBy": "enygren",
+      "mergeCommit": {
+        "oid": "06bb472563d642cbe8a5c8f5d7e77d8a63b9092a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDU0NDcwMzM2",
+          "commit": {
+            "abbreviatedOid": "de2ab8f"
+          },
+          "author": "enygren",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-07-23T20:26:54Z",
+          "updatedAt": "2020-07-23T20:26:54Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
