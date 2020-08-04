@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-07-28T15:41:17.155885+00:00",
+  "timestamp": "2020-08-04T15:59:57.050114+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -4104,6 +4104,30 @@
           "body": "Ah, that's good, but that's why I specified \"when introducing an acronym.\" It's very delayed to explain an acronym (or abbreviation) 6 pages after it's first used. I've changed the title of this issue accordingly.",
           "createdAt": "2020-07-24T03:48:18Z",
           "updatedAt": "2020-07-24T03:48:18Z"
+        }
+      ]
+    },
+    {
+      "number": 232,
+      "id": "MDU6SXNzdWU2NzE0MDAyNDQ=",
+      "title": "Confirm IANA actions for  Service Parameters Registry",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/issues/232",
+      "state": "OPEN",
+      "author": "moonshiner",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "In discussing draft-schwartz-svcb-dns Draft, @bemasc and I were debating the need for \"Standards Action\" vs \"Expert Review\"\r\n\r\nI suggest changing it to \"Expert Review / Specification Required\"",
+      "createdAt": "2020-08-02T02:08:06Z",
+      "updatedAt": "2020-08-04T15:13:53Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@moonshiner I'm not sure I understand your proposal.  Currently we have 256 Standards Action, 32512 Expert Review, 32512 FCFS, and 255 Private Use.  What are you suggesting?",
+          "createdAt": "2020-08-04T15:13:52Z",
+          "updatedAt": "2020-08-04T15:13:52Z"
         }
       ]
     }
@@ -17504,6 +17528,73 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 230,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDU4MDM1OTA2",
+      "title": "Proposal: Skip the default port prefix",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/230",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This changes the definition of \"Port Prefix Naming\" to only include the\r\n_port prefix if a non-default port is specified.  None of the examples\r\nexercise this case, and the HTTPS RR overrides it, so this only matters\r\nfor future protocol mappings that choose to follow this advice.",
+      "createdAt": "2020-07-28T20:25:44Z",
+      "updatedAt": "2020-07-28T20:25:44Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "bd3bd0b9e3aad9e51dbe6911f4d451cb24af5bbe",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-noport",
+      "headRefOid": "334db890a8ef0ed1007c741898e0c758e831b783",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 231,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDU4MDM3NDEx",
+      "title": "Explain \"SVCB\" at the top",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/231",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #229",
+      "createdAt": "2020-07-28T20:28:56Z",
+      "updatedAt": "2020-07-28T20:31:02Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "bd3bd0b9e3aad9e51dbe6911f4d451cb24af5bbe",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-svcb",
+      "headRefOid": "c27b3b4297f723d8671869bbbd99eade01242817",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@cbartle891 Is this better?",
+          "createdAt": "2020-07-28T20:29:25Z",
+          "updatedAt": "2020-07-28T20:29:25Z"
+        },
+        {
+          "author": "cbartle891",
+          "authorAssociation": "NONE",
+          "body": "Yes, thank you!",
+          "createdAt": "2020-07-28T20:31:02Z",
+          "updatedAt": "2020-07-28T20:31:02Z"
+        }
+      ],
+      "reviews": []
     }
   ]
 }
