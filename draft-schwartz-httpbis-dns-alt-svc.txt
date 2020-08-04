@@ -5,8 +5,8 @@
 HTTP Working Group                                           B. Schwartz
 Internet-Draft                                                    Google
 Intended status: Standards Track                               M. Bishop
-Expires: 29 January 2021                             Akamai Technologies
-                                                            28 July 2020
+Expires: 5 February 2021                             Akamai Technologies
+                                                           4 August 2020
 
 
      Finding HTTP Alternative Services via the Domain Name Service
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 January 2021.
+   This Internet-Draft will expire on 5 February 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 1]
+Schwartz & Bishop        Expires 5 February 2021                [Page 1]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    extracted from this document must include Simplified BSD License text
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 2]
+Schwartz & Bishop        Expires 5 February 2021                [Page 2]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    Together, these components provide a toolkit that has proven useful
@@ -165,9 +165,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 3]
+Schwartz & Bishop        Expires 5 February 2021                [Page 3]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    The IANA DNS Underscore Global Scoped Entry Registry [Attrleaf] MUST
@@ -221,9 +221,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 4]
+Schwartz & Bishop        Expires 5 February 2021                [Page 4]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    *  SRV records are not extensible, whereas Alt-Svc can be extended
@@ -277,9 +277,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 5]
+Schwartz & Bishop        Expires 5 February 2021                [Page 5]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    When receiving an RRSET containing multiple ALTSVC records, clients
@@ -333,9 +333,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 6]
+Schwartz & Bishop        Expires 5 February 2021                [Page 6]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
 4.1.  Cache interaction
@@ -389,9 +389,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 7]
+Schwartz & Bishop        Expires 5 February 2021                [Page 7]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    Note that this procedure does not rely on recursive resolvers
@@ -445,9 +445,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 8]
+Schwartz & Bishop        Expires 5 February 2021                [Page 8]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    Per [Attrleaf], please add the following entries to the DNS
@@ -501,9 +501,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021                [Page 9]
+Schwartz & Bishop        Expires 5 February 2021                [Page 9]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    [RFC2181]  Elz, R. and R. Bush, "Clarifications to the DNS
@@ -557,9 +557,9 @@ Internet-Draft               Alt-Svc via DNS                   July 2020
 
 
 
-Schwartz & Bishop        Expires 29 January 2021               [Page 10]
+Schwartz & Bishop        Expires 5 February 2021               [Page 10]
 
-Internet-Draft               Alt-Svc via DNS                   July 2020
+Internet-Draft               Alt-Svc via DNS                 August 2020
 
 
    [RFC7871]  Contavalli, C., van der Gaast, W., Lawrence, D., and W.
@@ -613,4 +613,4 @@ Authors' Addresses
 
 
 
-Schwartz & Bishop        Expires 29 January 2021               [Page 11]
+Schwartz & Bishop        Expires 5 February 2021               [Page 11]
