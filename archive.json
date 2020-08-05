@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-08-04T15:59:57.050114+00:00",
+  "timestamp": "2020-08-05T13:14:35.635147+00:00",
   "repo": "MikeBishop/dns-alt-svc",
   "labels": [
     {
@@ -17594,6 +17594,60 @@
           "updatedAt": "2020-07-28T20:31:02Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 233,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDYyOTQzNjUz",
+      "title": "Remove TODOs",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/233",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-08-04T18:58:02Z",
+      "updatedAt": "2020-08-04T18:58:02Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "b418893c912b89873ba8bde0b9751d6c31717b47",
+      "headRepository": "MikeBishop/dns-alt-svc",
+      "headRefName": "bemasc-todo",
+      "headRefOid": "9d1096316933cb32bb24510a8952ad10012cf9ac",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 234,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDYzMzQ5MjIy",
+      "title": "Update svcb-implementations.md linking to the PowerDNS implementation",
+      "url": "https://github.com/MikeBishop/dns-alt-svc/pull/234",
+      "state": "MERGED",
+      "author": "pieterlexis",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-08-05T12:23:06Z",
+      "updatedAt": "2020-08-05T13:14:01Z",
+      "baseRepository": "MikeBishop/dns-alt-svc",
+      "baseRefName": "master",
+      "baseRefOid": "b418893c912b89873ba8bde0b9751d6c31717b47",
+      "headRepository": "pieterlexis/dns-alt-svc",
+      "headRefName": "patch-1",
+      "headRefOid": "85e825a7a63ca8c46c17952aee838ba5fd86021a",
+      "closedAt": "2020-08-05T13:14:00Z",
+      "mergedAt": "2020-08-05T13:14:00Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "77c16235459b1b84da809cf7e0bf2704aefb1bc3"
+      },
+      "comments": [],
       "reviews": []
     }
   ]
